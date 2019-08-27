@@ -2,5 +2,7 @@
 
 ## Members
 Samuel Lim
+
 Elias Garcia
+
 Michael Cu
