@@ -25,6 +25,7 @@
     -   what submission might look like
     -   discussion of who gets to do what
     -   discussion of when to meet, general availability
+        +   The most likely time to meet is MWF
         -   Sam will be gone from 9th through 19th
         -   Elias will be gone through the 12th - 14th
 
