@@ -28,7 +28,7 @@
 
 <a id="org735a571"></a>
 
-## TODO | project 1 report
+### TODO | Project #1 Report
 
 -   want to get scrum documentation done
 -   get general idea down by end of this friday (2019.09.06)
@@ -43,7 +43,7 @@
 
 <a id="org3fe468d"></a>
 
-## TODO | functionality of sprint 1
+### TODO | Functionality of Sprint #1
 
 -   finish the functional/technical components of the project
 -   TBD
