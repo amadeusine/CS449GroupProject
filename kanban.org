@@ -1,15 +1,20 @@
 * TODO micro charter
 ** project
 * TODO board
-  | Backlog | ID | Analysis | Impl | Testing | Done |
-  |---------+----+----------+------+---------+------|
-  |         |    |          |      |         |      |
-  |         |    |          |      |         |      |
-  |         |    |          |      |         |      |
-  |         |    |          |      |         |      |
-  |         |    |          |      |         |      |
+  | Backlog                    | ID | Analysis | Impl | Testing | Done |
+  |----------------------------+----+----------+------+---------+------|
+  | [[Mills Board]]                |    |          |      |         |      |
+  | [[Piece placement]]            |    |          |      |         |      |
+  | [[Piece movement]]             |    |          |      |         |      |
+  | [[Flying Pieces]]              |    |          |      |         |      |
+  | [[Defining end of game]]       |    |          |      |         |      |
+  | [[choosing/assigning players]] |    |          |      |         |      |
+  |                            |    |          |      |         |      |
 * stories
 ** Mills Board
+   :PROPERTIES:
+   :story_id: 1
+   :END:
 *** Description
     3 expanded squares with 8 equidistant positions each.
 *** Priority
