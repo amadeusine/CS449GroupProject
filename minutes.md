@@ -16,25 +16,26 @@
 
 <a id="org2f07927"></a>
 
-## meeting 2019.09.04 (first)
+## 2019.09.04 | First Meeting
 
--   going over project pdf as group
+-   going over project PDF as group
     -   discussing tech stack
     -   going over sprint assignments
     -   going over normal assignments
--   discussing the actual structure of sprint 1
+-   discussing the actual structure of Sprint #1
     -   requirements
     -   user stories
     -   what submission might look like
     -   discussion of who gets to do what
     -   discussion of when to meet, general availability
+        +   The most likely time to meet is MWF
         -   Sam will be gone from 9th through 19th
         -   Elias will be gone through the 12th - 14th
 
 
 <a id="org23f005f"></a>
 
-### TODO project 1 report
+### TODO | Project #1 Report
 
 -   want to get scrum documentation done
 -   get general idea down by end of this friday (2019.09.06)
@@ -49,7 +50,7 @@
 
 <a id="org23b0760"></a>
 
-### TODO functionality of sprint 1
+### TODO | Functionality of Sprint #1
 
 -   finish the functional/technical components of the project
 -   TBD
