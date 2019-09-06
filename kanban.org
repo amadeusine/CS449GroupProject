@@ -1,0 +1,78 @@
+* TODO micro charter
+** project
+* TODO board
+  | Backlog | ID | Analysis | Impl | Testing | Done |
+  |---------+----+----------+------+---------+------|
+  |         |    |          |      |         |      |
+  |         |    |          |      |         |      |
+  |         |    |          |      |         |      |
+  |         |    |          |      |         |      |
+  |         |    |          |      |         |      |
+* stories
+** Mills Board
+*** Description
+    3 expanded squares with 8 equidistant positions each.
+*** Priority
+    high.
+*** Estimate
+    10 hours.
+*** Actual
+*** Status
+*** Developer
+** Piece placement
+*** Description
+    as a user, place n = 9 pieces on unoccupied positions
+*** Priority
+    high
+*** Estimate
+    10 hours
+*** Actual
+*** Status
+*** Developer
+** Piece movement
+*** Description
+    Moving your pieces into adjacent positions that are not occupied by
+    opponent nor adjacent to an opponent's mill.
+*** Priority
+    medium
+*** Estimate
+*** Actual
+*** Status
+*** Developer
+** Flying pieces
+*** Description
+    Upon a user reaching 3 pieces, the user can now fly (jump) across the board
+    to any un-occupied point. Whether the position is guarded is a variant of
+    the game, implementation decision TBD.
+*** Priority
+    low.
+*** Estimate
+*** Actual
+*** Status
+*** Developer
+** Defining end of game
+*** Description
+    when a player reaches less than three pieces, i.e. two pieces, the game is
+    considered lost for aforementioned player and won for the opponent.
+*** Priority
+    low.
+*** Estimate
+*** Actual
+*** Status
+*** Developer
+** choosing/assigning players
+*** Description
+    a user gets assigned a player number from either 1 or 2. The assignment is
+    random ("coin flip").
+*** Priority
+*** Estimate
+*** Actual
+*** Status
+*** Developer
+** [Template User Story]
+*** Description
+*** Priority
+*** Estimate
+*** Actual
+*** Status
+*** Developer
