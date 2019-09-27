@@ -1,0 +1,211 @@
+#+TITLE: CS449 Sprint 1 Report
+#+AUTHOR: Michael Cu, Elias Julian Marko Garcia, Samual Lim
+#+LATEX_HEADER: \usepackage{float}
+* Micro Charter
+** A Rustic Nine Men's Morris for the Web
+*** Vision Statement
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+*** Mission Statement
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+*** Elevator Pitch
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+*** Business Value
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+*** Customer and Users
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+*** Metrics
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+*** Milestones
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+*** Risks
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+*** Authors
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+* User Stories
+** Story Board
+   #+ATTR_LaTeX: :align |c|c|c|c|c|c|c|
+   | SID | Story Name        | Priority | Time Estimate (hr) | Actual (hr) | Status | Developer |
+   |-----+-------------------+----------+--------------------+-------------+--------+-----------|
+   | [[#S1]] | Blank Board       | high     | 10hr               |             |        |           |
+   |     | Piece Placement   | high     | 10hr               |             |        |           |
+   |     | Piece Movement    |          |                    |             |        |           |
+   |     | Flying Pieces     |          |                    |             |        |           |
+   |     | Defining End Game |          |                    |             |        |           |
+** Mills Board
+   :PROPERTIES:
+   :CUSTOM_ID: S1
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, I need an empty board consisting of 4 expanded squares with 8 equidistant positions
+    each to play a game of Nine Men's Morris.
+** User Input and Selection
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, I need to be able to select and choose input from the web GUI of the application to
+    be able to play and take turns at Nine Men's Morris.
+** Starting a Game
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, I need a GUI to prompt me with the options to start a game with either another human
+    or against the computer for Nine Men's Morris in order to play the game.
+** Assigning Players
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, I need to be assigned the role as either the first or second player, whether against
+    another human or the computer, in order to know my player turn (either first or second) in the
+    game.
+** Piece Placement
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, I need to place nine pieces on unoccupied positions in turn with another player to
+    start off a game of Nine Men's Morris.
+** Piece Movement
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, I need to be able to move my pieces into adjacent positions that are not occupied by
+    the other player or adjacent to their mill in order to take a turn.
+** Mill Formation
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, I need the game to recognize that I have formed a mill upon moving three of my own
+    pieces into adjacent positions so that I may gain the future ability to attack and defend my
+    mill pieces from being eliminated.
+** Piece Elimination
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, after forming a mill, I need the ability to remove an opponent's piece of my choosing
+    so long as either it is not in a mill or any piece given all available pieces are in a mill, so
+    that I may appropriately attack my opponent.
+** Flying Pieces
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, upon reaching three remaining pieces, I need the ability to fly (jump) my pieces
+    across the board to any un-occupied point in order to play Nine Men's Morris according to the
+    rules. Whether the position is guarded is a variant of the game, implementation decision TBD.
+** Defining End of Game
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, when either myself or the opponent reaches less than three pieces, i.e. two pieces, I
+    need the game and to declare the respective winner in order to successfully finish a game of
+    Nine Men's Morris.
+** Restarting and Replaying a Game
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, after having completed a game of Nine Men's Morris, I need the GUI to prompt me to
+    either play again or to end the game software so that I can accordingly choose whether to keep
+    playing or to end my game session.
+** [Template User Story]
+   :PROPERTIES:
+   :UNNUMBERED: t
+   :END:
+*** Description
+*** Priority
+*** Estimate
+*** Actual
+*** Status
+*** Developer
+* Acceptance Criteria
+** Criterion Board
+   #+ATTR_LaTeX: :align |l|l|p{4cm|l|l|
+   | SID & Name | ACID | Criterion | Status | Developer |
+   |------------+------+-----------+--------+-----------|
+   |          1 |    2 | Foo       | Bar    | Buzz      |
+   |            |      |           |        |           |
+   |            |      |           |        |           |
+   |            |      |           |        |           |
+   |            |      |           |        |           |
+   
+* Implementation Tasks
+** Summary of Production Code
+
+   #+ATTR_LaTeX: :align |c|c|c|c|c|c|c|
+   | SID & Name | ACID | Class Name(s) | Method Name(s) | Developer | Status | Notes |
+   |------------+------+---------------+----------------+-----------+--------+-------|
+   |          1 |    2 | Qux           | Bizz           | Daz       | Qud    | Foo   |
+   |            |      |               |                |           |        |       |
+   |            |      |               |                |           |        |       |
+   |            |      |               |                |           |        |       |
+   |            |      |               |                |           |        |       |
+   
+   #+LATEX: %%\newpage
+** Automated Test Code
+
+
+   #+ATTR_LaTeX:  :environment longtable :align |l|l|p{2.5cm}|p{2.5cm}|p{2.5cm}|l|l|
+   | SID & Name | ACID | Class Name(s) | Method Name(s) | Description | Status | Developer |
+   |------------+------+---------------+----------------+-------------+--------+-----------|
+   |          1 |    2 | Foo           | Bar            | Fizz        | Buzz   | Quz       |
+   |            |      |               |                |             |        |           |
+   |            |      |               |                |             |        |           |
+   |            |      |               |                |             |        |           |
+   |            |      |               |                |             |        |           |
+
+   
+** Manual Test Code
+   #+ATTR_LaTeX: :environment longtable :align |l|l||p{2.5cm}|p{2.5cm}|l|l|l|
+   | SID & Name | ACID | Test Input | Test Oracle | Status | Notes | Developer |
+   |------------+------+------------+-------------+--------+-------+-----------|
+   |          1 |    2 | Fizz       | Fuzz        | Quz    | Bar   | Qud       |
+   |            |      |            |             |        |       |           |
+   |            |      |            |             |        |       |           |
+   |            |      |            |             |        |       |           |
+   |            |      |            |             |        |       |           |
+** Other Manual Test Code
+   #+LATEX: \small
+   #+ATTR_LaTeX: :align |c|c|c|c|c|c|c|
+   | ID | Test Input | Expected Result | Class Name | Method Name of Test | Status | Developer |
+   |----+------------+-----------------+------------+---------------------+--------+-----------|
+   |  1 | Foo        | Bar             | Fuzz       | Quz                 | Fizz   | Bazz      |
+   |    |            |                 |            |                     |        |           |
+   |    |            |                 |            |                     |        |           |
+   |    |            |                 |            |                     |        |           |
+   |    |            |                 |            |                     |        |           |
+   |    |            |                 |            |                     |        |           |
+   #+LATEX: \normalsize
+
+* Meeting Minutes
+  :PROPERTIES:
+  :ALT_TITLE: Meeting Minutes
+  :APPENDIX: t
+  :END:

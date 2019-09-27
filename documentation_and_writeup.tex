@@ -1,0 +1,259 @@
+% Created 2019-09-27 Fri 18:39
+% Intended LaTeX compiler: pdflatex
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\usepackage{float}
+\author{Michael Cu, Elias Julian Marko Garcia, Samual Lim}
+\date{\today}
+\title{CS449 Sprint 1 Report}
+\hypersetup{
+ pdfauthor={Michael Cu, Elias Julian Marko Garcia, Samual Lim},
+ pdftitle={CS449 Sprint 1 Report},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 26.3 (Org mode 9.1.9)}, 
+ pdflang={English}}
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\section{Micro Charter}
+\label{sec:org5c92028}
+\subsection{A Rustic Nine Men's Morris for the Web}
+\label{sec:org63fd7a4}
+\subsubsection*{Vision Statement}
+\label{sec:org85ccb26}
+\subsubsection*{Mission Statement}
+\label{sec:orgbce4bef}
+\subsubsection*{Elevator Pitch}
+\label{sec:orgce8dbfe}
+\subsubsection*{Business Value}
+\label{sec:orgdc9bd4f}
+\subsubsection*{Customer and Users}
+\label{sec:orgaaab6a9}
+\subsubsection*{Metrics}
+\label{sec:org414961e}
+\subsubsection*{Milestones}
+\label{sec:orge4e5217}
+\subsubsection*{Risks}
+\label{sec:orgbf83c60}
+\subsubsection*{Authors}
+\label{sec:org88c3c24}
+\section{User Stories}
+\label{sec:orgc2a976e}
+\subsection{Story Board}
+\label{sec:orgc04e444}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|}
+SID & Story Name & Priority & Time Estimate (hr) & Actual (hr) & Status & Developer\\
+\hline
+\ref{sec:org9a752e5} & Blank Board & high & 10hr &  &  & \\
+ & Piece Placement & high & 10hr &  &  & \\
+ & Piece Movement &  &  &  &  & \\
+ & Flying Pieces &  &  &  &  & \\
+ & Defining End Game &  &  &  &  & \\
+\end{tabular}
+\end{center}
+\subsection{Mills Board}
+\label{sec:org9a752e5}
+\subsubsection*{Description}
+\label{sec:org55e6496}
+As a user, I need an empty board consisting of 4 expanded squares with 8 equidistant positions
+each to play a game of Nine Men's Morris.
+\subsection{User Input and Selection}
+\label{sec:org20f49a2}
+\subsubsection*{Description}
+\label{sec:orgfa7cd0e}
+As a user, I need to be able to select and choose input from the web GUI of the application to
+be able to play and take turns at Nine Men's Morris.
+\subsection{Starting a Game}
+\label{sec:orgdf7eec8}
+\subsubsection*{Description}
+\label{sec:org02d9caf}
+As a user, I need a GUI to prompt me with the options to start a game with either another human
+or against the computer for Nine Men's Morris in order to play the game.
+\subsection{Assigning Players}
+\label{sec:org8bcf587}
+\subsubsection*{Description}
+\label{sec:orgd8de5f2}
+As a user, I need to be assigned the role as either the first or second player, whether against
+another human or the computer, in order to know my player turn (either first or second) in the
+game.
+\subsection{Piece Placement}
+\label{sec:orgf670e5e}
+\subsubsection*{Description}
+\label{sec:orgda9412e}
+As a user, I need to place nine pieces on unoccupied positions in turn with another player to
+start off a game of Nine Men's Morris.
+\subsection{Piece Movement}
+\label{sec:orgbf75d4b}
+\subsubsection*{Description}
+\label{sec:org48683b5}
+As a user, I need to be able to move my pieces into adjacent positions that are not occupied by
+the other player or adjacent to their mill in order to take a turn.
+\subsection{Mill Formation}
+\label{sec:orgcc24bcb}
+\subsubsection*{Description}
+\label{sec:org1e4a969}
+As a user, I need the game to recognize that I have formed a mill upon moving three of my own
+pieces into adjacent positions so that I may gain the future ability to attack and defend my
+mill pieces from being eliminated.
+\subsection{Piece Elimination}
+\label{sec:org9fd7aac}
+\subsubsection*{Description}
+\label{sec:org0e6057a}
+As a user, after forming a mill, I need the ability to remove an opponent's piece of my choosing
+so long as either it is not in a mill or any piece given all available pieces are in a mill, so
+that I may appropriately attack my opponent.
+\subsection{Flying Pieces}
+\label{sec:org7a7e2cd}
+\subsubsection*{Description}
+\label{sec:orga27ec18}
+As a user, upon reaching three remaining pieces, I need the ability to fly (jump) my pieces
+across the board to any un-occupied point in order to play Nine Men's Morris according to the
+rules. Whether the position is guarded is a variant of the game, implementation decision TBD.
+\subsection{Defining End of Game}
+\label{sec:org8aae30b}
+\subsubsection*{Description}
+\label{sec:org65acd57}
+As a user, when either myself or the opponent reaches less than three pieces, i.e. two pieces, I
+need the game and to declare the respective winner in order to successfully finish a game of
+Nine Men's Morris.
+\subsection{Restarting and Replaying a Game}
+\label{sec:orgad8aff7}
+\subsubsection*{Description}
+\label{sec:orge4a7364}
+As a user, after having completed a game of Nine Men's Morris, I need the GUI to prompt me to
+either play again or to end the game software so that I can accordingly choose whether to keep
+playing or to end my game session.
+\subsection*{[Template User Story]}
+\label{sec:orgb1cce0c}
+\subsubsection*{Description}
+\label{sec:orgd48c54a}
+\subsubsection*{Priority}
+\label{sec:org72905e1}
+\subsubsection*{Estimate}
+\label{sec:org20322e5}
+\subsubsection*{Actual}
+\label{sec:org5cc13ef}
+\subsubsection*{Status}
+\label{sec:org359e59a}
+\subsubsection*{Developer}
+\label{sec:org6821f20}
+\section{Acceptance Criteria}
+\label{sec:orgd7dabfd}
+\subsection{Criterion Board}
+\label{sec:org561da52}
+\begin{center}
+\begin{tabular}{|l|l|p{4cm|l|l|}
+SID \& Name & ACID & Criterion & Status & Developer\\
+\hline
+1 & 2 & Foo & Bar & Buzz\\
+ &  &  &  & \\
+ &  &  &  & \\
+ &  &  &  & \\
+ &  &  &  & \\
+\end{tabular}
+\end{center}
+
+\section{Implementation Tasks}
+\label{sec:org05be8ce}
+\subsection{Summary of Production Code}
+\label{sec:org876429c}
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|}
+SID \& Name & ACID & Class Name(s) & Method Name(s) & Developer & Status & Notes\\
+\hline
+1 & 2 & Qux & Bizz & Daz & Qud & Foo\\
+ &  &  &  &  &  & \\
+ &  &  &  &  &  & \\
+ &  &  &  &  &  & \\
+ &  &  &  &  &  & \\
+\end{tabular}
+\end{center}
+
+%%\newpage
+\subsection{Automated Test Code}
+\label{sec:orgcf9cf0c}
+
+
+\begin{longtable}{|l|l|p{2.5cm}|p{2.5cm}|p{2.5cm}|l|l|}
+SID \& Name & ACID & Class Name(s) & Method Name(s) & Description & Status & Developer\\
+\hline
+\endfirsthead
+\multicolumn{7}{l}{Continued from previous page} \\
+\hline
+
+SID \& Name & ACID & Class Name(s) & Method Name(s) & Description & Status & Developer \\
+
+\hline
+\endhead
+\hline\multicolumn{7}{r}{Continued on next page} \\
+\endfoot
+\endlastfoot
+\hline
+1 & 2 & Foo & Bar & Fizz & Buzz & Quz\\
+ &  &  &  &  &  & \\
+ &  &  &  &  &  & \\
+ &  &  &  &  &  & \\
+ &  &  &  &  &  & \\
+\end{longtable}
+
+
+\subsection{Manual Test Code}
+\label{sec:orgc229bce}
+\begin{longtable}{|l|l||p{2.5cm}|p{2.5cm}|l|l|l|}
+SID \& Name & ACID & Test Input & Test Oracle & Status & Notes & Developer\\
+\hline
+\endfirsthead
+\multicolumn{7}{l}{Continued from previous page} \\
+\hline
+
+SID \& Name & ACID & Test Input & Test Oracle & Status & Notes & Developer \\
+
+\hline
+\endhead
+\hline\multicolumn{7}{r}{Continued on next page} \\
+\endfoot
+\endlastfoot
+\hline
+1 & 2 & Fizz & Fuzz & Quz & Bar & Qud\\
+ &  &  &  &  &  & \\
+ &  &  &  &  &  & \\
+ &  &  &  &  &  & \\
+ &  &  &  &  &  & \\
+\end{longtable}
+\subsection{Other Manual Test Code}
+\label{sec:org4e9e2d0}
+\small
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|}
+ID & Test Input & Expected Result & Class Name & Method Name of Test & Status & Developer\\
+\hline
+1 & Foo & Bar & Fuzz & Quz & Fizz & Bazz\\
+ &  &  &  &  &  & \\
+ &  &  &  &  &  & \\
+ &  &  &  &  &  & \\
+ &  &  &  &  &  & \\
+ &  &  &  &  &  & \\
+\end{tabular}
+\end{center}
+\normalsize
+
+\section{Meeting Minutes}
+\label{sec:orgf256917}
+\end{document}
