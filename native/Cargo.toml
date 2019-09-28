@@ -1,5 +1,5 @@
 [package]
-name = "CS449GroupProject"
+name = "native"
 version = "0.1.0"
 authors = ["elias <elias.jm.garcia@gmail.com>"]
 edition = "2018"
