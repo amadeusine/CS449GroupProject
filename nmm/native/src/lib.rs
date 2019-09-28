@@ -1,6 +1,9 @@
 #![allow(non_snake_case)]
 #![allow(dead_code)]
 
+#[macro_use]
+extern crate neon;
+use neon::prelude::*;
 use std::{cell::RefCell, collections::HashMap, rc::Rc};
 
 #[derive(Debug, Clone, Copy, PartialEq, PartialOrd)]
@@ -53,6 +56,12 @@ struct GameState {
     board: Board,
     mills: Vec<Mill>,
 }
+
+fn hello(mut cx: FunctionContext) -> JsResult<JsString> {
+    Ok(cx.string("hello node"))
+}
+
+register_module!(mut cx, { cx.export_function("hello", hello) });
 
 #[cfg(test)]
 mod tests {
