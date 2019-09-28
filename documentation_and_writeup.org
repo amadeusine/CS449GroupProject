@@ -40,15 +40,23 @@
     :UNNUMBERED: t
     :END:
 * User Stories
-** Story Board
-   #+ATTR_LaTeX: :align |c|c|c|c|c|c|c|
-   | SID | Story Name        | Priority | Time Estimate (hr) | Actual (hr) | Status | Developer |
-   |-----+-------------------+----------+--------------------+-------------+--------+-----------|
-   | [[#S1]] | Blank Board       | high     | 10hr               |             |        |           |
-   |     | Piece Placement   | high     | 10hr               |             |        |           |
-   |     | Piece Movement    |          |                    |             |        |           |
-   |     | Flying Pieces     |          |                    |             |        |           |
-   |     | Defining End Game |          |                    |             |        |           |
+   #+ATTR_LaTeX: :align |c|p{3.5cm}|l|p{1.5cm}|l|l|l|
+   |-----+---------------------------+----------+--------------------+-------------+--------+-----------|
+   | SID | Story Name                | Priority | Time Estimate (hr) | Actual (hr) | Status | Developer |
+   |-----+---------------------------+----------+--------------------+-------------+--------+-----------|
+   | [[#S1][S1]]  | Mills Board               | high     | 10hr               |             |        |           |
+   | [[#S2][S2]]  | User Input and Selection  | high     | 10hr               |             |        |           |
+   | [[#S3][S3]]  | Starting a Game           |          |                    |             |        |           |
+   | [[#S4][S4]]  | Assigning Players         |          |                    |             |        |           |
+   | [[#S5][S5]]  | Piece Placement           |          |                    |             |        |           |
+   | [[#S6][S6]]  | Piece Movement            |          |                    |             |        |           |
+   | [[#S7][S7]]  | Mill Formation            |          |                    |             |        |           |
+   | [[#S8][S8]]  | Piece Elimination         |          |                    |             |        |           |
+   | [[#S9][S9]]  | Flying Pieces             |          |                    |             |        |           |
+   | [[#S10][S10]] | Defining End Game         |          |                    |             |        |           |
+   | [[#S11][S11]] | Restarting/Replaying Game |          |                    |             |        |           |
+   |-----+---------------------------+----------+--------------------+-------------+--------+-----------|
+
 ** Mills Board
    :PROPERTIES:
    :CUSTOM_ID: S1
@@ -60,6 +68,9 @@
     As a user, I need an empty board consisting of 4 expanded squares with 8 equidistant positions
     each to play a game of Nine Men's Morris.
 ** User Input and Selection
+   :PROPERTIES:
+   :CUSTOM_ID: S2
+   :END:
 *** Description
     :PROPERTIES:
     :UNNUMBERED: t
@@ -67,6 +78,9 @@
     As a user, I need to be able to select and choose input from the web GUI of the application to
     be able to play and take turns at Nine Men's Morris.
 ** Starting a Game
+   :PROPERTIES:
+   :CUSTOM_ID: S3
+   :END:
 *** Description
     :PROPERTIES:
     :UNNUMBERED: t
@@ -74,6 +88,9 @@
     As a user, I need a GUI to prompt me with the options to start a game with either another human
     or against the computer for Nine Men's Morris in order to play the game.
 ** Assigning Players
+   :PROPERTIES:
+   :CUSTOM_ID: S4
+   :END:
 *** Description
     :PROPERTIES:
     :UNNUMBERED: t
@@ -82,6 +99,9 @@
     another human or the computer, in order to know my player turn (either first or second) in the
     game.
 ** Piece Placement
+   :PROPERTIES:
+   :CUSTOM_ID: S5
+   :END:
 *** Description
     :PROPERTIES:
     :UNNUMBERED: t
@@ -89,6 +109,9 @@
     As a user, I need to place nine pieces on unoccupied positions in turn with another player to
     start off a game of Nine Men's Morris.
 ** Piece Movement
+   :PROPERTIES:
+   :CUSTOM_ID: S6
+   :END:
 *** Description
     :PROPERTIES:
     :UNNUMBERED: t
@@ -96,6 +119,9 @@
     As a user, I need to be able to move my pieces into adjacent positions that are not occupied by
     the other player or adjacent to their mill in order to take a turn.
 ** Mill Formation
+   :PROPERTIES:
+   :CUSTOM_ID: S7
+   :END:
 *** Description
     :PROPERTIES:
     :UNNUMBERED: t
@@ -104,6 +130,9 @@
     pieces into adjacent positions so that I may gain the future ability to attack and defend my
     mill pieces from being eliminated.
 ** Piece Elimination
+   :PROPERTIES:
+   :CUSTOM_ID: S8
+   :END:
 *** Description
     :PROPERTIES:
     :UNNUMBERED: t
@@ -112,6 +141,9 @@
     so long as either it is not in a mill or any piece given all available pieces are in a mill, so
     that I may appropriately attack my opponent.
 ** Flying Pieces
+   :PROPERTIES:
+   :CUSTOM_ID: S9
+   :END:
 *** Description
     :PROPERTIES:
     :UNNUMBERED: t
@@ -119,7 +151,10 @@
     As a user, upon reaching three remaining pieces, I need the ability to fly (jump) my pieces
     across the board to any un-occupied point in order to play Nine Men's Morris according to the
     rules. Whether the position is guarded is a variant of the game, implementation decision TBD.
-** Defining End of Game
+** Defining End Game
+   :PROPERTIES:
+   :CUSTOM_ID: S10
+   :END:
 *** Description
     :PROPERTIES:
     :UNNUMBERED: t
@@ -128,6 +163,9 @@
     need the game and to declare the respective winner in order to successfully finish a game of
     Nine Men's Morris.
 ** Restarting and Replaying a Game
+   :PROPERTIES:
+   :CUSTOM_ID: S11
+   :END:
 *** Description
     :PROPERTIES:
     :UNNUMBERED: t
