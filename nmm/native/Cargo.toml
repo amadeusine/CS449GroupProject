@@ -1,0 +1,17 @@
+[package]
+name = "nmm"
+version = "0.1.0"
+authors = ["elias <elias.jm.garcia@gmail.com>"]
+license = "AGPL-3.0"
+build = "build.rs"
+exclude = ["artifacts.json", "index.node"]
+
+[lib]
+name = "nmm"
+crate-type = ["cdylib"]
+
+[build-dependencies]
+neon-build = "0.3.1"
+
+[dependencies]
+neon = "0.3.1"
