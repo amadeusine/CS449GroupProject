@@ -1,0 +1,159 @@
+* meeting minutes
+** meeting 2019.09.04 (first)
+   - going over project pdf as group
+     - discussing tech stack
+     - going over sprint assignments
+     - going over normal assignments
+   - discussing the actual structure of sprint 1
+     - requirements
+     - user stories
+     - what submission might look like
+     - discussion of who gets to do what
+     - discussion of when to meet, general availability
+       - Sam will be gone from 9th through 19th
+       - Elias will be gone through the 12th - 14th
+*** TODO project 1 report 
+    DEADLINE: <2019-09-20 Fri>
+    - want to get scrum documentation done
+    - get general idea down by end of this friday (2019.09.06)
+      - structure of the project
+      - how to use the frameworks/libraries involved (personal research/reading
+        per individual)
+        - Neon for rust
+        - node.js
+        - potentially express.js
+    - generating cards, user stories
+*** TODO functionality of sprint 1
+    DEADLINE: <2019-10-02 Wed>
+    - finish the functional/technical components of the project
+    - TBD
+** meeting 2019.09.06 (second)
+*** agenda
+    - discussing game rules
+    - discussing/writing user stories
+    - discussing tooling
+    - discussing design
+*** game rules
+    - watched a video demo'ing the game
+    - discussed/clarify mechanics
+      - whether or not to include coin flip
+      - terms of loss
+      - flying mechanic
+*** User stories
+    - elias wrote user stories in a new org mode file called kanban.org on the
+      repository
+    - discussed problem of documentation given requirements from the pdf for
+      sprint 1
+    - discussed alternative means of documenting, carrying out execution of our
+      cards for the project
+*** tooling & design
+    - did not achieve agenda, did not get to these topics because of the time
+      it took to discuss our epics/user stories.
+*** TODO discuss tooling
+    - need to finalize what our stack will look like and frameworks to be
+      used.
+    - elias has experimented with Neon and reports that it works well, seems
+      viable for the product.
+*** TODO discuss design
+    - need to discuss how the actual product will be packaged and its
+      architecture.
+** meeting 2019.09.27 (third)
+*** agenda
+    - discuss project structure
+    - acceptance criteria
+    - work assignment
+    - remaining TODOs
+*** project structure
+    - express.js has a lot of dependencies, only really need connect.js
+      + might try just using connect.js, which would be a lot simpler
+      + will continue with using Neon
+    - board
+      + gui
+        - js renders the fontend
+        - logic/data is all handled on back
+      + data structure/representation
+        + two choices:
+          1. one big board object that includes methods for both resolving where players are *and*
+             where things like mills are
+          2. two object entities, one is purely for the GUI (tracking positions on the board), the
+             other would be some kind of graph structure that allows position nodes to check peers
+             for occupation and whether it is the same or opposing players
+      + movement and move validity
+        - need to track flying
+          + proposition: flying is a universal property, merely constrained until player count is
+            reduced.
+            - need some kind of getter/setter between board and entity management system
+          + mill detection
+            - if going with entity system, would merely be a graph traversal from any given node
+            - another idea: create a mill entity system that tracks active mills and checks each
+              mill upon each turn(?) and modifies or destroys the mill as necessary.
+              + could save a lot of checking
+              + as for organization/logical membership, would keep such a mill entity system
+                independent of other objects in the system for simplicity, at least for now.
+          + Checking for attack
+            - if a mill entity system is used, we natively have a means to detect valid attacks. so
+              long as the node is not in one of the mills, do not attack *unless* all available
+              nodes are in mills.
+      + game driver
+        - Will have some kind of Game entity/manager object that drives the game event loop.
+          + will take inputs from players, run them as game moves
+            + however, internal logic to the entity management system is what will ultimately validate moves
+            + game manager will have no logic for why this happens, only passes back and for game
+              inputs and the results of moves.
+          + consequentially, need to codify where and how game validation logic happens
+      + validation logic
+        - as of now, think it will be handled by the main entity management system
+        - will have a set of logic checking methods defined over the system that verify whether a
+          given move is allowed
+*** acceptance criteria
+    - realized we need to add numbering to the board GUI (a-g, 1-7)
+    - (deferred, Sam will begin working on before next meeting)
+*** work assignment
+    - elias will begin on exploratory work for the backend (board, entity management, etc)
+    - sam, michael will begin exploratory work for the frontend (GUI, communicating with backend)
+*** remaining todos
+**** TODO kanban board setup, finalization of workflow for documentation
+     - can probably just use github for real time management, but keep organizational and notes in
+       =kanban.org= file on the repo.
+**** TODO defining test cases for stories and acceptance criteria
+**** TODO refining stories
+     - same case applies with above: refine stories, and put them on github's project management
+       board accordingly; actual refinement can be delegated to within =kanban.org= file.
+** meeting 2019.10.02 (fourth)
+*** Agenda
+    - addressing tagged issues generated on GitHub
+    - settling on how front-end talks to back-end
+    - documentation/design stuff
+*** issues on GitHub
+**** issue #3: determine communication channel between js and rust
+     - event polling seems overkill for what we need
+     - even handler on front-end which speaks to an entity ManagerGlue, which will be the JS that
+       talks to rust backend
+       + There will be a manager in the back-end, which will generate game state, and return that to
+         the front-end
+       + back-end will also have triggers (flags? Enums?) which signal to front-end when certain
+         actions are no longer needed or valid, i.e. button inputs or game state continuation
+     - JSON seems like a good enough medium for message passing between front and back components
+***** issue #4 is largely tagged to #3, so this resolves that
+      - =State=: Input Handle + BoardStruct + Trigger)
+      - =BoardState=
+        + this is what gets sent back to the JS
+        + 1D array of the =State= struct
+          - this array will be handed off as a NeonJS object, whatever it's called in neon
+          - 
+**** issue #6: Front-end/GUI Skeleton, Basic Design
+     1. Neon builds a node module
+     2. This is sent to express.js
+        - accepts it as a bunch of js functions
+     3. Express takes this, as a bunch of objects, and then saves as strings to JS files, in turn
+        statically served to end user (i.e. browser)
+        - express.js interaction is a one-off affair
+     4. Stretch goal: being able to set different themes on the front-end
+**** issue #8: CI/CD
+     - GitHub has native CI/CD now via it's Action's service.
+     - can impl for both Rust and Node.js
+*** design docs:
+    - at least 3 needed:
+      1. event diagram
+      2. general UML diagram for total project
+      3. class hierarchy/component diagram
