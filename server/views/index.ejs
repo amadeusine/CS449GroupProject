@@ -2,11 +2,17 @@
 <html>
   <head>
     <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href="/stylesheets/default.css" />
+    <!--link rel='stylesheet' href="/stylesheets/<%= theme %>.css" /-->
   </head>
   <body>
-    <div class="board" id="game">
-      <img src="images/board.png">
+    <div class="main-grid">
+      <div class="grid-board-view">
+        <img src="images/board.png">
+      </div>
+      <div class="grid-board-text">
+        <p>Players...</p>
+      </div>
     </div>
   </body>
 </html>
