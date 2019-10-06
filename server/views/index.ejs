@@ -3,12 +3,17 @@
   <head>
     <title><%= title %></title>
     <link rel='stylesheet' href="/stylesheets/default.css" />
+    <script type="text/javascript" src="/javascripts/board.js"></script>
+    <script> let b = new Board(); </script>
     <!--link rel='stylesheet' href="/stylesheets/<%= theme %>.css" /-->
   </head>
   <body>
     <div class="main-grid">
       <div class="grid-board-view">
-        <img src="images/board.png">
+        <img class="board-view-background" src="images/board.png">
+        <div class="board-view-piece-grid">
+          <div class="board-view-piece A 1" id="A1" onclick="((el) => {el.style.backgroundColor = 'blue';})(this)"></div>
+        </div>
       </div>
       <div class="grid-board-text">
         <p>Players...</p>

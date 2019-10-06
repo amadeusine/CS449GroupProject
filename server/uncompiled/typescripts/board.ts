@@ -8,16 +8,14 @@ enum xCoord {
     G = 'G',
 }
 
-enum yCoord {
-    one = '1',
-    two = '2',
-    three = '3',
-    four = '4',
-    five = '5',
-    six = '6',
-    seven = '7',
-}
-
+type yCoord =
+    '1' |
+    '2' |
+    '3' |
+    '4' |
+    '5' |
+    '6' |
+    '7';
 // type playerType = 'user' | 'computer';
 
 enum Player {
@@ -28,8 +26,8 @@ enum Player {
 // type Owner = Player | undefined;
 
 interface Coord {
-    x: xCoord;
-    y: yCoord;
+    x: xCoord | string;
+    y: yCoord | string | number;
 }
 
 class Position {
@@ -64,9 +62,19 @@ interface BoardPosition {
 
 class Board {
     private board: BoardPosition;
+    public readonly validPositions: Object;
 
     constructor(positions?: Position[]) {
         this.board = {};
+        this.validPositions = {
+            A: [1, 4, 7],
+            B: [2, 4, 6],
+            C: [3, 4, 5],
+            D: [1, 2, 3, 5, 6, 7],
+            E: [3, 4, 5],
+            F: [2, 4, 6],
+            G: [1, 4, 7]
+        }
         this.emptyBoard();
         if (!positions) return;
         for (let i = 0; i < positions.length; i++) {
@@ -76,8 +84,8 @@ class Board {
     }
 
     public emptyBoard(): void {
-        Object.values(xCoord).forEach(x => {
-            Object.values(yCoord).forEach(y => {
+        Object.entries(this.validPositions).forEach(([x, arr]) => {
+            arr.forEach(y => {
                 let coord: string = x+y;
                 if (this.board[coord] === undefined) {
                     this.board[coord] = new Position({x: x, y: y});
@@ -86,8 +94,14 @@ class Board {
         });
     }
 
-    public at(position: Coord | Position): Position {
-        let coord: Coord = position instanceof Position ? position.position : position;
-        return this.board[coord.x + coord.y];
+    public at(position: Coord | Position | string): Position {
+        let coord: string;
+        if (position instanceof Position)
+            position = position.position;
+        if (typeof(position) === 'string')
+            coord = position;
+        else
+            coord = position.x + position.y;
+        return this.board[coord];
     }
 }
