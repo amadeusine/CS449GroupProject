@@ -7,39 +7,59 @@
   :PROPERTIES:
   :CUSTOM_ID: S1
   :END:
-** A Rustic Nine Men's Morris for the Web
+** N Men Morris
+   :PROPERTIES:
+   :UNNUMBERED: t
+   :END:
 *** Vision Statement
     :PROPERTIES:
     :UNNUMBERED: t
     :END:
+    Create a extensible framework for board game web apps with scalability and performance.
 *** Mission Statement
     :PROPERTIES:
     :UNNUMBERED: t
     :END:
-*** Elevator Pitch
+    To play Nine Men's Morris on the web browser using a composable web technology stack that allows
+    for future modularity while not foregoing performance.
+*** Elevator Pitch and Business Value
     :PROPERTIES:
     :UNNUMBERED: t
     :END:
-*** Business Value
+    We are creating Nine Men's Morris on a board game framework using Express.js and Neon for
+    Rust. This allows for a data and type safe application that is capable of composability,
+    scalability, extensibility, and performance.
+*** Customers and Users
     :PROPERTIES:
     :UNNUMBERED: t
     :END:
-*** Customer and Users
-    :PROPERTIES:
-    :UNNUMBERED: t
-    :END:
+    - Customers: Entrepreneurs and ventures that want to deploy board games on the web with low
+      overhead, latency, and maintenance.
+    - Users: Individuals who are passionate about board games and want a new online experience that
+      they can take and play wherever they go with their friends.
 *** Metrics
     :PROPERTIES:
     :UNNUMBERED: t
     :END:
+    By benchmarking N Men Morris, we can compare our solution to other products on the market on:
+    1. latency
+    2. binary size
+    3. up-time
 *** Milestones
     :PROPERTIES:
     :UNNUMBERED: t
     :END:
+    1. First MVP
+    2. First Offline N Men's Morris
+    3. Player versus Player (Offline)
+    4. Player versus Player (Online)
 *** Risks
     :PROPERTIES:
     :UNNUMBERED: t
     :END:
+    1. Inherent complexity of technology stack.
+    2. Inability to cooperate with teammates.
+    3. Plausibility of orphaning project due to development team size.
 *** Authors
     :PROPERTIES:
     :UNNUMBERED: t
