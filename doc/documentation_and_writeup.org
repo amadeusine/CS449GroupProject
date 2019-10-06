@@ -1,7 +1,12 @@
 #+TITLE: CS449 Sprint 1 Report
 #+AUTHOR: Michael Cu, Elias Julian Marko Garcia, Samual Lim
 #+LATEX_HEADER: \usepackage{float}
+#+LATEX_HEADER: \usepackage{array}
+
 * Micro Charter
+  :PROPERTIES:
+  :CUSTOM_ID: S1
+  :END:
 ** A Rustic Nine Men's Morris for the Web
 *** Vision Statement
     :PROPERTIES:
@@ -40,26 +45,48 @@
     :UNNUMBERED: t
     :END:
 * User Stories
-   #+ATTR_LaTeX: :align |c|p{3.5cm}|l|p{1.5cm}|l|l|l|
-   |-----+---------------------------+----------+--------------------+-------------+--------+-----------|
-   | SID | Story Name                | Priority | Time Estimate (hr) | Actual (hr) | Status | Developer |
-   |-----+---------------------------+----------+--------------------+-------------+--------+-----------|
-   | [[#S1][S1]]  | Mills Board               | high     | 10hr               |             |        |           |
-   | [[#S2][S2]]  | User Input and Selection  | high     | 10hr               |             |        |           |
-   | [[#S3][S3]]  | Starting a Game           |          |                    |             |        |           |
-   | [[#S4][S4]]  | Assigning Players         |          |                    |             |        |           |
-   | [[#S5][S5]]  | Piece Placement           |          |                    |             |        |           |
-   | [[#S6][S6]]  | Piece Movement            |          |                    |             |        |           |
-   | [[#S7][S7]]  | Mill Formation            |          |                    |             |        |           |
-   | [[#S8][S8]]  | Piece Elimination         |          |                    |             |        |           |
-   | [[#S9][S9]]  | Flying Pieces             |          |                    |             |        |           |
-   | [[#S10][S10]] | Defining End Game         |          |                    |             |        |           |
-   | [[#S11][S11]] | Restarting/Replaying Game |          |                    |             |        |           |
-   |-----+---------------------------+----------+--------------------+-------------+--------+-----------|
+  :PROPERTIES:
+  :CUSTOM_ID: S2
+  :END:
+
+  Below you will find a table that makes up our "User Story Board", with some simplifications taken
+  with respect to the total contents of the board. With respect to the final formal documentation,
+  i.e. this paper, we only keep the basic qualitative and quantitative values for each story in the
+  table while giving each user story proper its own section. This makes documenting each story
+  less unruly while also easier to read. Each Story I.D. (SID) value is internally linked to its
+  respective story, which also helps with navigating this section.
+  
+   #+ATTR_LaTeX: :align |c|m{3.5cm}|c|c|c|c|c|
+   |     |                           |          | Time Est. | Actual |        |              |
+   | SID | Story Name                | Priority | (hr)      | (hr)   | Status | Developer(s) |
+   |-----+---------------------------+----------+-----------+--------+--------+--------------|
+   | [[#SID1][S1]]  | Mills Board               | high     | 10hr      |        |        |              |
+   |-----+---------------------------+----------+-----------+--------+--------+--------------|
+   | [[#SID2][S2]]  | User Input and            | high     | 10hr      |        |        |              |
+   |     | Selection                 |          |           |        |        |              |
+   |-----+---------------------------+----------+-----------+--------+--------+--------------|
+   | [[#SID3][S3]]  | Starting a Game           |          |           |        |        |              |
+   |-----+---------------------------+----------+-----------+--------+--------+--------------|
+   | [[#SID4][S4]]  | Assigning Players         |          |           |        |        |              |
+   |-----+---------------------------+----------+-----------+--------+--------+--------------|
+   | [[#SID5][S5]]  | Piece Placement           |          |           |        |        |              |
+   |-----+---------------------------+----------+-----------+--------+--------+--------------|
+   | [[#SID6][S6]]  | Piece Movement            |          |           |        |        |              |
+   |-----+---------------------------+----------+-----------+--------+--------+--------------|
+   | [[#SID7][S7]]  | Mill Formation            |          |           |        |        |              |
+   |-----+---------------------------+----------+-----------+--------+--------+--------------|
+   | [[#SID8][S8]]  | Piece Elimination         |          |           |        |        |              |
+   |-----+---------------------------+----------+-----------+--------+--------+--------------|
+   | [[#SID9][S9]]  | Flying Pieces             |          |           |        |        |              |
+   |-----+---------------------------+----------+-----------+--------+--------+--------------|
+   | [[#SID10][S10]] | Defining End Game         |          |           |        |        |              |
+   |-----+---------------------------+----------+-----------+--------+--------+--------------|
+   | [[#SID11][S11]] | Restarting/Replaying Game |          |           |        |        |              |
+
 
 ** Mills Board
    :PROPERTIES:
-   :CUSTOM_ID: S1
+   :CUSTOM_ID: SID1
    :END:
 *** Description
     :PROPERTIES:
@@ -69,7 +96,7 @@
     each to play a game of Nine Men's Morris.
 ** User Input and Selection
    :PROPERTIES:
-   :CUSTOM_ID: S2
+   :CUSTOM_ID: SID2
    :END:
 *** Description
     :PROPERTIES:
@@ -79,7 +106,7 @@
     be able to play and take turns at Nine Men's Morris.
 ** Starting a Game
    :PROPERTIES:
-   :CUSTOM_ID: S3
+   :CUSTOM_ID: SID3
    :END:
 *** Description
     :PROPERTIES:
@@ -89,7 +116,7 @@
     or against the computer for Nine Men's Morris in order to play the game.
 ** Assigning Players
    :PROPERTIES:
-   :CUSTOM_ID: S4
+   :CUSTOM_ID: SID4
    :END:
 *** Description
     :PROPERTIES:
@@ -100,7 +127,7 @@
     game.
 ** Piece Placement
    :PROPERTIES:
-   :CUSTOM_ID: S5
+   :CUSTOM_ID: SID5
    :END:
 *** Description
     :PROPERTIES:
@@ -110,7 +137,7 @@
     start off a game of Nine Men's Morris.
 ** Piece Movement
    :PROPERTIES:
-   :CUSTOM_ID: S6
+   :CUSTOM_ID: SID6
    :END:
 *** Description
     :PROPERTIES:
@@ -120,7 +147,7 @@
     the other player or adjacent to their mill in order to take a turn.
 ** Mill Formation
    :PROPERTIES:
-   :CUSTOM_ID: S7
+   :CUSTOM_ID: SID7
    :END:
 *** Description
     :PROPERTIES:
@@ -131,7 +158,7 @@
     mill pieces from being eliminated.
 ** Piece Elimination
    :PROPERTIES:
-   :CUSTOM_ID: S8
+   :CUSTOM_ID: SID8
    :END:
 *** Description
     :PROPERTIES:
@@ -142,7 +169,7 @@
     that I may appropriately attack my opponent.
 ** Flying Pieces
    :PROPERTIES:
-   :CUSTOM_ID: S9
+   :CUSTOM_ID: SID9
    :END:
 *** Description
     :PROPERTIES:
@@ -153,7 +180,7 @@
     rules. Whether the position is guarded is a variant of the game, implementation decision TBD.
 ** Defining End Game
    :PROPERTIES:
-   :CUSTOM_ID: S10
+   :CUSTOM_ID: SID10
    :END:
 *** Description
     :PROPERTIES:
@@ -164,7 +191,7 @@
     Nine Men's Morris.
 ** Restarting and Replaying a Game
    :PROPERTIES:
-   :CUSTOM_ID: S11
+   :CUSTOM_ID: SID11
    :END:
 *** Description
     :PROPERTIES:
@@ -184,66 +211,143 @@
 *** Status
 *** Developer
 * Acceptance Criteria
-** Criterion Board
-   #+ATTR_LaTeX: :align |l|l|p{4cm|l|l|
-   | SID & Name | ACID | Criterion | Status | Developer |
-   |------------+------+-----------+--------+-----------|
-   |          1 |    2 | Foo       | Bar    | Buzz      |
-   |            |      |           |        |           |
-   |            |      |           |        |           |
-   |            |      |           |        |           |
-   |            |      |           |        |           |
+  :PROPERTIES:
+  :CUSTOM_ID: S3
+  :END:
+
+  The following section covers the acceptance criteria enumerated in response to the User Stories
+  discovered and documented in [[#S2][$\S{2}$]]. In a similar fashion to $\S{2}$, the table documenting these
+  acceptance criteria is in a simplified form. Every Acceptance Criterion has an Acceptance
+  Criterion ID (=ACID=), which is associated in the table below with its respective =SID=, development
+  status, and the developers responsible for implementing it. Each =ACID= is linked to its respective
+  subsection below for viewing the description of each criterion.
+
+   #+ATTR_LaTeX: :align |c|c|c|c|
+   | SID & Name | ACID | Status | Developer(s) |
+   |------------+------+--------+--------------|
+   |          1 |    1 | Qux    | Bizz         |
+   |------------+------+--------+--------------|
+   |          2 |      |        |              |
+   |------------+------+--------+--------------|
+   |            |      |        |              |
+** Criterion 1
+   :PROPERTIES:
+   :CUSTOM_ID: ACID1
+   :END:
+   #+ATTR_LaTeX: :align |c|l|
+   | ACID | Description |
+   |------+-------------|
+   |    1 |             |
+   |------+-------------|
+   |  1.0 |             |
    
+*** Further Notes
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+** [TEMPLATE, Remove UNNUMBERED prop] Criterion N
+   :PROPERTIES:
+   :CUSTOM_ID: ACIDN
+   :UNNUMBERED: t 
+   :END:
+   #+ATTR_LaTeX: :align |c|l|
+   | ACID | Description |
+   |------+-------------|
+   |    1 |             |
+   |------+-------------|
+   |  1.0 |             |
+   
+*** Further Notes
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
 * Implementation Tasks
+  :PROPERTIES:
+  :CUSTOM_ID: S4
+  :END:
+
+  This section summarizes the details of implementation tasks for the project. You will find in each
+  subsection a table similar to those found in [[#S2][$\S{2}$]] and [[#S3][$\S{3}$]].
+
 ** Summary of Production Code
 
-   #+ATTR_LaTeX: :align |c|c|c|c|c|c|c|
-   | SID & Name | ACID | Class Name(s) | Method Name(s) | Developer | Status | Notes |
-   |------------+------+---------------+----------------+-----------+--------+-------|
-   |          1 |    2 | Qux           | Bizz           | Daz       | Qud    | Foo   |
-   |            |      |               |                |           |        |       |
-   |            |      |               |                |           |        |       |
-   |            |      |               |                |           |        |       |
-   |            |      |               |                |           |        |       |
+   #+ATTR_LaTeX: :align |c|c|p{3.5cm}|p{3.5cm}|c|c|c|
+   |            |      | Class   |              |        |       |
+   | SID & Name | ACID | Name(s) | Developer(s) | Status | Notes |
+   |------------+------+---------+--------------+--------+-------|
+   |          1 |    2 | [[#PID1][Qux]]     | Daz          | Qud    | Foo   |
+   |------------+------+---------+--------------+--------+-------|
+   |            |      |         |              |        |       |
+   |------------+------+---------+--------------+--------+-------|
+   |            |      |         |              |        |       |
+
    
    #+LATEX: %%\newpage
+*** Class =QUX=
+    :PROPERTIES:
+    :CUSTOM_ID: PID1
+    :END:
+
+    Class summary goes here.
+
+    #+ATTR_LaTeX: :align |c|l|
+    | Method | Notes          |
+    |--------+----------------|
+    | Bizz   | blah blah blah |
+    |        |                |
+
+
+*** [TEMPLATE] Class =FOOBAR=
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :CUSTOM_ID: PIDN
+    :END:
+
+    Class summary goes here.
+
+    #+ATTR_LaTeX: :align |c|l|
+    | Method | Notes          |
+    |--------+----------------|
+    | Qud    | blah blah blah |
+    |        |                |
+    
+
 ** Automated Test Code
 
-
-   #+ATTR_LaTeX:  :environment longtable :align |l|l|p{2.5cm}|p{2.5cm}|p{2.5cm}|l|l|
-   | SID & Name | ACID | Class Name(s) | Method Name(s) | Description | Status | Developer |
-   |------------+------+---------------+----------------+-------------+--------+-----------|
-   |          1 |    2 | Foo           | Bar            | Fizz        | Buzz   | Quz       |
-   |            |      |               |                |             |        |           |
-   |            |      |               |                |             |        |           |
-   |            |      |               |                |             |        |           |
-   |            |      |               |                |             |        |           |
-
-   
+   #+ATTR_LaTeX: :align |l|l|p{2.5cm}|p{2.5cm}|p{2.5cm}|l|l|
+   |            |      | Class   | Method  |             |        |           |
+   | SID & Name | ACID | Name(s) | Name(s) | Description | Status | Developer |
+   |------------+------+---------+---------+-------------+--------+-----------|
+   |          1 |    2 | Foo     | Bar     | Fizz        | Buzz   | Quz       |
+   |            |      |         |         |             |        |           |
+   |            |      |         |         |             |        |           |
+   |            |      |         |         |             |        |           |
+   |            |      |         |         |             |        |           |
 ** Manual Test Code
-   #+ATTR_LaTeX: :environment longtable :align |l|l||p{2.5cm}|p{2.5cm}|l|l|l|
-   | SID & Name | ACID | Test Input | Test Oracle | Status | Notes | Developer |
-   |------------+------+------------+-------------+--------+-------+-----------|
-   |          1 |    2 | Fizz       | Fuzz        | Quz    | Bar   | Qud       |
-   |            |      |            |             |        |       |           |
-   |            |      |            |             |        |       |           |
-   |            |      |            |             |        |       |           |
-   |            |      |            |             |        |       |           |
+   #+ATTR_LaTeX: :align |c|c|p{2.5cm}|p{2.5cm}|l|l|l|
+   |            |      | Test  | Test   |        |       |              |
+   | SID & Name | ACID | Input | Oracle | Status | Notes | Developer(s) |
+   |------------+------+-------+--------+--------+-------+--------------|
+   |          1 |    2 | Fizz  | Fuzz   | Quz    | Bar   | Qud          |
+   |            |      |       |        |        |       |              |
+   |            |      |       |        |        |       |              |
+   |            |      |       |        |        |       |              |
 ** Other Manual Test Code
-   #+LATEX: \small
+
    #+ATTR_LaTeX: :align |c|c|c|c|c|c|c|
-   | ID | Test Input | Expected Result | Class Name | Method Name of Test | Status | Developer |
-   |----+------------+-----------------+------------+---------------------+--------+-----------|
-   |  1 | Foo        | Bar             | Fuzz       | Quz                 | Fizz   | Bazz      |
-   |    |            |                 |            |                     |        |           |
-   |    |            |                 |            |                     |        |           |
-   |    |            |                 |            |                     |        |           |
-   |    |            |                 |            |                     |        |           |
-   |    |            |                 |            |                     |        |           |
-   #+LATEX: \normalsize
+   |    |            |          |       |             |        |           |
+   |    |            | Expected | Class | Method Name |        |           |
+   | ID | Test Input | Result   | Name  | of Test     | Status | Developer |
+   |----+------------+----------+-------+-------------+--------+-----------|
+   |  1 | Foo        | Bar      | Fuzz  | Quz         | Fizz   | Bazz      |
+   |    |            |          |       |             |        |           |
+   |    |            |          |       |             |        |           |
+   |    |            |          |       |             |        |           |
+
 
 * Meeting Minutes
   :PROPERTIES:
   :ALT_TITLE: Meeting Minutes
   :APPENDIX: t
+  :CUSTOM_ID: S5
   :END:
