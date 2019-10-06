@@ -1,4 +1,4 @@
-% Created 2019-09-27 Fri 19:04
+% Created 2019-10-06 Sun 18:08
 % Intended LaTeX compiler: pdflatex
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
@@ -15,6 +15,7 @@
 \usepackage{capt-of}
 \usepackage{hyperref}
 \usepackage{float}
+\usepackage{array}
 \author{Michael Cu, Elias Julian Marko Garcia, Samual Lim}
 \date{\today}
 \title{CS449 Sprint 1 Report}
@@ -30,237 +31,299 @@
 \maketitle
 \tableofcontents
 
+
 \section{Micro Charter}
-\label{sec:orgf79c1b9}
+\label{sec:org1445870}
 \subsection{A Rustic Nine Men's Morris for the Web}
-\label{sec:org69ab729}
+\label{sec:org70c2ed4}
 \subsubsection*{Vision Statement}
-\label{sec:org9e3f993}
+\label{sec:orgce89b4a}
 \subsubsection*{Mission Statement}
-\label{sec:org825a526}
+\label{sec:org4023fa4}
 \subsubsection*{Elevator Pitch}
-\label{sec:orgf983bb0}
+\label{sec:org798f1de}
 \subsubsection*{Business Value}
-\label{sec:org2a59a76}
+\label{sec:orgadc69ad}
 \subsubsection*{Customer and Users}
-\label{sec:org52c6f30}
+\label{sec:org42a7144}
 \subsubsection*{Metrics}
-\label{sec:org5842ea8}
+\label{sec:orgbfbd243}
 \subsubsection*{Milestones}
-\label{sec:org6f46d9d}
+\label{sec:orgbc0ccb7}
 \subsubsection*{Risks}
-\label{sec:org48b1c7d}
+\label{sec:org55f30a6}
 \subsubsection*{Authors}
-\label{sec:org6aaf19e}
+\label{sec:org6ec7639}
 \section{User Stories}
-\label{sec:orge6e0be8}
+\label{sec:org8cd8f44}
+Below you will find a table that makes up our "User Story Board", with some simplifications taken
+with respect to the total contents of the board. With respect to the final formal documentation,
+i.e. this paper, we only keep the basic qualitative and quantitative values for each story in the
+table while giving each user story proper its own section. This makes documenting each story
+less unruly while also easier to read. Each Story I.D. (SID) value is internally linked to its
+respective story, which also helps with navigating this section.
+
 \begin{center}
-\begin{tabular}{|c|p{3.5cm}|l|p{1.5cm}|l|l|l|}
+\begin{tabular}{|c|m{3.5cm}|c|c|c|c|c|}
+ &  &  & Time Est. & Actual &  & \\
+SID & Story Name & Priority & (hr) & (hr) & Status & Developer(s)\\
 \hline
-SID & Story Name & Priority & Time Estimate (hr) & Actual (hr) & Status & Developer\\
+\hyperref[sec:org3f5f910]{S1} & Mills Board & high & 10hr &  &  & \\
 \hline
-\hyperref[sec:org4f08a4e]{S1} & Mills Board & high & 10hr &  &  & \\
-\hyperref[sec:org72f35e1]{S2} & User Input and Selection & high & 10hr &  &  & \\
-\hyperref[sec:org4d8fe43]{S3} & Starting a Game &  &  &  &  & \\
-\hyperref[sec:org244707a]{S4} & Assigning Players &  &  &  &  & \\
-\hyperref[sec:org63fc355]{S5} & Piece Placement &  &  &  &  & \\
-\hyperref[sec:org78c1c14]{S6} & Piece Movement &  &  &  &  & \\
-\hyperref[sec:orga40d8ea]{S7} & Mill Formation &  &  &  &  & \\
-\hyperref[sec:org52dc15a]{S8} & Piece Elimination &  &  &  &  & \\
-\hyperref[sec:org492d4f7]{S9} & Flying Pieces &  &  &  &  & \\
-\hyperref[sec:orgbb6ee55]{S10} & Defining End Game &  &  &  &  & \\
-\hyperref[sec:orga6c6496]{S11} & Restarting/Replaying Game &  &  &  &  & \\
+\hyperref[sec:org96ee30f]{S2} & User Input and & high & 10hr &  &  & \\
+ & Selection &  &  &  &  & \\
 \hline
+\hyperref[sec:org0591b29]{S3} & Starting a Game &  &  &  &  & \\
+\hline
+\hyperref[sec:org935843e]{S4} & Assigning Players &  &  &  &  & \\
+\hline
+\hyperref[sec:orga4c2085]{S5} & Piece Placement &  &  &  &  & \\
+\hline
+\hyperref[sec:org67107d5]{S6} & Piece Movement &  &  &  &  & \\
+\hline
+\hyperref[sec:org2525b34]{S7} & Mill Formation &  &  &  &  & \\
+\hline
+\hyperref[sec:orga001de4]{S8} & Piece Elimination &  &  &  &  & \\
+\hline
+\hyperref[sec:org6817def]{S9} & Flying Pieces &  &  &  &  & \\
+\hline
+\hyperref[sec:org25e89ad]{S10} & Defining End Game &  &  &  &  & \\
+\hline
+\hyperref[sec:orgd356751]{S11} & Restarting/Replaying Game &  &  &  &  & \\
 \end{tabular}
 \end{center}
 
+
 \subsection{Mills Board}
-\label{sec:org4f08a4e}
+\label{sec:org3f5f910}
 \subsubsection*{Description}
-\label{sec:org8dd567d}
+\label{sec:org1b49fd5}
 As a user, I need an empty board consisting of 4 expanded squares with 8 equidistant positions
 each to play a game of Nine Men's Morris.
 \subsection{User Input and Selection}
-\label{sec:org72f35e1}
+\label{sec:org96ee30f}
 \subsubsection*{Description}
-\label{sec:orgdcb46cf}
+\label{sec:org19fc73b}
 As a user, I need to be able to select and choose input from the web GUI of the application to
 be able to play and take turns at Nine Men's Morris.
 \subsection{Starting a Game}
-\label{sec:org4d8fe43}
+\label{sec:org0591b29}
 \subsubsection*{Description}
-\label{sec:orgd40ae12}
+\label{sec:orgeb39229}
 As a user, I need a GUI to prompt me with the options to start a game with either another human
 or against the computer for Nine Men's Morris in order to play the game.
 \subsection{Assigning Players}
-\label{sec:org244707a}
+\label{sec:org935843e}
 \subsubsection*{Description}
-\label{sec:org3719ab0}
+\label{sec:orgef420f4}
 As a user, I need to be assigned the role as either the first or second player, whether against
 another human or the computer, in order to know my player turn (either first or second) in the
 game.
 \subsection{Piece Placement}
-\label{sec:org63fc355}
+\label{sec:orga4c2085}
 \subsubsection*{Description}
-\label{sec:orge773498}
+\label{sec:org95cd271}
 As a user, I need to place nine pieces on unoccupied positions in turn with another player to
 start off a game of Nine Men's Morris.
 \subsection{Piece Movement}
-\label{sec:org78c1c14}
+\label{sec:org67107d5}
 \subsubsection*{Description}
-\label{sec:org1ba99f9}
+\label{sec:orgc612300}
 As a user, I need to be able to move my pieces into adjacent positions that are not occupied by
 the other player or adjacent to their mill in order to take a turn.
 \subsection{Mill Formation}
-\label{sec:orga40d8ea}
+\label{sec:org2525b34}
 \subsubsection*{Description}
-\label{sec:org5fee148}
+\label{sec:orga5d6947}
 As a user, I need the game to recognize that I have formed a mill upon moving three of my own
 pieces into adjacent positions so that I may gain the future ability to attack and defend my
 mill pieces from being eliminated.
 \subsection{Piece Elimination}
-\label{sec:org52dc15a}
+\label{sec:orga001de4}
 \subsubsection*{Description}
-\label{sec:org87c5535}
+\label{sec:orgf84cd38}
 As a user, after forming a mill, I need the ability to remove an opponent's piece of my choosing
 so long as either it is not in a mill or any piece given all available pieces are in a mill, so
 that I may appropriately attack my opponent.
 \subsection{Flying Pieces}
-\label{sec:org492d4f7}
+\label{sec:org6817def}
 \subsubsection*{Description}
-\label{sec:orgd9dcd9b}
+\label{sec:orgfbf4acf}
 As a user, upon reaching three remaining pieces, I need the ability to fly (jump) my pieces
 across the board to any un-occupied point in order to play Nine Men's Morris according to the
 rules. Whether the position is guarded is a variant of the game, implementation decision TBD.
 \subsection{Defining End Game}
-\label{sec:orgbb6ee55}
+\label{sec:org25e89ad}
 \subsubsection*{Description}
-\label{sec:orgb89e872}
+\label{sec:org4e1de6e}
 As a user, when either myself or the opponent reaches less than three pieces, i.e. two pieces, I
 need the game and to declare the respective winner in order to successfully finish a game of
 Nine Men's Morris.
 \subsection{Restarting and Replaying a Game}
-\label{sec:orga6c6496}
+\label{sec:orgd356751}
 \subsubsection*{Description}
-\label{sec:orgc212bd5}
+\label{sec:orgf2da15a}
 As a user, after having completed a game of Nine Men's Morris, I need the GUI to prompt me to
 either play again or to end the game software so that I can accordingly choose whether to keep
 playing or to end my game session.
 \subsection*{[Template User Story]}
-\label{sec:orga6d12ad}
+\label{sec:org6d4fabe}
 \subsubsection*{Description}
-\label{sec:org81dc201}
+\label{sec:org4f36cb7}
 \subsubsection*{Priority}
-\label{sec:orgeb4408b}
+\label{sec:orgab3d1a1}
 \subsubsection*{Estimate}
-\label{sec:org50dc05a}
+\label{sec:org71d6bdd}
 \subsubsection*{Actual}
-\label{sec:orgda7cc38}
+\label{sec:org20a3b1b}
 \subsubsection*{Status}
-\label{sec:orgd5b3181}
+\label{sec:org1bd0eeb}
 \subsubsection*{Developer}
-\label{sec:org4238d51}
+\label{sec:org796a0b8}
 \section{Acceptance Criteria}
-\label{sec:org8859707}
-\subsection{Criterion Board}
-\label{sec:orgf28b0ae}
+\label{sec:org76729d4}
+The following section covers the acceptance criteria enumerated in response to the User Stories
+discovered and documented in \hyperref[sec:org8cd8f44]{\(\S{2}\)}. In a similar fashion to \(\S{2}\), the table documenting these
+acceptance criteria is in a simplified form. Every Acceptance Criterion has an Acceptance
+Criterion ID (\texttt{ACID}), which is associated in the table below with its respective \texttt{SID}, development
+status, and the developers responsible for implementing it. Each \texttt{ACID} is linked to its respective
+subsection below for viewing the description of each criterion.
+
 \begin{center}
-\begin{tabular}{|l|l|p{4cm|l|l|}
-SID \& Name & ACID & Criterion & Status & Developer\\
+\begin{tabular}{|c|c|c|c|}
+SID \& Name & ACID & Status & Developer(s)\\
 \hline
-1 & 2 & Foo & Bar & Buzz\\
- &  &  &  & \\
- &  &  &  & \\
- &  &  &  & \\
- &  &  &  & \\
+1 & 1 & Qux & Bizz\\
+\hline
+2 &  &  & \\
+\hline
+ &  &  & \\
+\end{tabular}
+\end{center}
+\subsection{Criterion 1}
+\label{sec:org4e14e24}
+\begin{center}
+\begin{tabular}{|c|l|}
+ACID & Description\\
+\hline
+1 & \\
+\hline
+1.0 & \\
 \end{tabular}
 \end{center}
 
+\subsubsection*{Further Notes}
+\label{sec:orga558cff}
+\subsection*{[TEMPLATE, Remove UNNUMBERED prop] Criterion N}
+\label{sec:org7c7ae83}
+\begin{center}
+\begin{tabular}{|c|l|}
+ACID & Description\\
+\hline
+1 & \\
+\hline
+1.0 & \\
+\end{tabular}
+\end{center}
+
+\subsubsection*{Further Notes}
+\label{sec:org51f026c}
 \section{Implementation Tasks}
-\label{sec:org028bfd1}
+\label{sec:orgd0e0923}
+This section summarizes the details of implementation tasks for the project. You will find in each
+subsection a table similar to those found in \hyperref[sec:org8cd8f44]{\(\S{2}\)} and \hyperref[sec:org76729d4]{\(\S{3}\)}.
+
 \subsection{Summary of Production Code}
-\label{sec:org7313f2f}
+\label{sec:org9b1b564}
 
 \begin{center}
-\begin{tabular}{|c|c|c|c|c|c|c|}
-SID \& Name & ACID & Class Name(s) & Method Name(s) & Developer & Status & Notes\\
+\begin{tabular}{|c|c|p{3.5cm}|p{3.5cm}|c|c|c|}
+ &  & Class &  &  & \\
+SID \& Name & ACID & Name(s) & Developer(s) & Status & Notes\\
 \hline
-1 & 2 & Qux & Bizz & Daz & Qud & Foo\\
- &  &  &  &  &  & \\
- &  &  &  &  &  & \\
- &  &  &  &  &  & \\
- &  &  &  &  &  & \\
+1 & 2 & \hyperref[sec:orgac4b477]{Qux} & Daz & Qud & Foo\\
+\hline
+ &  &  &  &  & \\
+\hline
+ &  &  &  &  & \\
 \end{tabular}
 \end{center}
+
 
 %%\newpage
+\subsubsection{Class \texttt{QUX}}
+\label{sec:orgac4b477}
+Class summary goes here.
+
+\begin{center}
+\begin{tabular}{|c|l|}
+Method & Notes\\
+\hline
+Bizz & blah blah blah\\
+ & \\
+\end{tabular}
+\end{center}
+
+
+\subsubsection*{[TEMPLATE] Class \texttt{FOOBAR}}
+\label{sec:orgec12ede}
+Class summary goes here.
+
+\begin{center}
+\begin{tabular}{|c|l|}
+Method & Notes\\
+\hline
+Qud & blah blah blah\\
+ & \\
+\end{tabular}
+\end{center}
+
+
 \subsection{Automated Test Code}
-\label{sec:org8b67f6d}
+\label{sec:orge791abd}
 
-
-\begin{longtable}{|l|l|p{2.5cm}|p{2.5cm}|p{2.5cm}|l|l|}
-SID \& Name & ACID & Class Name(s) & Method Name(s) & Description & Status & Developer\\
-\hline
-\endfirsthead
-\multicolumn{7}{l}{Continued from previous page} \\
-\hline
-
-SID \& Name & ACID & Class Name(s) & Method Name(s) & Description & Status & Developer \\
-
-\hline
-\endhead
-\hline\multicolumn{7}{r}{Continued on next page} \\
-\endfoot
-\endlastfoot
+\begin{center}
+\begin{tabular}{|l|l|p{2.5cm}|p{2.5cm}|p{2.5cm}|l|l|}
+ &  & Class & Method &  &  & \\
+SID \& Name & ACID & Name(s) & Name(s) & Description & Status & Developer\\
 \hline
 1 & 2 & Foo & Bar & Fizz & Buzz & Quz\\
  &  &  &  &  &  & \\
  &  &  &  &  &  & \\
  &  &  &  &  &  & \\
  &  &  &  &  &  & \\
-\end{longtable}
-
-
+\end{tabular}
+\end{center}
 \subsection{Manual Test Code}
-\label{sec:orgc3d6aeb}
-\begin{longtable}{|l|l||p{2.5cm}|p{2.5cm}|l|l|l|}
-SID \& Name & ACID & Test Input & Test Oracle & Status & Notes & Developer\\
-\hline
-\endfirsthead
-\multicolumn{7}{l}{Continued from previous page} \\
-\hline
-
-SID \& Name & ACID & Test Input & Test Oracle & Status & Notes & Developer \\
-
-\hline
-\endhead
-\hline\multicolumn{7}{r}{Continued on next page} \\
-\endfoot
-\endlastfoot
+\label{sec:org1ac953c}
+\begin{center}
+\begin{tabular}{|c|c|p{2.5cm}|p{2.5cm}|l|l|l|}
+ &  & Test & Test &  &  & \\
+SID \& Name & ACID & Input & Oracle & Status & Notes & Developer(s)\\
 \hline
 1 & 2 & Fizz & Fuzz & Quz & Bar & Qud\\
  &  &  &  &  &  & \\
  &  &  &  &  &  & \\
  &  &  &  &  &  & \\
- &  &  &  &  &  & \\
-\end{longtable}
+\end{tabular}
+\end{center}
 \subsection{Other Manual Test Code}
-\label{sec:org50426e2}
-\small
+\label{sec:orga826e42}
+
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|c|}
-ID & Test Input & Expected Result & Class Name & Method Name of Test & Status & Developer\\
+ &  &  &  &  &  & \\
+ &  & Expected & Class & Method Name &  & \\
+ID & Test Input & Result & Name & of Test & Status & Developer\\
 \hline
 1 & Foo & Bar & Fuzz & Quz & Fizz & Bazz\\
  &  &  &  &  &  & \\
  &  &  &  &  &  & \\
  &  &  &  &  &  & \\
- &  &  &  &  &  & \\
- &  &  &  &  &  & \\
 \end{tabular}
 \end{center}
-\normalsize
+
 
 \section{Meeting Minutes}
-\label{sec:org71a552c}
+\label{sec:orge2d332d}
 \end{document}
