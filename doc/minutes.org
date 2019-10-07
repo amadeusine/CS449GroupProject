@@ -220,3 +220,35 @@
      - microcharter
      - mocking TS => Rust
      - event keys on front-end (browser)
+** Meeting 2019.10.06 (seventh) (>5hr)
+*** Agenda
+    - Tying up loose ends with respect to documentation and write up
+    - Tying up loose ends with respect to UI/JS end of the application
+    - Discussing what is left to do with the project
+*** Documentation and Write-up
+    - Figured out how to format the tables given that many of the ones provided do not play well
+      with latex/org-mode markdown
+    - Similarly, decided on how to interconnect documentation components between sections
+    - Discussed the remaining things left undocumented, particularly pair ratings.
+*** UI/JS Loose Ends
+    - Complete manual testing of interacting elements
+    - Finalize positions of clickable elements on the board grid.
+    - Alternating player logic for placement of pieces.
+    - Limiting piece placement to nine.
+*** Discussing Future Sprint/Direction of Project
+    - Current User Stories are pseudo-Epics and need to be refined into better User stories aside
+      from [[#SID1][S1]]. As they stand, discussing the current user stories makes for overly generic/abstract
+      discussion and doesn't meaningfully translate into logic/behavior to implement and actual
+      engineering tasks.
+    - Currently, the front end mocks all of the behavior/functionality that would otherwise be
+      provided by the backend. In sprint 2, this is where the real meat of programming will come in
+      as we learn to make the back-end and front-end interface, particularly with translating data
+      types across the FFI boundary through Neon.
+    - We need to improve the current state documentation massively.
+      + Design diagrams.
+      + Docstrings across software code base.
+      + Event diagrams.
+    - Translate the above issues into their proper documentation for the master documentation and
+      write-up file.
+    - How to test more of the functionality given that a major component of this application is
+      running directly on the browser.
