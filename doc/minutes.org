@@ -1,5 +1,5 @@
 * meeting minutes
-** meeting 2019.09.04 (first)
+** meeting 2019.09.04 (first) (1Hr)
    - going over project pdf as group
      - discussing tech stack
      - going over sprint assignments
@@ -27,7 +27,7 @@
     DEADLINE: <2019-10-02 Wed>
     - finish the functional/technical components of the project
     - TBD
-** meeting 2019.09.06 (second)
+** meeting 2019.09.06 (second) (1Hr)
 *** agenda
     - discussing game rules
     - discussing/writing user stories
@@ -57,7 +57,7 @@
 *** TODO discuss design
     - need to discuss how the actual product will be packaged and its
       architecture.
-** meeting 2019.09.27 (third)
+** meeting 2019.09.27 (third) (1Hr30m)
 *** agenda
     - discuss project structure
     - acceptance criteria
@@ -119,7 +119,7 @@
 **** TODO refining stories
      - same case applies with above: refine stories, and put them on github's project management
        board accordingly; actual refinement can be delegated to within =kanban.org= file.
-** meeting 2019.10.02 (fourth)
+** meeting 2019.10.02 (fourth) (1Hr40m)
 *** Agenda
     - addressing tagged issues generated on GitHub
     - settling on how front-end talks to back-end
@@ -157,7 +157,7 @@
       1. event diagram
       2. general UML diagram for total project
       3. class hierarchy/component diagram
-** meeting 2019.10.03 (fifth)
+** meeting 2019.10.03 (fifth) (1Hr53m)
 *** agenda
      - how to branch
      - branching basic_gui
@@ -184,7 +184,7 @@
      - push scaffolds for the website GUI
      - handle basic logic for pushing items to back-end storage
      - create mock of Rust functionality in TypeScript for further discussion
-** meeting 2019.10.05 (sixth)
+** meeting 2019.10.05 (sixth) (1Hr16m)
 *** agenda
      - CSS Grid
      - SASS
