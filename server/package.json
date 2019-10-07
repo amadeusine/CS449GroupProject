@@ -3,14 +3,20 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "sass": "sass --watch uncompiled/sass/:public/stylesheets/",
+    "build": "sass uncompiled/sass/:public/stylesheets/ && tsc",
+    "watch": "npm run sass & tsc --watch"
   },
   "dependencies": {
+    "@types/node": "^12.7.11",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "ejs": "~2.6.1",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
-    "morgan": "~1.9.1"
+    "morgan": "~1.9.1",
+    "sass": "^1.23.0",
+    "typescript": "^3.6.3"
   }
 }
