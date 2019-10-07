@@ -90,21 +90,21 @@
    |-----+---------------------------+----------+-----------+--------+--------+---------------------|
    | [[#SID3][S3]]  | Starting a Game           | medium   |        10 | -      | TODO   | -                   |
    |-----+---------------------------+----------+-----------+--------+--------+---------------------|
-   | [[#SID4][S4]]  | Assigning Players         | medium   |        10 | -      | TODO   |                     |
+   | [[#SID4][S4]]  | Assigning Players         | medium   |        10 | -      | TODO   | -                   |
    |-----+---------------------------+----------+-----------+--------+--------+---------------------|
-   | [[#SID5][S5]]  | Piece Placement           | high     |        10 | 2      |        | Sam, Michael        |
+   | [[#SID5][S5]]  | Piece Placement           | high     |        10 | 2      | TODO   | Sam, Michael        |
    |-----+---------------------------+----------+-----------+--------+--------+---------------------|
-   | [[#SID6][S6]]  | Piece Movement            | medium   |        10 | -      | TODO   |                     |
+   | [[#SID6][S6]]  | Piece Movement            | medium   |        10 | -      | TODO   | -                   |
    |-----+---------------------------+----------+-----------+--------+--------+---------------------|
-   | [[#SID7][S7]]  | Mill Formation            | medium   |        10 |        | TODO   | -                   |
+   | [[#SID7][S7]]  | Mill Formation            | medium   |        10 | -      | TODO   | -                   |
    |-----+---------------------------+----------+-----------+--------+--------+---------------------|
-   | [[#SID8][S8]]  | Piece Elimination         | medium   |        10 |        | TODO   | -                   |
+   | [[#SID8][S8]]  | Piece Elimination         | medium   |        10 | -      | TODO   | -                   |
    |-----+---------------------------+----------+-----------+--------+--------+---------------------|
-   | [[#SID9][S9]]  | Flying Pieces             | medium   |        10 |        |        | -                   |
+   | [[#SID9][S9]]  | Flying Pieces             | medium   |        10 | -      | TODO   | -                   |
    |-----+---------------------------+----------+-----------+--------+--------+---------------------|
-   | [[#SID10][S10]] | Defining End Game         | medium   |        10 |        |        | -                   |
+   | [[#SID10][S10]] | Defining End Game         | medium   |        10 | -      | TODO   | -                   |
    |-----+---------------------------+----------+-----------+--------+--------+---------------------|
-   | [[#SID11][S11]] | Restarting/Replaying Game | medium   |        10 |        |        | -                   |
+   | [[#SID11][S11]] | Restarting/Replaying Game | medium   |        10 | -      | TODO   | -                   |
 
 
 ** Mills Board
@@ -248,15 +248,29 @@
    #+ATTR_LaTeX: :align |c|c|c|c|
    | SID & Name                 | ACID | Status | Developer(s)        |
    |----------------------------+------+--------+---------------------|
-   | 1 Mills Board              |    1 | DONE   | Sam, Elias, Michael |
+   | 1 Mills Board              | [[#ACID1][A1]]   | DONE   | Sam, Elias, Michael |
    |----------------------------+------+--------+---------------------|
-   | 2 User Input and Selection |    2 | DONE   | Sam, Elias, Michael |
+   | 2 User Input and Selection | [[#ACID2][A2]]   | DONE   | Sam, Elias, Michael |
    |----------------------------+------+--------+---------------------|
-   | 3 Starting a Game          |    3 | TODO   | -                   |
+   | 3 Starting a Game          | [[#ACID3][A3]]   | TODO   | -                   |
    |----------------------------+------+--------+---------------------|
-   | 4 Assigning Players        |    4 | TODO   | -                   |
+   | 4 Assigning Players        | [[#ACID4][A4]]   | TODO   | -                   |
    |----------------------------+------+--------+---------------------|
-   | 5                          |      |        |                     |
+   | 5 Piece Placement          | [[#ACID5][A5]]   | DONE   | Sam, Michael        |
+   |----------------------------+------+--------+---------------------|
+   | 6 Piece Movement           | [[#ACID6][A6]]   | TODO   | -                   |
+   |----------------------------+------+--------+---------------------|
+   | 7 Mill Formation           | [[#ACID7][A7]]   | TODO   | -                   |
+   |----------------------------+------+--------+---------------------|
+   | 8 Piece Elimination        | [[#ACID8][A8]]   | TODO   | -                   |
+   |----------------------------+------+--------+---------------------|
+   | 9 Flying Pieces            | [[#ACID9][A9]]   | TODO   | -                   |
+   |----------------------------+------+--------+---------------------|
+   | 10 Defining End Game       | [[#ACID10][A10]]  | TODO   | -                   |
+   |----------------------------+------+--------+---------------------|
+   | 11 Restarting/Replaying    | [[#ACID11][A11]]  | TODO   | -                   |
+   | Game                       |      |        |                     |
+
 ** Criterion 1
    :PROPERTIES:
    :CUSTOM_ID: ACID1
@@ -264,7 +278,7 @@
    #+ATTR_LaTeX: :align |c|l|
    | ACID | Description                                                                |
    |------+----------------------------------------------------------------------------|
-   |    1 | Given a User...                                                            |
+   |  1.0 | Given a User...                                                            |
    |------+----------------------------------------------------------------------------|
    |  1.1 | When the User visits our site (IP), then an interactive board will appear. |
    |  1.2 | When the User does not visit our site (IP), our board will not appear.     |
@@ -273,29 +287,31 @@
     :PROPERTIES:
     :UNNUMBERED: t
     :END:
+
+    None for now.
+
 ** Criterion 2
    :PROPERTIES:
    :CUSTOM_ID: ACID2
    :UNNUMBERED: t 
    :END:
    #+ATTR_LaTeX: :align |c|l|
-   | ACID | Description                             |
-   |------+-----------------------------------------|
-   |  2.0 | Given a User using the application...   |
-   |------+-----------------------------------------|
-   |  2.1 | When a user clicks on an interactive    |
-   |      | button of the application's page, then  |
-   |      | the application will detect the user    |
-   |      | input event.                            |
-   |  2.2 | When a user clicks on a non-interactive |
-   |      | button of the application's page, then  |
-   |      | the application will not detect any     |
-   |      | input.                                  |
+   | ACID | Description                                                            |
+   |------+------------------------------------------------------------------------|
+   |  2.0 | Given a User using the application...                                  |
+   |------+------------------------------------------------------------------------|
+   |  2.1 | When a user clicks on an interactive button of the application's page, |
+   |      | then the application will detect the user input event.                 |
+   |  2.2 | When a user clicks on a non-interactive button of the application's    |
+   |      | page, then the application will not detect any input.                  |
    
 *** Further Notes
     :PROPERTIES:
     :UNNUMBERED: t
     :END:
+
+    None for now.
+
 ** Criterion 3
    :PROPERTIES:
    :CUSTOM_ID: ACID3
@@ -317,6 +333,8 @@
     :PROPERTIES:
     :UNNUMBERED: t
     :END:
+
+    None for now.
 
 ** Criterion 4
    :PROPERTIES:
@@ -341,6 +359,8 @@
     :PROPERTIES:
     :UNNUMBERED: t
     :END:
+    
+    None for now.
 
 ** Criterion 5
    :PROPERTIES:
@@ -367,31 +387,35 @@
     :PROPERTIES:
     :UNNUMBERED: t
     :END:
+   
+    None for now.
 
 ** Criterion 6
    :PROPERTIES:
    :CUSTOM_ID: ACID6
    :END:
    #+ATTR_LaTeX: :align |c|l|
-   | ACID | Description                                                  |
-   |------+--------------------------------------------------------------|
-   |  6.0 | Given a user playing the game during their turn...           |
-   |------+--------------------------------------------------------------|
-   |  6.1 | When the user moves his piece to an unoccupied position not  |
-   |      | adjacent to an opponent mill, the piece will be shifted.     |
-   |  6.2 | When the user moves his piece to an occupied position not    |
-   |      | adjacent to an opponent mill, the piece will not be          |
-   |      | shifted.                                                     |
-   |  6.3 | When the user moves his piece to an unoccupied position      |
-   |      | adjacent to an opponent mill, the piece will not be shifted. |
-   |      |                                                              |
-   |  6.4 | when the user moves his piece to an occupied position        |
-   |      | adjacent to an opponent mill, the piece will not be shifted. |
+   | ACID | Description                                                        |
+   |------+--------------------------------------------------------------------|
+   |  6.0 | Given a user playing the game during their turn...                 |
+   |------+--------------------------------------------------------------------|
+   |  6.1 | When the user moves his piece to an unoccupied position not        |
+   |      | adjacent to an opponent mill, then the piece will be shifted.      |
+   |  6.2 | When the user moves his piece to an occupied position not          |
+   |      | adjacent to an opponent mill, then the piece will not be           |
+   |      | shifted.                                                           |
+   |  6.3 | When the user moves his piece to an unoccupied position,           |
+   |      | adjacent to an opponent mill, then the  piece will not be shifted. |
+   |      |                                                                    |
+   |  6.4 | When the user moves his piece to an occupied position,             |
+   |      | adjacent to an opponent mill, then the  piece will not be shifted. |
    
 *** Further Notes
     :PROPERTIES:
     :UNNUMBERED: t
     :END:
+
+    None for now.
 
 ** Criterion 7
    :PROPERTIES:
@@ -411,6 +435,9 @@
     :PROPERTIES:
     :UNNUMBERED: t
     :END:
+
+    None for now.
+
 ** Criterion 8
    :PROPERTIES:
    :CUSTOM_ID: ACID8
@@ -436,6 +463,8 @@
     :UNNUMBERED: t
     :END:
 
+    None for now.
+
 ** Criterion 9
    :PROPERTIES:
    :CUSTOM_ID: ACID9
@@ -451,13 +480,56 @@
    |  9.1 | When the user loses a piece such that they have more than three         |
    |      | pieces remaining on the board, then the application will not allow      |
    |      | them to "fly" their pieces to any open and valid position on the board. |
-
    
 *** Further Notes
     :PROPERTIES:
     :UNNUMBERED: t
     :END:
 
+    None for now.
+
+** Criterion 10
+   :PROPERTIES:
+   :CUSTOM_ID: ACID10
+   :END:
+   #+ATTR_LaTeX: :align |c|l|
+   | ACID | Description                                                       |
+   |------+-------------------------------------------------------------------|
+   | 10.0 | Given a User is playing their turn...                             |
+   |------+-------------------------------------------------------------------|
+   | 10.1 | When the user eliminates an opponent's pieces down to two pieces, |
+   |      | then the user wins.                                               |
+   | 10.2 | When the user's pieces are eliminated down to two pieces,         |
+   |      | then the user loses.                                              |
+
+*** Further Notes
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+
+    None for now.
+
+** Criterion 11
+   :PROPERTIES:
+   :CUSTOM_ID: ACID11
+   :END:
+   #+ATTR_LaTeX: :align |c|l|
+   | ACID | Description                                                       |
+   |------+-------------------------------------------------------------------|
+   | 11.0 | Given a user after they have completed a game...                  |
+   |------+-------------------------------------------------------------------|
+   | 11.1 | When the user chooses to play again, then the board will be reset |
+   |      | and game count incremented.                                       |
+   |      |                                                                   |
+   | 11.2 | When the user chooses not to play again, then the board will      |
+   |      | not be reset and game count not incremented.                      |
+   
+*** Further Notes
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+
+    None for now.
 
 ** [TEMPLATE, Remove UNNUMBERED prop] Criterion N
    :PROPERTIES:
@@ -525,7 +597,6 @@
     | Qud    | blah blah blah |
     |        |                |
     
-
 ** Automated Test Code
 
    #+ATTR_LaTeX: :align |l|l|p{2.5cm}|p{2.5cm}|p{2.5cm}|l|l|
