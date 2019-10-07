@@ -561,21 +561,6 @@
     | 1. =eventPress= | These functions relate to a pseudo-epic, and thus the testing will be   |
     | 2. =at=         | generic.                                                                |
     |               |                                                                         |
-
-    
-*** [TEMPLATE] Class =FOOBAR=
-    :PROPERTIES:
-    :UNNUMBERED: t
-    :CUSTOM_ID: PIDN
-    :END:
-
-    Class summary goes here.
-
-    #+ATTR_LaTeX: :align |c|l|
-    |        | <71>                                                                    |
-    | Method | Notes                                                                   |
-    |--------+-------------------------------------------------------------------------|
-    | Qud    | blah blah blah                                                          |
     
 ** Automated Test Code
 
