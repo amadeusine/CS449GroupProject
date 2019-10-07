@@ -1,15 +1,27 @@
+@import url('https://fonts.googleapis.com/css?family=PT+Sans&display=swap');
+
+body {
+  p {
+    font-family: 'PT Sans', sans-serif;
+    font-size: 20pt;
+  }
+  background-color: grey;
+}
+
 .main-grid {
-  padding: 12vh;
+  padding: 10vh;
   width: 100%;
   max-width: 960px;
   margin: 0 auto;
   box-shadow: 0 .5em 2em rgba(black, .3);
   margin-bottom: 3em;
+  background-color: white;
 
   display: grid;
-  grid-template-columns: 60% 40%;
+  grid-template-columns: 65% 35%;
   grid-template-areas: "board text";
   grid-gap: 40px;
+
   .grid-board-text {
     grid-area: text;
   }
@@ -32,49 +44,49 @@
         width: 10%;
         height: 10%;
         border-radius: 100px;
-        background-color: red;
+        background-color: none;
       }
-      [class="1"] {
-        top: 95%;
+      .one {
+        top: 91%;
       }
-      [class="2"] {
-        top: 80%;
+      .two {
+        top: 76%;
       }
-      [class="3"] {
-        top: 10%;
+      .three {
+        top: 60%;
       }
-      [class="4"] {
-        top: 10%;
+      .four {
+        top: 45%;
       }
-      [class="5"] {
-        top: 10%;
+      .five {
+        top: 30%;
       }
-      [class="6"] {
-        top: 10%;
+      .six {
+        top: 14%;
       }
-      [class="7"] {
-        top: 10%;
+      .seven {
+        top: -1.5%;
       }
       .A {
-        left: 10%;
+        left: 0%;
       }
       .B {
-        left: 10%;
+        left: 15%;
       }
       .C {
-        left: 10%;
+        left: 30%;
       }
       .D {
-        left: 10%;
+        left: 44.9%;
       }
       .E {
-        left: 10%;
+        left: 60%;
       }
       .F {
-        left: 10%;
+        left: 75%;
       }
       .G {
-        left: 10%;
+        left: 91%;
       }
     }
   }

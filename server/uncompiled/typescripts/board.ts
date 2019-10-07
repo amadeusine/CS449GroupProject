@@ -39,8 +39,8 @@ class Position {
         this._owner = player;
     }
 
-    public hasOwner(player?: Player): boolean {
-        return this._owner === player;
+    public hasOwner(): boolean {
+        return this._owner !== undefined;
     }
 
     public set owner(player: Player | undefined) {
@@ -85,7 +85,7 @@ class Board {
 
     public emptyBoard(): void {
         Object.entries(this.validPositions).forEach(([x, arr]) => {
-            arr.forEach(y => {
+            arr.forEach((y: number) => {
                 let coord: string = x+y;
                 if (this.board[coord] === undefined) {
                     this.board[coord] = new Position({x: x, y: y});
