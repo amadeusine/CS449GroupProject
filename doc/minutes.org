@@ -157,3 +157,66 @@
       1. event diagram
       2. general UML diagram for total project
       3. class hierarchy/component diagram
+** meeting 2019.10.03 (fifth)
+*** agenda
+     - how to branch
+     - branching basic_gui
+     - GitHub PR format
+     - styling format
+*** GitHub PR format
+     - Show Michael how to create a branch
+     - name the branch and pull from remote
+     - push the branch from local
+     - sync branches
+     - checkout a branch
+*** branching basic_gui
+     - created a branch \`basic_gui\`
+     - set up an issue with the branch for PR
+     - push a commit from local to remote branch
+*** GitHub PR format
+     - went through how to form a PR from different branches
+     - how to further commit to the compare branch
+*** styling format
+     - no bootstrap, no jquery
+     - setup proper layouts for the GUI
+     - discussed how we want to handle events onclick
+*** TODO
+     - push scaffolds for the website GUI
+     - handle basic logic for pushing items to back-end storage
+     - create mock of Rust functionality in TypeScript for further discussion
+** meeting 2019.10.05 (sixth)
+*** agenda
+     - CSS Grid
+     - SASS
+     - TypeScript
+     - build script compilation and runtime
+     - proper layout for GUI
+*** CSS Grid
+     - teach Michael about CSS Grid
+     - pure CSS, not bootstrap (Elias)
+     - use columns properly
+     - no need for floats / flexbox
+*** SASS
+     - transpiler for CSS
+     - allows nested functionality
+     - separate compiled/uncompiled folders
+     - use \`watch\` script to sync changes
+*** TypeScript
+     - better able to handle equivalence mocking to Rust
+     - easy to push onto browser
+     - separate folders (see above)
+     - push to public folder for site access
+*** build script compilation and runtime
+     - use watch and start scripts to build site
+     - separate scripts will be run for Rust beforehand
+     - build scripts allow for synced changes between folders (see above)
+*** proper layout for GUI
+     - use column areas in CSS Grid
+     - main column for game
+     - nested grid for board layout (tentative)
+     - proportion text for board side-by-side
+*** TODO
+     - design docs
+     - microcharter
+     - mocking TS => Rust
+     - event keys on front-end (browser)
