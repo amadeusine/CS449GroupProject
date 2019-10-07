@@ -64,6 +64,9 @@
     :PROPERTIES:
     :UNNUMBERED: t
     :END:
+    - Michael Cu
+    - Elias Julian Marko Garcia
+    - Samual Lim
 * User Stories
   :PROPERTIES:
   :CUSTOM_ID: S2
@@ -77,31 +80,31 @@
   respective story, which also helps with navigating this section.
   
    #+ATTR_LaTeX: :align |c|m{3.5cm}|c|c|c|c|c|
-   |     |                           |          | Time Est. | Actual |        |              |
-   | SID | Story Name                | Priority | (hr)      | (hr)   | Status | Developer(s) |
-   |-----+---------------------------+----------+-----------+--------+--------+--------------|
-   | [[#SID1][S1]]  | Mills Board               | high     | 10hr      |        |        |              |
-   |-----+---------------------------+----------+-----------+--------+--------+--------------|
-   | [[#SID2][S2]]  | User Input and            | high     | 10hr      |        |        |              |
-   |     | Selection                 |          |           |        |        |              |
-   |-----+---------------------------+----------+-----------+--------+--------+--------------|
-   | [[#SID3][S3]]  | Starting a Game           |          |           |        |        |              |
-   |-----+---------------------------+----------+-----------+--------+--------+--------------|
-   | [[#SID4][S4]]  | Assigning Players         |          |           |        |        |              |
-   |-----+---------------------------+----------+-----------+--------+--------+--------------|
-   | [[#SID5][S5]]  | Piece Placement           |          |           |        |        |              |
-   |-----+---------------------------+----------+-----------+--------+--------+--------------|
-   | [[#SID6][S6]]  | Piece Movement            |          |           |        |        |              |
-   |-----+---------------------------+----------+-----------+--------+--------+--------------|
-   | [[#SID7][S7]]  | Mill Formation            |          |           |        |        |              |
-   |-----+---------------------------+----------+-----------+--------+--------+--------------|
-   | [[#SID8][S8]]  | Piece Elimination         |          |           |        |        |              |
-   |-----+---------------------------+----------+-----------+--------+--------+--------------|
-   | [[#SID9][S9]]  | Flying Pieces             |          |           |        |        |              |
-   |-----+---------------------------+----------+-----------+--------+--------+--------------|
-   | [[#SID10][S10]] | Defining End Game         |          |           |        |        |              |
-   |-----+---------------------------+----------+-----------+--------+--------+--------------|
-   | [[#SID11][S11]] | Restarting/Replaying Game |          |           |        |        |              |
+   |     |                           |          | Time Est. | Actual |        |                     |
+   | SID | Story Name                | Priority |      (hr) | (hr)   | Status | Developer(s)        |
+   |-----+---------------------------+----------+-----------+--------+--------+---------------------|
+   | [[#SID1][S1]]  | Mills Board               | high     |        10 | 4      | DONE   | Sam, Michael, Elias |
+   |-----+---------------------------+----------+-----------+--------+--------+---------------------|
+   | [[#SID2][S2]]  | User Input and            | high     |        10 | 4      | DONE   | Sam                 |
+   |     | Selection                 |          |           |        |        |                     |
+   |-----+---------------------------+----------+-----------+--------+--------+---------------------|
+   | [[#SID3][S3]]  | Starting a Game           | medium   |        10 | -      | TODO   | -                   |
+   |-----+---------------------------+----------+-----------+--------+--------+---------------------|
+   | [[#SID4][S4]]  | Assigning Players         | medium   |        10 | -      | TODO   |                     |
+   |-----+---------------------------+----------+-----------+--------+--------+---------------------|
+   | [[#SID5][S5]]  | Piece Placement           | high     |        10 | 2      |        | Sam, Michael        |
+   |-----+---------------------------+----------+-----------+--------+--------+---------------------|
+   | [[#SID6][S6]]  | Piece Movement            | medium   |        10 | -      | TODO   |                     |
+   |-----+---------------------------+----------+-----------+--------+--------+---------------------|
+   | [[#SID7][S7]]  | Mill Formation            | medium   |        10 |        | TODO   | -                   |
+   |-----+---------------------------+----------+-----------+--------+--------+---------------------|
+   | [[#SID8][S8]]  | Piece Elimination         | medium   |        10 |        | TODO   | -                   |
+   |-----+---------------------------+----------+-----------+--------+--------+---------------------|
+   | [[#SID9][S9]]  | Flying Pieces             | medium   |        10 |        |        | -                   |
+   |-----+---------------------------+----------+-----------+--------+--------+---------------------|
+   | [[#SID10][S10]] | Defining End Game         | medium   |        10 |        |        | -                   |
+   |-----+---------------------------+----------+-----------+--------+--------+---------------------|
+   | [[#SID11][S11]] | Restarting/Replaying Game | medium   |        10 |        |        | -                   |
 
 
 ** Mills Board
@@ -243,28 +246,219 @@
   subsection below for viewing the description of each criterion.
 
    #+ATTR_LaTeX: :align |c|c|c|c|
-   | SID & Name | ACID | Status | Developer(s) |
-   |------------+------+--------+--------------|
-   |          1 |    1 | Qux    | Bizz         |
-   |------------+------+--------+--------------|
-   |          2 |      |        |              |
-   |------------+------+--------+--------------|
-   |            |      |        |              |
+   | SID & Name                 | ACID | Status | Developer(s)        |
+   |----------------------------+------+--------+---------------------|
+   | 1 Mills Board              |    1 | DONE   | Sam, Elias, Michael |
+   |----------------------------+------+--------+---------------------|
+   | 2 User Input and Selection |    2 | DONE   | Sam, Elias, Michael |
+   |----------------------------+------+--------+---------------------|
+   | 3 Starting a Game          |    3 | TODO   | -                   |
+   |----------------------------+------+--------+---------------------|
+   | 4 Assigning Players        |    4 | TODO   | -                   |
+   |----------------------------+------+--------+---------------------|
+   | 5                          |      |        |                     |
 ** Criterion 1
    :PROPERTIES:
    :CUSTOM_ID: ACID1
    :END:
    #+ATTR_LaTeX: :align |c|l|
-   | ACID | Description |
-   |------+-------------|
-   |    1 |             |
-   |------+-------------|
-   |  1.0 |             |
+   | ACID | Description                                                                |
+   |------+----------------------------------------------------------------------------|
+   |    1 | Given a User...                                                            |
+   |------+----------------------------------------------------------------------------|
+   |  1.1 | When the User visits our site (IP), then an interactive board will appear. |
+   |  1.2 | When the User does not visit our site (IP), our board will not appear.     |
    
 *** Further Notes
     :PROPERTIES:
     :UNNUMBERED: t
     :END:
+** Criterion 2
+   :PROPERTIES:
+   :CUSTOM_ID: ACID2
+   :UNNUMBERED: t 
+   :END:
+   #+ATTR_LaTeX: :align |c|l|
+   | ACID | Description                             |
+   |------+-----------------------------------------|
+   |  2.0 | Given a User using the application...   |
+   |------+-----------------------------------------|
+   |  2.1 | When a user clicks on an interactive    |
+   |      | button of the application's page, then  |
+   |      | the application will detect the user    |
+   |      | input event.                            |
+   |  2.2 | When a user clicks on a non-interactive |
+   |      | button of the application's page, then  |
+   |      | the application will not detect any     |
+   |      | input.                                  |
+   
+*** Further Notes
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+** Criterion 3
+   :PROPERTIES:
+   :CUSTOM_ID: ACID3
+   :END:
+   #+ATTR_LaTeX: :align |c|l|
+   | ACID | Description                                                |
+   |------+------------------------------------------------------------|
+   |  3.0 | Given a User using the application...                      |
+   |------+------------------------------------------------------------|
+   |  3.1 | When a user enters HUMAN as an opponent,                   |
+   |      | then the application will allow for a second human player. |
+   |  3.2 | When a user enters AI as an opponent,                      |
+   |      | then the application will assign an AI as a second player. |
+   |  3.3 | When a user chooses neither a HUMAN or AI as an opponent   |
+   |      | then the application will not choose and will re-prompt    |
+   |      | the user to choose an opponent type.                       |
+   
+*** Further Notes
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+
+** Criterion 4
+   :PROPERTIES:
+   :CUSTOM_ID: ACID4
+   :END:
+   #+ATTR_LaTeX: :align |c|l|
+   | ACID | Description                                                |
+   |------+------------------------------------------------------------|
+   |  4.0 | Given a User using the application...                      |
+   |------+------------------------------------------------------------|
+   |  4.1 | When a user chooses player one,                            |
+   |      | then the application will assign the role of player one to |
+   |      | the user.                                                  |
+   |  4.2 | When a user chooses player 2,                              |
+   |      | then the application will assign the role of player two to |
+   |      | the user.                                                  |
+   |  4.3 | When a user chooses neither player one or player two       |
+   |      | then the application will not will not assign a player and |
+   |      | the player will be re-prompted                             |
+   
+*** Further Notes
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+
+** Criterion 5
+   :PROPERTIES:
+   :CUSTOM_ID: ACID5
+   :END:
+   #+ATTR_LaTeX: :align |c|l|
+   |  ACID | Description                                                     |
+   |-------+-----------------------------------------------------------------|
+   | 5.1.0 | Given a User playing a game with unassigned pieces...           |
+   |-------+-----------------------------------------------------------------|
+   | 5.1.1 | When the user enters an unoccupied position,                    |
+   |       | a piece of the users color will be placed in the position.      |
+   | 5.1.2 | When the user enters an occupied position,                      |
+   |       | a piece of the users color will not be placed in the position.. |
+   |-------+-----------------------------------------------------------------|
+   | 5.2.0 | Given a User playing a game with no unassigned pieces...        |
+   |-------+-----------------------------------------------------------------|
+   | 5.2.1 | When the user enters an unoccupied position,                    |
+   |       | a piece of the users color will not be placed in the position.  |
+   | 5.2.2 | When the user enters an occupied position,                      |
+   |       | a piece of the users color will not be placed in the position.. |
+   
+*** Further Notes
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+
+** Criterion 6
+   :PROPERTIES:
+   :CUSTOM_ID: ACID6
+   :END:
+   #+ATTR_LaTeX: :align |c|l|
+   | ACID | Description                                                  |
+   |------+--------------------------------------------------------------|
+   |  6.0 | Given a user playing the game during their turn...           |
+   |------+--------------------------------------------------------------|
+   |  6.1 | When the user moves his piece to an unoccupied position not  |
+   |      | adjacent to an opponent mill, the piece will be shifted.     |
+   |  6.2 | When the user moves his piece to an occupied position not    |
+   |      | adjacent to an opponent mill, the piece will not be          |
+   |      | shifted.                                                     |
+   |  6.3 | When the user moves his piece to an unoccupied position      |
+   |      | adjacent to an opponent mill, the piece will not be shifted. |
+   |      |                                                              |
+   |  6.4 | when the user moves his piece to an occupied position        |
+   |      | adjacent to an opponent mill, the piece will not be shifted. |
+   
+*** Further Notes
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+
+** Criterion 7
+   :PROPERTIES:
+   :CUSTOM_ID: ACID7
+   :END:
+   #+ATTR_LaTeX: :align |c|l|
+   | ACID | Description                                                      |
+   |------+------------------------------------------------------------------|
+   |  7.0 | Given a User is playing their turn...                            |
+   |------+------------------------------------------------------------------|
+   |  7.1 | When the user places a piece in a valid position adjacent to     |
+   |      | two other pieces of their color, then a mill will be formed.     |
+   |  7.2 | When the user places a piece in an invalid position adjacent to  |
+   |      | two other pieces of their color, then a mill will not be formed. |
+   
+*** Further Notes
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+** Criterion 8
+   :PROPERTIES:
+   :CUSTOM_ID: ACID8
+   :END:
+   #+ATTR_LaTeX: :align |c|l|
+   | ACID | Description                                                      |
+   |------+------------------------------------------------------------------|
+   |  8.0 | Given a User is playing their turn...                            |
+   |------+------------------------------------------------------------------|
+   |  8.1 | When the user moves a piece from his mill into an opponent's     |
+   |      | piece not in a mill, the opponent's piece will be replaced by    |
+   |      | the user's piece.                                                |
+   |      |                                                                  |
+   |  8.2 | When the user moves a piece from his mill into an opponent's     |
+   |      | piece in a mill, the opponent's piece will be not replaced by    |
+   |      | the user's piece.                                                |
+   |      |                                                                  |
+   |  8.3 | When the user moves a piece from his mill into a vacant          |
+   |      | space, no opponent's piece will be replaced by the user's piece. |
+   
+*** Further Notes
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+
+** Criterion 9
+   :PROPERTIES:
+   :CUSTOM_ID: ACID9
+   :END:
+   #+ATTR_LaTeX: :align |c|l|
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   |  9.0 | Given a User is playing their turn...                                   |
+   |------+-------------------------------------------------------------------------|
+   |  9.1 | When the user loses a piece such that they only have three pieces       |
+   |      | remaining on the board, then the application will allow them to         |
+   |      | "fly" their pieces to any open and valid position on the board.         |
+   |  9.1 | When the user loses a piece such that they have more than three         |
+   |      | pieces remaining on the board, then the application will not allow      |
+   |      | them to "fly" their pieces to any open and valid position on the board. |
+
+   
+*** Further Notes
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+
+
 ** [TEMPLATE, Remove UNNUMBERED prop] Criterion N
    :PROPERTIES:
    :CUSTOM_ID: ACIDN
@@ -363,7 +557,6 @@
    |    |            |          |       |             |        |           |
    |    |            |          |       |             |        |           |
    |    |            |          |       |             |        |           |
-
 
 * Meeting Minutes
   :PROPERTIES:

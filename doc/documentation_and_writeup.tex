@@ -1,4 +1,4 @@
-% Created 2019-10-06 Sun 18:37
+% Created 2019-10-06 Sun 19:46
 % Intended LaTeX compiler: pdflatex
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
@@ -33,23 +33,23 @@
 
 
 \section{Micro Charter}
-\label{sec:org529813a}
-\subsection{N Men Morris}
-\label{sec:org9c501e5}
+\label{sec:org8cad37b}
+\subsection*{N Men Morris}
+\label{sec:orge1c1f69}
 \subsubsection*{Vision Statement}
-\label{sec:org355a367}
+\label{sec:orgbac232c}
 Create a extensible framework for board game web apps with scalability and performance.
 \subsubsection*{Mission Statement}
-\label{sec:org72f46d0}
+\label{sec:org20b5ae2}
 To play Nine Men's Morris on the web browser using a composable web technology stack that allows
 for future modularity while not foregoing performance.
 \subsubsection*{Elevator Pitch and Business Value}
-\label{sec:orgd902978}
+\label{sec:org72a5a53}
 We are creating Nine Men's Morris on a board game framework using Express.js and Neon for
 Rust. This allows for a data and type safe application that is capable of composability,
 scalability, extensibility, and performance.
 \subsubsection*{Customers and Users}
-\label{sec:orgf0ebf9e}
+\label{sec:orga57a0cb}
 \begin{itemize}
 \item Customers: Entrepreneurs and ventures that want to deploy board games on the web with low
 overhead, latency, and maintenance.
@@ -57,7 +57,7 @@ overhead, latency, and maintenance.
 they can take and play wherever they go with their friends.
 \end{itemize}
 \subsubsection*{Metrics}
-\label{sec:orgc0f0cca}
+\label{sec:orgc22e1b9}
 By benchmarking N Men Morris, we can compare our solution to other products on the market on:
 \begin{enumerate}
 \item latency
@@ -65,7 +65,7 @@ By benchmarking N Men Morris, we can compare our solution to other products on t
 \item up-time
 \end{enumerate}
 \subsubsection*{Milestones}
-\label{sec:org08f1ef8}
+\label{sec:orgb33e006}
 \begin{enumerate}
 \item First MVP
 \item First Offline N Men's Morris
@@ -73,16 +73,21 @@ By benchmarking N Men Morris, we can compare our solution to other products on t
 \item Player versus Player (Online)
 \end{enumerate}
 \subsubsection*{Risks}
-\label{sec:org377620d}
+\label{sec:orgab115d7}
 \begin{enumerate}
 \item Inherent complexity of technology stack.
 \item Inability to cooperate with teammates.
 \item Plausibility of orphaning project due to development team size.
 \end{enumerate}
 \subsubsection*{Authors}
-\label{sec:orgfc7eed1}
+\label{sec:org4189d41}
+\begin{itemize}
+\item Michael Cu
+\item Elias Julian Marko Garcia
+\item Samual Lim
+\end{itemize}
 \section{User Stories}
-\label{sec:orgb72f50b}
+\label{sec:org97af3de}
 Below you will find a table that makes up our "User Story Board", with some simplifications taken
 with respect to the total contents of the board. With respect to the final formal documentation,
 i.e. this paper, we only keep the basic qualitative and quantitative values for each story in the
@@ -95,122 +100,122 @@ respective story, which also helps with navigating this section.
  &  &  & Time Est. & Actual &  & \\
 SID & Story Name & Priority & (hr) & (hr) & Status & Developer(s)\\
 \hline
-\hyperref[sec:org26ef080]{S1} & Mills Board & high & 10hr &  &  & \\
+\hyperref[sec:org211e8c0]{S1} & Mills Board & high & 10 & 4 & DONE & Sam, Michael, Elias\\
 \hline
-\hyperref[sec:org0164a07]{S2} & User Input and & high & 10hr &  &  & \\
+\hyperref[sec:org96cf1f7]{S2} & User Input and & high & 10 & 4 & DONE & Sam\\
  & Selection &  &  &  &  & \\
 \hline
-\hyperref[sec:org36cf713]{S3} & Starting a Game &  &  &  &  & \\
+\hyperref[sec:orga4d2de6]{S3} & Starting a Game & medium & 10 & - & TODO & -\\
 \hline
-\hyperref[sec:org5de048f]{S4} & Assigning Players &  &  &  &  & \\
+\hyperref[sec:org41fc180]{S4} & Assigning Players & medium & 10 & - & TODO & \\
 \hline
-\hyperref[sec:org224bd66]{S5} & Piece Placement &  &  &  &  & \\
+\hyperref[sec:org1c7cdcf]{S5} & Piece Placement & high & 10 & 2 &  & Sam, Michael\\
 \hline
-\hyperref[sec:org896f644]{S6} & Piece Movement &  &  &  &  & \\
+\hyperref[sec:orgfd3c1b4]{S6} & Piece Movement & medium & 10 & - & TODO & \\
 \hline
-\hyperref[sec:orgdd62d75]{S7} & Mill Formation &  &  &  &  & \\
+\hyperref[sec:org90d71af]{S7} & Mill Formation & medium & 10 &  & TODO & -\\
 \hline
-\hyperref[sec:orgb0bd3e8]{S8} & Piece Elimination &  &  &  &  & \\
+\hyperref[sec:org8164721]{S8} & Piece Elimination & medium & 10 &  & TODO & -\\
 \hline
-\hyperref[sec:org270d580]{S9} & Flying Pieces &  &  &  &  & \\
+\hyperref[sec:org5cbdd28]{S9} & Flying Pieces & medium & 10 &  &  & -\\
 \hline
-\hyperref[sec:org61ed46a]{S10} & Defining End Game &  &  &  &  & \\
+\hyperref[sec:orgfa9575d]{S10} & Defining End Game & medium & 10 &  &  & -\\
 \hline
-\hyperref[sec:org9b963e0]{S11} & Restarting/Replaying Game &  &  &  &  & \\
+\hyperref[sec:org25e3e41]{S11} & Restarting/Replaying Game & medium & 10 &  &  & -\\
 \end{tabular}
 \end{center}
 
 
 \subsection{Mills Board}
-\label{sec:org26ef080}
+\label{sec:org211e8c0}
 \subsubsection*{Description}
-\label{sec:org5abc2c3}
+\label{sec:org6f95184}
 As a user, I need an empty board consisting of 4 expanded squares with 8 equidistant positions
 each to play a game of Nine Men's Morris.
 \subsection{User Input and Selection}
-\label{sec:org0164a07}
+\label{sec:org96cf1f7}
 \subsubsection*{Description}
-\label{sec:org42567f0}
+\label{sec:orgdc07be4}
 As a user, I need to be able to select and choose input from the web GUI of the application to
 be able to play and take turns at Nine Men's Morris.
 \subsection{Starting a Game}
-\label{sec:org36cf713}
+\label{sec:orga4d2de6}
 \subsubsection*{Description}
-\label{sec:org97aa098}
+\label{sec:orgbe4b99a}
 As a user, I need a GUI to prompt me with the options to start a game with either another human
 or against the computer for Nine Men's Morris in order to play the game.
 \subsection{Assigning Players}
-\label{sec:org5de048f}
+\label{sec:org41fc180}
 \subsubsection*{Description}
-\label{sec:org145f6ad}
+\label{sec:org6f03a09}
 As a user, I need to be assigned the role as either the first or second player, whether against
 another human or the computer, in order to know my player turn (either first or second) in the
 game.
 \subsection{Piece Placement}
-\label{sec:org224bd66}
+\label{sec:org1c7cdcf}
 \subsubsection*{Description}
-\label{sec:org52a7d38}
+\label{sec:orga8a5bdd}
 As a user, I need to place nine pieces on unoccupied positions in turn with another player to
 start off a game of Nine Men's Morris.
 \subsection{Piece Movement}
-\label{sec:org896f644}
+\label{sec:orgfd3c1b4}
 \subsubsection*{Description}
-\label{sec:org3280cae}
+\label{sec:org361c407}
 As a user, I need to be able to move my pieces into adjacent positions that are not occupied by
 the other player or adjacent to their mill in order to take a turn.
 \subsection{Mill Formation}
-\label{sec:orgdd62d75}
+\label{sec:org90d71af}
 \subsubsection*{Description}
-\label{sec:org868e03e}
+\label{sec:org4df6a6a}
 As a user, I need the game to recognize that I have formed a mill upon moving three of my own
 pieces into adjacent positions so that I may gain the future ability to attack and defend my
 mill pieces from being eliminated.
 \subsection{Piece Elimination}
-\label{sec:orgb0bd3e8}
+\label{sec:org8164721}
 \subsubsection*{Description}
-\label{sec:orgb1defc2}
+\label{sec:org0522f13}
 As a user, after forming a mill, I need the ability to remove an opponent's piece of my choosing
 so long as either it is not in a mill or any piece given all available pieces are in a mill, so
 that I may appropriately attack my opponent.
 \subsection{Flying Pieces}
-\label{sec:org270d580}
+\label{sec:org5cbdd28}
 \subsubsection*{Description}
-\label{sec:orgf1b80f9}
+\label{sec:orgd81ae83}
 As a user, upon reaching three remaining pieces, I need the ability to fly (jump) my pieces
 across the board to any un-occupied point in order to play Nine Men's Morris according to the
 rules. Whether the position is guarded is a variant of the game, implementation decision TBD.
 \subsection{Defining End Game}
-\label{sec:org61ed46a}
+\label{sec:orgfa9575d}
 \subsubsection*{Description}
-\label{sec:org6557e28}
+\label{sec:orgcb33cce}
 As a user, when either myself or the opponent reaches less than three pieces, i.e. two pieces, I
 need the game and to declare the respective winner in order to successfully finish a game of
 Nine Men's Morris.
 \subsection{Restarting and Replaying a Game}
-\label{sec:org9b963e0}
+\label{sec:org25e3e41}
 \subsubsection*{Description}
-\label{sec:org0e9379b}
+\label{sec:org9188960}
 As a user, after having completed a game of Nine Men's Morris, I need the GUI to prompt me to
 either play again or to end the game software so that I can accordingly choose whether to keep
 playing or to end my game session.
 \subsection*{[Template User Story]}
-\label{sec:org872dd89}
+\label{sec:org9506f82}
 \subsubsection*{Description}
-\label{sec:org11c2f02}
+\label{sec:orge59768e}
 \subsubsection*{Priority}
-\label{sec:org60ba569}
+\label{sec:org6a120bb}
 \subsubsection*{Estimate}
-\label{sec:orgb3a3f61}
+\label{sec:org54b60af}
 \subsubsection*{Actual}
-\label{sec:orgbc26ac9}
+\label{sec:org8aea75b}
 \subsubsection*{Status}
-\label{sec:org6fd7044}
+\label{sec:org2e29b7d}
 \subsubsection*{Developer}
-\label{sec:org4be799f}
+\label{sec:org1e6f9fb}
 \section{Acceptance Criteria}
-\label{sec:orgd8c15f3}
+\label{sec:org921f311}
 The following section covers the acceptance criteria enumerated in response to the User Stories
-discovered and documented in \hyperref[sec:orgb72f50b]{\(\S{2}\)}. In a similar fashion to \(\S{2}\), the table documenting these
+discovered and documented in \hyperref[sec:org97af3de]{\(\S{2}\)}. In a similar fashion to \(\S{2}\), the table documenting these
 acceptance criteria is in a simplified form. Every Acceptance Criterion has an Acceptance
 Criterion ID (\texttt{ACID}), which is associated in the table below with its respective \texttt{SID}, development
 status, and the developers responsible for implementing it. Each \texttt{ACID} is linked to its respective
@@ -220,29 +225,211 @@ subsection below for viewing the description of each criterion.
 \begin{tabular}{|c|c|c|c|}
 SID \& Name & ACID & Status & Developer(s)\\
 \hline
-1 & 1 & Qux & Bizz\\
+1 Mills Board & 1 & DONE & Sam, Elias, Michael\\
 \hline
-2 &  &  & \\
+2 User Input and Selection & 2 & DONE & Sam, Elias, Michael\\
 \hline
- &  &  & \\
+3 Starting a Game & 3 & TODO & -\\
+\hline
+4 Assigning Players & 4 & TODO & -\\
+\hline
+5 &  &  & \\
 \end{tabular}
 \end{center}
 \subsection{Criterion 1}
-\label{sec:org8bff951}
+\label{sec:org1602e50}
 \begin{center}
 \begin{tabular}{|c|l|}
 ACID & Description\\
 \hline
-1 & \\
+1 & Given a User\ldots{}\\
 \hline
-1.0 & \\
+1.1 & When the User visits our site (IP), then an interactive board will appear.\\
+1.2 & When the User does not visit our site (IP), our board will not appear.\\
 \end{tabular}
 \end{center}
 
 \subsubsection*{Further Notes}
-\label{sec:orgd5c39a9}
+\label{sec:org75f593d}
+\subsection*{Criterion 2}
+\label{sec:org262da57}
+\begin{center}
+\begin{tabular}{|c|l|}
+ACID & Description\\
+\hline
+2.0 & Given a User using the application\ldots{}\\
+\hline
+2.1 & When a user clicks on an interactive\\
+ & button of the application's page, then\\
+ & the application will detect the user\\
+ & input event.\\
+2.2 & When a user clicks on a non-interactive\\
+ & button of the application's page, then\\
+ & the application will not detect any\\
+ & input.\\
+\end{tabular}
+\end{center}
+
+\subsubsection*{Further Notes}
+\label{sec:org18acd18}
+\subsection{Criterion 3}
+\label{sec:org7f1416b}
+\begin{center}
+\begin{tabular}{|c|l|}
+ACID & Description\\
+\hline
+3.0 & Given a User using the application\ldots{}\\
+\hline
+3.1 & When a user enters HUMAN as an opponent,\\
+ & then the application will allow for a second human player.\\
+3.2 & When a user enters AI as an opponent,\\
+ & then the application will assign an AI as a second player.\\
+3.3 & When a user chooses neither a HUMAN or AI as an opponent\\
+ & then the application will not choose and will re-prompt\\
+ & the user to choose an opponent type.\\
+\end{tabular}
+\end{center}
+
+\subsubsection*{Further Notes}
+\label{sec:orgfd58e1c}
+
+\subsection{Criterion 4}
+\label{sec:orga5e9373}
+\begin{center}
+\begin{tabular}{|c|l|}
+ACID & Description\\
+\hline
+4.0 & Given a User using the application\ldots{}\\
+\hline
+4.1 & When a user chooses player one,\\
+ & then the application will assign the role of player one to\\
+ & the user.\\
+4.2 & When a user chooses player 2,\\
+ & then the application will assign the role of player two to\\
+ & the user.\\
+4.3 & When a user chooses neither player one or player two\\
+ & then the application will not will not assign a player and\\
+ & the player will be re-prompted\\
+\end{tabular}
+\end{center}
+
+\subsubsection*{Further Notes}
+\label{sec:orgdd04c45}
+
+\subsection{Criterion 5}
+\label{sec:org748d4d0}
+\begin{center}
+\begin{tabular}{|c|l|}
+ACID & Description\\
+\hline
+5.1.0 & Given a User playing a game with unassigned pieces\ldots{}\\
+\hline
+5.1.1 & When the user enters an unoccupied position,\\
+ & a piece of the users color will be placed in the position.\\
+5.1.2 & When the user enters an occupied position,\\
+ & a piece of the users color will not be placed in the position..\\
+\hline
+5.2.0 & Given a User playing a game with no unassigned pieces\ldots{}\\
+\hline
+5.2.1 & When the user enters an unoccupied position,\\
+ & a piece of the users color will not be placed in the position.\\
+5.2.2 & When the user enters an occupied position,\\
+ & a piece of the users color will not be placed in the position..\\
+\end{tabular}
+\end{center}
+
+\subsubsection*{Further Notes}
+\label{sec:org89f8c8c}
+
+\subsection{Criterion 6}
+\label{sec:org3c5cf33}
+\begin{center}
+\begin{tabular}{|c|l|}
+ACID & Description\\
+\hline
+6.0 & Given a user playing the game during their turn\ldots{}\\
+\hline
+6.1 & When the user moves his piece to an unoccupied position not\\
+ & adjacent to an opponent mill, the piece will be shifted.\\
+6.2 & When the user moves his piece to an occupied position not\\
+ & adjacent to an opponent mill, the piece will not be\\
+ & shifted.\\
+6.3 & When the user moves his piece to an unoccupied position\\
+ & adjacent to an opponent mill, the piece will not be shifted.\\
+ & \\
+6.4 & when the user moves his piece to an occupied position\\
+ & adjacent to an opponent mill, the piece will not be shifted.\\
+\end{tabular}
+\end{center}
+
+\subsubsection*{Further Notes}
+\label{sec:org81fad58}
+
+\subsection{Criterion 7}
+\label{sec:org8907051}
+\begin{center}
+\begin{tabular}{|c|l|}
+ACID & Description\\
+\hline
+7.0 & Given a User is playing their turn\ldots{}\\
+\hline
+7.1 & When the user places a piece in a valid position adjacent to\\
+ & two other pieces of their color, then a mill will be formed.\\
+7.2 & When the user places a piece in an invalid position adjacent to\\
+ & two other pieces of their color, then a mill will not be formed.\\
+\end{tabular}
+\end{center}
+
+\subsubsection*{Further Notes}
+\label{sec:orgc94cb42}
+\subsection{Criterion 8}
+\label{sec:org8bd6e5b}
+\begin{center}
+\begin{tabular}{|c|l|}
+ACID & Description\\
+\hline
+8.0 & Given a User is playing their turn\ldots{}\\
+\hline
+8.1 & When the user moves a piece from his mill into an opponent's\\
+ & piece not in a mill, the opponent's piece will be replaced by\\
+ & the user's piece.\\
+ & \\
+8.2 & When the user moves a piece from his mill into an opponent's\\
+ & piece in a mill, the opponent's piece will be not replaced by\\
+ & the user's piece.\\
+ & \\
+8.3 & When the user moves a piece from his mill into a vacant\\
+ & space, no opponent's piece will be replaced by the user's piece.\\
+\end{tabular}
+\end{center}
+
+\subsubsection*{Further Notes}
+\label{sec:orgbeede17}
+
+\subsection{Criterion 9}
+\label{sec:org1254c3a}
+\begin{center}
+\begin{tabular}{|c|l|}
+ACID & Description\\
+\hline
+9.0 & Given a User is playing their turn\ldots{}\\
+\hline
+9.1 & When the user loses a piece such that they only have three pieces\\
+ & remaining on the board, then the application will allow them to\\
+ & "fly" their pieces to any open and valid position on the board.\\
+9.1 & When the user loses a piece such that they have more than three\\
+ & pieces remaining on the board, then the application will not allow\\
+ & them to "fly" their pieces to any open and valid position on the board.\\
+\end{tabular}
+\end{center}
+
+
+\subsubsection*{Further Notes}
+\label{sec:org0bafc0a}
+
+
 \subsection*{[TEMPLATE, Remove UNNUMBERED prop] Criterion N}
-\label{sec:org819948a}
+\label{sec:orgf4e293d}
 \begin{center}
 \begin{tabular}{|c|l|}
 ACID & Description\\
@@ -254,21 +441,21 @@ ACID & Description\\
 \end{center}
 
 \subsubsection*{Further Notes}
-\label{sec:org71fa4ca}
+\label{sec:orga3658c3}
 \section{Implementation Tasks}
-\label{sec:org27e0ede}
+\label{sec:orgfc8da86}
 This section summarizes the details of implementation tasks for the project. You will find in each
-subsection a table similar to those found in \hyperref[sec:orgb72f50b]{\(\S{2}\)} and \hyperref[sec:orgd8c15f3]{\(\S{3}\)}.
+subsection a table similar to those found in \hyperref[sec:org97af3de]{\(\S{2}\)} and \hyperref[sec:org921f311]{\(\S{3}\)}.
 
 \subsection{Summary of Production Code}
-\label{sec:orgfacb6b9}
+\label{sec:orgcdac00a}
 
 \begin{center}
 \begin{tabular}{|c|c|p{3.5cm}|p{3.5cm}|c|c|c|}
  &  & Class &  &  & \\
 SID \& Name & ACID & Name(s) & Developer(s) & Status & Notes\\
 \hline
-1 & 2 & \hyperref[sec:orgf606299]{Qux} & Daz & Qud & Foo\\
+1 & 2 & \hyperref[sec:org92e7912]{Qux} & Daz & Qud & Foo\\
 \hline
  &  &  &  &  & \\
 \hline
@@ -279,7 +466,7 @@ SID \& Name & ACID & Name(s) & Developer(s) & Status & Notes\\
 
 %%\newpage
 \subsubsection{Class \texttt{QUX}}
-\label{sec:orgf606299}
+\label{sec:org92e7912}
 Class summary goes here.
 
 \begin{center}
@@ -293,7 +480,7 @@ Bizz & blah blah blah\\
 
 
 \subsubsection*{[TEMPLATE] Class \texttt{FOOBAR}}
-\label{sec:org34f63e3}
+\label{sec:org5143047}
 Class summary goes here.
 
 \begin{center}
@@ -307,7 +494,7 @@ Qud & blah blah blah\\
 
 
 \subsection{Automated Test Code}
-\label{sec:org0cf0a19}
+\label{sec:org35496c0}
 
 \begin{center}
 \begin{tabular}{|l|l|p{2.5cm}|p{2.5cm}|p{2.5cm}|l|l|}
@@ -322,7 +509,7 @@ SID \& Name & ACID & Name(s) & Name(s) & Description & Status & Developer\\
 \end{tabular}
 \end{center}
 \subsection{Manual Test Code}
-\label{sec:org53beba1}
+\label{sec:org95bffe5}
 \begin{center}
 \begin{tabular}{|c|c|p{2.5cm}|p{2.5cm}|l|l|l|}
  &  & Test & Test &  &  & \\
@@ -335,7 +522,7 @@ SID \& Name & ACID & Input & Oracle & Status & Notes & Developer(s)\\
 \end{tabular}
 \end{center}
 \subsection{Other Manual Test Code}
-\label{sec:org9a8649d}
+\label{sec:org2f34e6c}
 
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|c|}
@@ -350,7 +537,6 @@ ID & Test Input & Result & Name & of Test & Status & Developer\\
 \end{tabular}
 \end{center}
 
-
 \section{Meeting Minutes}
-\label{sec:org7387a53}
+\label{sec:orgb191912}
 \end{document}
