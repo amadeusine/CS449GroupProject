@@ -1,0 +1,53 @@
+#+OPTIONS: toc:nil
+
+* Sprint 1 Summary
+  - Project: N Men's Morris
+  - Members: Elias Garcia, Samuel Lim, Michael Cu
+  - Team Name: MISAEL
+** Mission Statement
+   To play Nine Men’s Morris on the web browser using a composable web technology
+   stack that allows for future modularity while not foregoing performance.
+
+** Pitch and Business value
+   We are creating Nine Men’s Morris on a board game framework using Express.js and Neon for
+   Rust. This allows for a data and type safe application that is capable of composability,
+   scalability, extensibility, and performance.
+
+* Tech Stack
+   - Vanilla JS, TypeScript, EJS Templates
+     + Served statically using Express.js
+     + Interfaces to back-end
+   - Rust and Neon
+     + Statically compiled and type safe back-end
+     + Neon library allows safe and efficient FFI with JS
+* Workflow (Rust)
+   - Enumeration on Coordinates
+   - Position Class
+   - Player Type
+   - Game State Class
+     - Board Storage
+* Workflow (JS)
+  - Mirrored Rust datatypes in TypeScript for mocking and testing front-end
+  - Added Window class (with logic restrictions)
+    + Interfaces with GUI
+* Workflow (Agile/Scrum)
+  - Meetings
+    + outlined issues
+    + teased out requirements
+    + User stories, AC
+  - GitHub
+    + Translated meeting details to issues and projects
+* Workflow (GUI)
+  - Deploy on Browser with CSS Grid
+* Testing
+  - Tested interactive elements
+  - Implementation of board placement
+    + Partial Board
+    + Full Board
+* Experience/Lessons Learned
+  - Meet more regularly.
+    + Met 7 times before submission.
+    + Still felt like there were issues, topics we could have better addressed.
+  - Using GitHub PRs, Issues
+  - Testing mockups and GUI
+    + Testing isn't as intuitive when main driver not implemented yet.

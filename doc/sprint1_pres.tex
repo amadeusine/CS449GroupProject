@@ -1,0 +1,125 @@
+% Created 2019-10-11 Fri 13:27
+% Intended LaTeX compiler: pdflatex
+\documentclass[presentation]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\usetheme{default}
+\date{\today}
+\title{}
+\hypersetup{
+ pdfauthor={},
+ pdftitle={},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 26.3 (Org mode 9.1.9)}, 
+ pdflang={English}}
+\begin{document}
+
+
+\begin{frame}[label={sec:orge6b5e10}]{Sprint 1 Summary}
+\begin{itemize}
+\item Project: N Men's Morris
+\item Members: Elias Garcia, Samuel Lim, Michael Cu
+\item Team Name: MISAEL
+\end{itemize}
+\begin{block}{Mission Statement}
+To play Nine Men’s Morris on the web browser using a composable web technology
+stack that allows for future modularity while not foregoing performance.
+\end{block}
+
+\begin{block}{Pitch and Business value}
+We are creating Nine Men’s Morris on a board game framework using Express.js and Neon for
+Rust. This allows for a data and type safe application that is capable of composability,
+scalability, extensibility, and performance.
+\end{block}
+\end{frame}
+
+\begin{frame}[label={sec:org5642c99}]{Tech Stack}
+\begin{itemize}
+\item Vanilla JS, TypeScript, EJS Templates
+\begin{itemize}
+\item Served statically using Express.js
+\item Interfaces to back-end
+\end{itemize}
+\item Rust and Neon
+\begin{itemize}
+\item Statically compiled and type safe back-end
+\item Neon library allows safe and efficient FFI with JS
+\end{itemize}
+\end{itemize}
+\end{frame}
+\begin{frame}[label={sec:org840f37f}]{Workflow (Rust)}
+\begin{itemize}
+\item Enumeration on Coordinates
+\item Position Class
+\item Player Type
+\item Game State Class
+\begin{itemize}
+\item Board Storage
+\end{itemize}
+\end{itemize}
+\end{frame}
+\begin{frame}[label={sec:org76f8a32}]{Workflow (JS)}
+\begin{itemize}
+\item Mirrored Rust datatypes in TypeScript for mocking and testing front-end
+\item Added Window class (with logic restrictions)
+\begin{itemize}
+\item Interfaces with GUI
+\end{itemize}
+\end{itemize}
+\end{frame}
+\begin{frame}[label={sec:orgd97e51b}]{Workflow (Agile/Scrum)}
+\begin{itemize}
+\item Meetings
+\begin{itemize}
+\item outlined issues
+\item teased out requirements
+\item User stories, AC
+\end{itemize}
+\item GitHub
+\begin{itemize}
+\item Translated meeting details to issues and projects
+\end{itemize}
+\end{itemize}
+\end{frame}
+\begin{frame}[label={sec:orgc97e722}]{Workflow (GUI)}
+\begin{itemize}
+\item Deploy on Browser with CSS Grid
+\end{itemize}
+\end{frame}
+\begin{frame}[label={sec:orgb44ed15}]{Testing}
+\begin{itemize}
+\item Tested interactive elements
+\item Implementation of board placement
+\begin{itemize}
+\item Partial Board
+\item Full Board
+\end{itemize}
+\end{itemize}
+\end{frame}
+\begin{frame}[label={sec:org63ace63}]{Experience/Lessons Learned}
+\begin{itemize}
+\item Meet more regularly.
+\begin{itemize}
+\item Met 7 times before submission.
+\item Still felt like there were issues, topics we could have better addressed.
+\end{itemize}
+\item Using GitHub PRs, Issues
+\item Testing mockups and GUI
+\begin{itemize}
+\item Testing isn't as intuitive when main driver not implemented yet.
+\end{itemize}
+\end{itemize}
+\end{frame}
+\end{document}

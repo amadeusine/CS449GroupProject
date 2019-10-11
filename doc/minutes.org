@@ -140,7 +140,6 @@
         + this is what gets sent back to the JS
         + 1D array of the =State= struct
           - this array will be handed off as a NeonJS object, whatever it's called in neon
-          - 
 **** issue #6: Front-end/GUI Skeleton, Basic Design
      1. Neon builds a node module
      2. This is sent to express.js
@@ -220,7 +219,7 @@
      - microcharter
      - mocking TS => Rust
      - event keys on front-end (browser)
-** Meeting 2019.10.06 (seventh) (>5hr)
+** meeting 2019.10.06 (seventh) (>7hr)
 *** Agenda
     - Tying up loose ends with respect to documentation and write up
     - Tying up loose ends with respect to UI/JS end of the application
@@ -252,3 +251,93 @@
       write-up file.
     - How to test more of the functionality given that a major component of this application is
       running directly on the browser.
+** meeting 2019.10.11 (eighth) (2hr)
+*** agenda
+    - review sprint 1
+      + bugs
+    - roadmap sprint 2
+      + outline what is needed
+      + setup project board
+      + issues
+      + interface between front/end
+*** review of sprint 1
+    - GUI
+      + coordinate system
+      + testing was not fun w/ current setup
+    - backend
+      + types, not much else
+    - documentation
+      + implemented a decent workflow for putting together and compiling a documentation artifact
+        for submission
+    - complains
+      + mostly just not having enough meetings despite getting 6 of them in before deadline.
+        * had one right before submission, was clearly heavily crunch oriented.
+        * documentation was a major pain point given the ratio of code/work to actual required
+          documentation.
+*** sprint 2 roadmap 
+**** bugs
+     - Wrong current player display
+     - Bad formatting of org mode files on GH
+       + won't fix bc final artifact pdf, that looks fine
+     - Bad formatting of code inputs/outputs on manual tests within tables as currently.
+**** submission requirements of Sprint 2
+     - full human player vs human player functionality
+       + piece movement
+       + piece elimination
+       + mill formation
+       + (optional) piece flying
+       + end game
+     - All proper documentation wrt to above new functionality and its implementation
+       + User story refinements
+         * side note: this is actually more sizeable then what it appears
+       + AC and respective refinements
+         * at least one manual *or* automatic
+       + all test code and documentation
+         * aside from manual/automatic requirements, all units of code should have a accompanying
+           unit test.
+**** project board (backlog/requirement refinement)
+     1. Front End -> Backend communication
+        - JS speaks to rust
+          + Struct will have a position struct and an event enum that dictates to backend what to
+            do next.
+          + let's call this object a =PushEventStruct=
+          + This represents the attempted inputs/moves of the current player
+     2. Backend -> Front end communication
+        - backend runs actual logic and validation
+        - upon receiving a =PushEventStruct=, the back-end:
+          1. Does a validation:
+             - Checks whether requested action is valid in the current game state
+             - When not valid, immediate returns:
+               1. Original =BoardStruct=
+               2. =InputHandle= -> Error that rust handles, and returns "none" to JS
+               3. =Trigger= dependent on game state transition
+          2. Game Manager handles event:
+             - Processes game events and generates resulting new game state
+          3. Back-end returns new =State=, where:
+             - =InputHandle= is =Success=
+             - =BoardStruct= is the new =State=
+             - =Trigger= of the condition of the phase is satisfied
+               + =none=
+               + =elimination=
+               + =flying=
+               + =gameover=
+     3. Proper GUI styling
+        - Add Game meta information
+          + how many pieces left for each player
+          + current phase (turn)
+          + (optional/idea) GUI indicates existing mills
+        - game menu
+          + theme options
+          + game options
+          + how to play
+        - mobile/responsive design
+**** snow plow form sprint 1
+     1. design docs
+     2. Development Workflow
+        - CI/CD with GitHub Actions
+          + CI
+            * need front-end GH Action
+            * need back-end GH Action
+            * figure out action for integration between front/back components
+        - Development environment documentation
+          + How to setup local machine to build both the front and back-end
