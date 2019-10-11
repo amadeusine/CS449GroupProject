@@ -21,10 +21,10 @@
           const pieceStyle = pieceElement.style;
           if (pieceStyle.backgroundColor === "" && this.piecesLeft > 0) {
             let i = this.calcPlayer();
-            this.piecesLeft--;
             let currentColor = document.getElementById("current-player-color");
             currentColor.style.color = this.playerColors[this.calcPlayer(1)];
             currentColor.innerText = this.playerColors[this.calcPlayer(1)];
+            this.piecesLeft--;
             return pieceStyle.backgroundColor = this.playerColors[i];
           } else {
             return new Error(`Position ${pieceElement.id} is occupied.`);
