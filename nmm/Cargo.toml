@@ -2,5 +2,5 @@
 
 members = [
     "native",
-    "native/core"
+    "native/base"
 ]

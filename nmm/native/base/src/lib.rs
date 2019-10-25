@@ -1,3 +1,7 @@
+pub fn base_hello() -> String {
+    String::from("Hello from base")
+}
+
 #[cfg(test)]
 mod tests {
     #[test]

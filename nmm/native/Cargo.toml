@@ -4,6 +4,7 @@ version = "0.1.0"
 authors = ["elias <elias.jm.garcia@gmail.com>"]
 license = "AGPL-3.0"
 build = "build.rs"
+edition = "2018"
 exclude = ["artifacts.json", "index.node"]
 
 [lib]
@@ -11,7 +12,8 @@ name = "nmm"
 crate-type = ["cdylib"]
 
 [build-dependencies]
-neon-build = "0.3.1"
+neon-build = "0.3.3"
 
 [dependencies]
-neon = "0.3.1"
+neon = "0.3.3"
+base = { path = "base" }

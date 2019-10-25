@@ -9,6 +9,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "base"
+version = "0.1.0"
+
+[[package]]
 name = "cc"
 version = "1.0.46"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -75,6 +79,7 @@ dependencies = [
 name = "nmm"
 version = "0.1.0"
 dependencies = [
+ "base 0.1.0",
  "neon 0.3.3 (registry+https://github.com/rust-lang/crates.io-index)",
  "neon-build 0.3.3 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
