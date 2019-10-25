@@ -136,6 +136,21 @@
      - JSON seems like a good enough medium for message passing between front and back components
 ***** issue #4 is largely tagged to #3, so this resolves that
       - =State=: Input Handle + BoardStruct + Trigger)
+        + BoardStruct: struct
+        + InputHandle: Enum
+          * Piece switch (moving a piece out of position, destination not known)
+          * (invalid) piece switch
+          * Piece being placed
+          * (invalid) piece being placed
+        + Trigger: Enum
+          * None
+          * Phases, i.e. stages of game
+            - startgame (menu?)
+            - player selection (1 human vs computer, 2 human, etc)
+            - Placing Pieces
+            - Elimination
+            - Flying
+            - Endgame (menu?)
       - =BoardState=
         + this is what gets sent back to the JS
         + 1D array of the =State= struct
@@ -341,3 +356,91 @@
             * figure out action for integration between front/back components
         - Development environment documentation
           + How to setup local machine to build both the front and back-end
+** meeting 2019.10.25 (ninth) (2 hr)
+   - Duration: 2 hours
+   - Location: Miller Nichols Library
+*** Agenda
+    - new project format
+    - testing
+      + server
+      + gui
+      + unit testing
+    - interop/ffi/interfaces
+      + managerGlue
+    - general development/programming
+*** project format
+    - rust projects using neon have a default layout
+      + not friendly for testing the rust specific code
+      + similarly, not friendly for testing the node/js/front-end code not involved with rust
+        exported module
+    - solution: rust workspaces
+      + simply change top level to have cargo file with workspace member declarations
+      + well documented here: https://github.com/neon-bindings/examples/tree/master/workspace
+    - benefits:
+      + can now run rust tests independent of node/js via traditional ~cargo test~ and ~cargo check~
+      + furthermore, now have backend code organized as:
+        #+begin_verse
+        .
+        ├── Cargo.lock
+        ├── Cargo.toml
+        ├── lib
+        │   └── index.js
+        ├── native
+            ├── artifacts.json
+            ├── base
+            │   ├── Cargo.toml
+            │   └── src
+            ├── build.rs
+            ├── Cargo.toml
+            ├── index.node
+            ├── src
+            │   └── lib.rs
+            └── target
+        #+end_verse
+      + This allows us to move all logic into a sub-crate, =base=, which is private and internal to
+         the backend. An API for the module that provides the backend functionality is the only thing
+         exposed in the main ~native/src/lib.rs~ file, which is what is compiled and exported to node.
+        - i.e. we keep our code enapsulated and enforce demeter's law
+      + finally, means all integrations tests on node side only test the actual interopability logic
+        and functionality rather than any of the rust specific code and logic.
+*** testing
+    - ibid project format for overall structure's effect on testing approach
+    - server (node):
+      + no browser tests
+      + check if all functions are translated properly
+        * node functions get translated to plaintext js functions
+      + request testing
+        * extra assets (GET stuff)
+        * further research/parking lot:
+          - coop and multiple clients
+    - gui (client stuff):
+      + test functions within test module:
+        * master functions that assert all tests at instantiation
+        * i.e. when browser pulls the plain js
+        * pull from dev endpoint
+      + manual testing:
+        * automated testing on browser is pretty bad/gross
+        * getting setup not really worth it, so opting for manual tests as necessary.
+      + three layer testing (~eventPress~):
+        * log input events from divs
+        * validation testing on newly retrieved ~BoardState~
+    - unit testing:
+      + *reminder*: 1:1 ratio between functions and tests at minimum, 2:3 ideally
+      + rust is pretty straight forward, built in as first class feature.
+        * managerGlue
+          - dedicated interop testing
+          - mutation of state from rust
+          - this is probably going to mocking
+*** interop/ffi/interface
+    - rust -> neon -> index.node -> yields an array of exports, i.e. ~register_module!~
+    - managerGlue
+      + pulls rust functions into script source, i.e. require
+      + completely server side
+      + browser does not support at current level
+        * node has a virtual dom representation that browsers simply don't support
+        * this is why node gets trans to strings, saved as asset/js,  and pulled into browser
+*** TODO [0/2] action items
+    - [ ] refine user stories generally
+      + [ ] currently are epic-y, need to be more specific and decomposable
+    - [ ] Generate acceptance criterions from new refinements + issues discussed in today's meeting
+      + [ ] add as items to issues/sprint 2 board on GH

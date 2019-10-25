@@ -1,0 +1,10 @@
+* nmm notes
+** TODO BoardStruct representing position placement and player
+   - currently a hashmap of coord and bool
+   - need to add information for what player is positioned, if any.
+   - maybe just change value to tuple (bool, Option<Player>)?
+** TODO figure out Neon values that get returned
+   - looks like only need to worry about JSArray and JSObject
+** TODO static hashmap of valid coords(?)
+** TODO receive coordstruct {X, Y}
+   - JS object type, X and Y will be strings, A-G, 1-7
