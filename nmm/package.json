@@ -1,12 +1,8 @@
 {
   "name": "nmm",
   "version": "0.1.0",
-  "description": "",
+  "description": "rust module that targets node.js for handling nine men's morris game logic",
   "main": "lib/index.js",
-  "repository": {
-    "type": "git",
-    "url": "."
-  },
   "author": "elias <elias.jm.garcia@gmail.com>",
   "license": "AGPL-3.0",
   "dependencies": {
