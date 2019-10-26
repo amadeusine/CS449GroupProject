@@ -1,22 +1,12 @@
 ---
 name: Sprint Issue template
 about: Standardise the impl of issues and discussion.
-title: ''
+title: '[ISSUE_TYPE] Short description in title'
 labels: ''
 assignees: ''
 
 ---
 
-<!-- Everything in HTML comments will not render in filed issue, added only for documentation of template. Feel free to delete them or leave commented as is before submitting -->
-
-<!-- Issue Tracker this action item belongs to. -->
-- *this issue is included in the #<TRACKER ISSUE NUMBER> tracker for Sprint <NUMBER> milestone*
-<!-- IF RELEVANT: Another filed issue that this action item also address, aside from tracker. -->
-- *this issue formally addresses one prerequisite to the larger issue filed in #3*
-
----
-
-<!-- Succinct description of the action item followed by check list of "acceptance criterion quality" sub-tasks that signal a successful implementation/solution -->
 # summary
 <!-- Example:
 
@@ -27,7 +17,6 @@ In order for the front-end to both *initiate* and communicate *back* to the rust
   
 -->
 
-<!-- Clarifying facts that do not belong in a succinct summary, e.g. points of confusion to clarify, issues in need of discussion in the comments or in next meeting, general concerns -->
 ## clarifications
 <!-- Example:
 
