@@ -92,6 +92,21 @@ struct GameState {
 }
 
 #[derive(Debug, Clone)]
+enum Agent {
+    Human,
+    Auto,
+}
+
+#[derive(Debug, Clone)]
+pub struct GameOpts {
+    user: Option<Player>,
+    opponent: Option<Player>,
+    agent: Option<Agent>,
+    sender: Option<Player>,
+    Position: Option<Coord>,
+}
+
+#[derive(Debug, Clone)]
 pub struct Manager {
     state: GameState,
 }
