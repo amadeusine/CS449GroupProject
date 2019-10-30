@@ -59,12 +59,42 @@ type PositionStatus = (bool, Option<Player>);
 #[derive(Debug, Clone)]
 pub struct Board(HashMap<Coord, PositionStatus>);
 
+#[derive(Debug, Clone, Copy, PartialOrd, PartialEq, Display)]
+pub enum Handle {
+    Ok,
+    Err,
+}
+
+#[derive(Debug, Clone, Copy, PartialOrd, PartialEq, Display)]
+pub enum Trigger {
+    None,
+    Placement,
+    Elimination,
+    Flying,
+    End,
+    Win,
+    Lose,
+}
+
+#[derive(Debug, Clone, Copy, PartialOrd, PartialEq, Display)]
+pub enum Action {
+    Menu,
+    Piece,
+}
+
+// TODO: Make top level GameResult type that wraps GameState and custom GameErr types?
 #[derive(Debug, Clone)]
 struct GameState {
+    handle: Handle,
+    trigger: Trigger,
     board: Board,
     mills: Vec<Mill>,
 }
 
+#[derive(Debug, Clone)]
+pub struct Manager {
+    state: GameState,
+}
 impl Board {
     pub fn new() -> Self {
         Board::default()
@@ -114,6 +144,29 @@ impl Default for Board {
         .collect();
 
         Board(valid_positions)
+    }
+}
+
+impl GameState {
+    pub fn new() -> Self {
+        GameState {
+            handle: Handle::Ok,
+            trigger: Trigger::None,
+            board: Board::default(),
+            mills: vec![],
+        }
+    }
+}
+
+impl Manager {
+    pub fn new() -> Self {
+        Manager {
+            state: GameState::new(),
+        }
+    }
+
+    pub fn poll(act: Action, opts: GameOpts) -> Board {
+        unimplemented!()
     }
 }
 
