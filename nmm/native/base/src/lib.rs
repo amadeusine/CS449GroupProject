@@ -53,8 +53,11 @@ struct Mill {
     Owner: Player,
     Pieces: (Position, Position, Position),
 }
+
+type PositionStatus = (bool, Option<Player>);
+
 #[derive(Debug, Clone)]
-struct Board(HashMap<Coord, bool>);
+pub struct Board(HashMap<Coord, PositionStatus>);
 
 #[derive(Debug, Clone)]
 struct GameState {
@@ -62,6 +65,57 @@ struct GameState {
     mills: Vec<Mill>,
 }
 
+impl Board {
+    pub fn new() -> Self {
+        Board::default()
+    }
+}
+
+impl Default for Board {
+    fn default() -> Self {
+        // TODO: maybe move out coordinates/position types into own module and declare a static
+        //       vector for each major board variation (3, 6, 9, 12) for sake of keeping both
+        //       `new_from_n(n)` and `default()` from having such noisy declarations.
+        let valid_positions: HashMap<Coord, PositionStatus> = [
+            // A => 1, 4, 7
+            (Coord::new(XCoord::A, YCoord::One), (false, None)),
+            (Coord::new(XCoord::A, YCoord::Four), (false, None)),
+            (Coord::new(XCoord::A, YCoord::Seven), (false, None)),
+            // B => 2, 4, 6
+            (Coord::new(XCoord::B, YCoord::Two), (false, None)),
+            (Coord::new(XCoord::B, YCoord::Four), (false, None)),
+            (Coord::new(XCoord::B, YCoord::Six), (false, None)),
+            // C => 3, 4, 5
+            (Coord::new(XCoord::C, YCoord::Three), (false, None)),
+            (Coord::new(XCoord::C, YCoord::Four), (false, None)),
+            (Coord::new(XCoord::C, YCoord::Five), (false, None)),
+            // D => 1, 2, 3, 5, 6, 7
+            (Coord::new(XCoord::D, YCoord::One), (false, None)),
+            (Coord::new(XCoord::D, YCoord::Two), (false, None)),
+            (Coord::new(XCoord::D, YCoord::Three), (false, None)),
+            (Coord::new(XCoord::D, YCoord::Five), (false, None)),
+            (Coord::new(XCoord::D, YCoord::Six), (false, None)),
+            (Coord::new(XCoord::D, YCoord::Seven), (false, None)),
+            // E => 3, 4, 5
+            (Coord::new(XCoord::E, YCoord::Three), (false, None)),
+            (Coord::new(XCoord::E, YCoord::Four), (false, None)),
+            (Coord::new(XCoord::E, YCoord::Five), (false, None)),
+            // F => 2, 4, 6
+            (Coord::new(XCoord::F, YCoord::Two), (false, None)),
+            (Coord::new(XCoord::F, YCoord::Four), (false, None)),
+            (Coord::new(XCoord::F, YCoord::Six), (false, None)),
+            // G => 1, 4, 7
+            (Coord::new(XCoord::G, YCoord::One), (false, None)),
+            (Coord::new(XCoord::G, YCoord::Four), (false, None)),
+            (Coord::new(XCoord::G, YCoord::Seven), (false, None)),
+        ]
+        .iter()
+        .cloned()
+        .collect();
+
+        Board(valid_positions)
+    }
+}
 
 #[cfg(test)]
 mod tests {
