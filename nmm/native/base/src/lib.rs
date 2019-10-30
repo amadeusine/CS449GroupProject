@@ -2,18 +2,19 @@
 #![allow(dead_code)]
 
 use std::{cell::RefCell, collections::HashMap, rc::Rc};
+use strum_macros::Display;
 
 pub fn base_hello() -> String {
     String::from("Hello from base")
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, PartialOrd)]
-enum Players {
+#[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Display)]
+enum Player {
     PlayerOne,
     PlayerTwo,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Hash, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Hash, Eq, Display)]
 enum XCoord {
     A,
     B,
@@ -38,17 +39,20 @@ enum YCoord {
 #[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Hash, Eq)]
 struct Coord(XCoord, YCoord);
 
-type Peer = Option<Rc<RefCell<Piece>>>;
+type Adjacents = Option<Rc<RefCell<Position>>>;
 
 #[derive(Debug, Clone, PartialEq, PartialOrd)]
-struct Piece {
+struct Position {
     position: Coord,
-    peers: Vec<Peer>,
-    occupied: Option<Players>,
+    peers: Vec<Adjacents>,
+    occupied: Option<Player>,
 }
 
 #[derive(Debug, Clone, PartialEq, PartialOrd)]
-struct Mill(Piece, Piece, Piece);
+struct Mill {
+    Owner: Player,
+    Pieces: (Position, Position, Position),
+}
 #[derive(Debug, Clone)]
 struct Board(HashMap<Coord, bool>);
 
