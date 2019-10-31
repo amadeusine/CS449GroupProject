@@ -193,6 +193,24 @@ impl Board {
     pub fn new() -> Self {
         Board::default()
     }
+
+    fn add(&mut self, k: Coord, v: PositionStatus) {
+        self.0.insert(k, v);
+    }
+
+    pub fn len(&mut self) -> u32 {
+        self.0.len() as u32
+    }
+}
+
+impl IntoIterator for Board {
+    // on god, i think the trait impl requires the assoc type Item but Hashmap literlaly doesn't
+    // use it because it's a tuple type lol
+    type Item = (Coord, PositionStatus);
+    type IntoIter = ::std::collections::hash_map::IntoIter<Coord, PositionStatus>;
+    fn into_iter(self) -> Self::IntoIter {
+        self.0.into_iter()
+    }
 }
 
 impl Default for Board {
