@@ -88,7 +88,7 @@ pub enum Action {
 
 // TODO: Make top level GameResult type that wraps GameState and custom GameErr types?
 #[derive(Debug, Clone)]
-struct GameState {
+pub struct GameState {
     handle: Handle,
     trigger: Trigger,
     board: Board,
@@ -220,36 +220,108 @@ impl Default for Board {
         //       `new_from_n(n)` and `default()` from having such noisy declarations.
         let valid_positions: HashMap<Coord, PositionStatus> = [
             // A => 1, 4, 7
-            (Coord::new(XCoord::A, YCoord::One), (false, None)),
-            (Coord::new(XCoord::A, YCoord::Four), (false, None)),
-            (Coord::new(XCoord::A, YCoord::Seven), (false, None)),
+            (
+                Coord::new(XCoord::A, YCoord::One),
+                PositionStatus::default(),
+            ),
+            (
+                Coord::new(XCoord::A, YCoord::Four),
+                PositionStatus::default(),
+            ),
+            (
+                Coord::new(XCoord::A, YCoord::Seven),
+                PositionStatus::default(),
+            ),
             // B => 2, 4, 6
-            (Coord::new(XCoord::B, YCoord::Two), (false, None)),
-            (Coord::new(XCoord::B, YCoord::Four), (false, None)),
-            (Coord::new(XCoord::B, YCoord::Six), (false, None)),
+            (
+                Coord::new(XCoord::B, YCoord::Two),
+                PositionStatus::default(),
+            ),
+            (
+                Coord::new(XCoord::B, YCoord::Four),
+                PositionStatus::default(),
+            ),
+            (
+                Coord::new(XCoord::B, YCoord::Six),
+                PositionStatus::default(),
+            ),
             // C => 3, 4, 5
-            (Coord::new(XCoord::C, YCoord::Three), (false, None)),
-            (Coord::new(XCoord::C, YCoord::Four), (false, None)),
-            (Coord::new(XCoord::C, YCoord::Five), (false, None)),
+            (
+                Coord::new(XCoord::C, YCoord::Three),
+                PositionStatus::default(),
+            ),
+            (
+                Coord::new(XCoord::C, YCoord::Four),
+                PositionStatus::default(),
+            ),
+            (
+                Coord::new(XCoord::C, YCoord::Five),
+                PositionStatus::default(),
+            ),
             // D => 1, 2, 3, 5, 6, 7
-            (Coord::new(XCoord::D, YCoord::One), (false, None)),
-            (Coord::new(XCoord::D, YCoord::Two), (false, None)),
-            (Coord::new(XCoord::D, YCoord::Three), (false, None)),
-            (Coord::new(XCoord::D, YCoord::Five), (false, None)),
-            (Coord::new(XCoord::D, YCoord::Six), (false, None)),
-            (Coord::new(XCoord::D, YCoord::Seven), (false, None)),
+            (
+                Coord::new(XCoord::D, YCoord::One),
+                PositionStatus::default(),
+            ),
+            (
+                Coord::new(XCoord::D, YCoord::Two),
+                PositionStatus::default(),
+            ),
+            (
+                Coord::new(XCoord::D, YCoord::Three),
+                PositionStatus::default(),
+            ),
+            (
+                Coord::new(XCoord::D, YCoord::Five),
+                PositionStatus::default(),
+            ),
+            (
+                Coord::new(XCoord::D, YCoord::Six),
+                PositionStatus::default(),
+            ),
+            (
+                Coord::new(XCoord::D, YCoord::Seven),
+                PositionStatus::default(),
+            ),
             // E => 3, 4, 5
-            (Coord::new(XCoord::E, YCoord::Three), (false, None)),
-            (Coord::new(XCoord::E, YCoord::Four), (false, None)),
-            (Coord::new(XCoord::E, YCoord::Five), (false, None)),
+            (
+                Coord::new(XCoord::E, YCoord::Three),
+                PositionStatus::default(),
+            ),
+            (
+                Coord::new(XCoord::E, YCoord::Four),
+                PositionStatus::default(),
+            ),
+            (
+                Coord::new(XCoord::E, YCoord::Five),
+                PositionStatus::default(),
+            ),
             // F => 2, 4, 6
-            (Coord::new(XCoord::F, YCoord::Two), (false, None)),
-            (Coord::new(XCoord::F, YCoord::Four), (false, None)),
-            (Coord::new(XCoord::F, YCoord::Six), (false, None)),
+            (
+                Coord::new(XCoord::F, YCoord::Two),
+                PositionStatus::default(),
+            ),
+            (
+                Coord::new(XCoord::F, YCoord::Four),
+                PositionStatus::default(),
+            ),
+            (
+                Coord::new(XCoord::F, YCoord::Six),
+                PositionStatus::default(),
+            ),
             // G => 1, 4, 7
-            (Coord::new(XCoord::G, YCoord::One), (false, None)),
-            (Coord::new(XCoord::G, YCoord::Four), (false, None)),
-            (Coord::new(XCoord::G, YCoord::Seven), (false, None)),
+            (
+                Coord::new(XCoord::G, YCoord::One),
+                PositionStatus::default(),
+            ),
+            (
+                Coord::new(XCoord::G, YCoord::Four),
+                PositionStatus::default(),
+            ),
+            (
+                Coord::new(XCoord::G, YCoord::Seven),
+                PositionStatus::default(),
+            ),
         ]
         .iter()
         .cloned()
@@ -279,6 +351,10 @@ impl Manager {
 
     pub fn poll(act: Action, opts: GameOpts) -> Board {
         unimplemented!()
+    }
+
+    pub fn get_board(self) -> Board {
+        self.state.board.clone()
     }
 }
 
