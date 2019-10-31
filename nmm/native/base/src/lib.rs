@@ -4,6 +4,8 @@
 use std::{cell::RefCell, collections::HashMap, rc::Rc};
 use strum_macros::Display;
 
+mod util;
+
 pub fn base_hello() -> String {
     String::from("Hello from base")
 }
@@ -110,6 +112,55 @@ pub struct GameOpts {
 pub struct Manager {
     state: GameState,
 }
+
+impl XCoord {
+    fn from_char(s: char) -> XCoord {
+        match s {
+            'A' => XCoord::A,
+            'B' => XCoord::B,
+            'C' => XCoord::C,
+            'D' => XCoord::D,
+            'E' => XCoord::E,
+            'F' => XCoord::F,
+            'G' => XCoord::E,
+            e => panic!("Invalid XCoord Character: {:?}", e),
+        }
+    }
+}
+
+impl YCoord {
+    fn from_char(s: char) -> YCoord {
+        match s {
+            '1' => YCoord::One,
+            '2' => YCoord::Two,
+            '3' => YCoord::Three,
+            '4' => YCoord::Four,
+            '5' => YCoord::Five,
+            '6' => YCoord::Six,
+            '7' => YCoord::Seven,
+            e => panic!("Invalid YCoord Character: {:?}", e),
+        }
+    }
+}
+
+impl Coord {
+    fn new(x: XCoord, y: YCoord) -> Self {
+        Coord(x, y)
+    }
+    fn from_str(s: &str) -> Coord {
+        let mut chars = s.chars();
+        if let Some(x) = chars.next() {
+            if let Some(y) = chars.next() {
+                return Coord::new(XCoord::from_char(x), YCoord::from_char(y));
+            } else {
+                panic!("Invalid Coordinate: Missing Y");
+            }
+        } else {
+            panic!("Invalid Coordinate: Missing X");
+        }
+    }
+}
+
 impl Board {
     pub fn new() -> Self {
         Board::default()
