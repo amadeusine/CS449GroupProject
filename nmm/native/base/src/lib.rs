@@ -57,7 +57,8 @@ struct Mill {
     Pieces: (Position, Position, Position),
 }
 
-type PositionStatus = (bool, Option<Player>);
+#[derive(Debug, Clone, Copy)]
+pub struct PositionStatus(bool, Option<Player>);
 
 #[derive(Debug, Clone)]
 pub struct Board(HashMap<Coord, PositionStatus>);
@@ -141,6 +142,29 @@ impl YCoord {
             '7' => YCoord::Seven,
             e => panic!("Invalid YCoord Character: {:?}", e),
         }
+    }
+}
+
+impl PositionStatus {
+    pub fn new() -> Self {
+        PositionStatus::default()
+    }
+    pub fn as_string(self) -> String {
+        if self.0 {
+            if let Some(p) = self.1 {
+                return format!("{}", p);
+            } else {
+                panic!("PositionStatus set to true, but Player is None")
+            }
+        } else {
+            return format!("None");
+        }
+    }
+}
+
+impl Default for PositionStatus {
+    fn default() -> Self {
+        PositionStatus(false, None)
     }
 }
 
