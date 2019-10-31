@@ -1,6 +1,7 @@
 #![allow(non_snake_case)]
 #![allow(dead_code)]
 
+use std::string::ToString;
 use std::{cell::RefCell, collections::HashMap, rc::Rc};
 use strum_macros::Display;
 
@@ -27,7 +28,7 @@ enum XCoord {
     G,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Hash, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Hash, Eq, Display)]
 enum YCoord {
     One = 1,
     Two = 2,
@@ -39,7 +40,7 @@ enum YCoord {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Hash, Eq)]
-struct Coord(XCoord, YCoord);
+pub struct Coord(XCoord, YCoord);
 
 type Adjacents = Option<Rc<RefCell<Position>>>;
 
@@ -158,6 +159,9 @@ impl Coord {
         } else {
             panic!("Invalid Coordinate: Missing X");
         }
+    }
+    pub fn as_string(self) -> String {
+        format!("{}{}", self.0, self.1 as u32)
     }
 }
 
