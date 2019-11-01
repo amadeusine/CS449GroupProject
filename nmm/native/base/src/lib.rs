@@ -1,6 +1,7 @@
 #![allow(non_snake_case)]
 #![allow(dead_code)]
 
+// ToString Needs to be in scope, do not believe the linter's lies.
 use std::string::ToString;
 use std::{cell::RefCell, collections::HashMap, rc::Rc};
 use strum_macros::Display;
@@ -340,6 +341,18 @@ impl GameState {
             mills: vec![],
         }
     }
+
+    fn get_handle(self) -> Handle {
+        self.handle
+    }
+
+    fn get_trigger(self) -> Trigger {
+        self.trigger
+    }
+
+    fn get_board(self) -> Board {
+        self.board
+    }
 }
 
 impl Manager {
@@ -349,10 +362,38 @@ impl Manager {
         }
     }
 
-    pub fn poll(act: Action, opts: GameOpts) -> Board {
-        unimplemented!()
+    // poll() will eventually use Action and Opts together to figure out what game logic to compute
+    // from the attempted move. For now, just trying to figure out what an okay "public" "API" would
+    // look like when this gets exported into the node module. Main idea is that node/js interacts
+    // exclusively through this `Manager` struct, which is getting exported as a Js Class and
+    // has a limited set of methods that will compute the necessary logic on the game state hidden
+    // within the exported rust module.
+    pub fn poll(&mut self, act: Action, opts: GameOpts) -> (Handle, Trigger, Board) {
+        // Rust is protesting because of move semantics.
+
+        // By just accessing `state` via self is a move operation because `GameState` doesn't
+        // derive copy (`Board`, a type within `GameState`, is a hashmap can't can't derive clone).
+        // So not sure best way around this right now outside of wrapping in an Rc, I think?
+        // Otherwise dumb to deal with.
+
+        // This will work, but excessive imho because of all these damn clones?
+        // (
+        //     self.state.clone().get_handle(),
+        //     self.state.clone().get_trigger(),
+        //     self.state.clone().get_board(),
+        // )
+        //
+
+        // Currently, this will fail because self is a mutable ref in poll().
+        (
+            self.state.get_handle(), // BUT! changing poll to plain `self` results in first one working w/o clone.
+            self.state.get_trigger(), // HOWEVER! That means `state` got moved ^^^ and henceforth the next two will fail.
+            self.state.get_board(),
+        )
     }
 
+    // This was to figure out basic neon stuff in the exporting crate a level above,
+    // ignore this.
     pub fn get_board(self) -> Board {
         self.state.board.clone()
     }
