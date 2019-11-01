@@ -1,6 +1,7 @@
 #![allow(non_snake_case)]
 #![allow(dead_code)]
 
+use std::string::ToString;
 use std::{cell::RefCell, collections::HashMap, rc::Rc};
 use strum_macros::Display;
 
@@ -27,7 +28,7 @@ enum XCoord {
     G,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Hash, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Hash, Eq, Display)]
 enum YCoord {
     One = 1,
     Two = 2,
@@ -39,7 +40,7 @@ enum YCoord {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Hash, Eq)]
-struct Coord(XCoord, YCoord);
+pub struct Coord(XCoord, YCoord);
 
 type Adjacents = Option<Rc<RefCell<Position>>>;
 
@@ -56,7 +57,8 @@ struct Mill {
     Pieces: (Position, Position, Position),
 }
 
-type PositionStatus = (bool, Option<Player>);
+#[derive(Debug, Clone, Copy)]
+pub struct PositionStatus(bool, Option<Player>);
 
 #[derive(Debug, Clone)]
 pub struct Board(HashMap<Coord, PositionStatus>);
@@ -86,7 +88,7 @@ pub enum Action {
 
 // TODO: Make top level GameResult type that wraps GameState and custom GameErr types?
 #[derive(Debug, Clone)]
-struct GameState {
+pub struct GameState {
     handle: Handle,
     trigger: Trigger,
     board: Board,
@@ -143,6 +145,29 @@ impl YCoord {
     }
 }
 
+impl PositionStatus {
+    pub fn new() -> Self {
+        PositionStatus::default()
+    }
+    pub fn as_string(self) -> String {
+        if self.0 {
+            if let Some(p) = self.1 {
+                return format!("{}", p);
+            } else {
+                panic!("PositionStatus set to true, but Player is None")
+            }
+        } else {
+            return format!("None");
+        }
+    }
+}
+
+impl Default for PositionStatus {
+    fn default() -> Self {
+        PositionStatus(false, None)
+    }
+}
+
 impl Coord {
     fn new(x: XCoord, y: YCoord) -> Self {
         Coord(x, y)
@@ -159,11 +184,32 @@ impl Coord {
             panic!("Invalid Coordinate: Missing X");
         }
     }
+    pub fn as_string(self) -> String {
+        format!("{}{}", self.0, self.1 as u32)
+    }
 }
 
 impl Board {
     pub fn new() -> Self {
         Board::default()
+    }
+
+    fn add(&mut self, k: Coord, v: PositionStatus) {
+        self.0.insert(k, v);
+    }
+
+    pub fn len(&mut self) -> u32 {
+        self.0.len() as u32
+    }
+}
+
+impl IntoIterator for Board {
+    // on god, i think the trait impl requires the assoc type Item but Hashmap literlaly doesn't
+    // use it because it's a tuple type lol
+    type Item = (Coord, PositionStatus);
+    type IntoIter = ::std::collections::hash_map::IntoIter<Coord, PositionStatus>;
+    fn into_iter(self) -> Self::IntoIter {
+        self.0.into_iter()
     }
 }
 
@@ -174,36 +220,108 @@ impl Default for Board {
         //       `new_from_n(n)` and `default()` from having such noisy declarations.
         let valid_positions: HashMap<Coord, PositionStatus> = [
             // A => 1, 4, 7
-            (Coord::new(XCoord::A, YCoord::One), (false, None)),
-            (Coord::new(XCoord::A, YCoord::Four), (false, None)),
-            (Coord::new(XCoord::A, YCoord::Seven), (false, None)),
+            (
+                Coord::new(XCoord::A, YCoord::One),
+                PositionStatus::default(),
+            ),
+            (
+                Coord::new(XCoord::A, YCoord::Four),
+                PositionStatus::default(),
+            ),
+            (
+                Coord::new(XCoord::A, YCoord::Seven),
+                PositionStatus::default(),
+            ),
             // B => 2, 4, 6
-            (Coord::new(XCoord::B, YCoord::Two), (false, None)),
-            (Coord::new(XCoord::B, YCoord::Four), (false, None)),
-            (Coord::new(XCoord::B, YCoord::Six), (false, None)),
+            (
+                Coord::new(XCoord::B, YCoord::Two),
+                PositionStatus::default(),
+            ),
+            (
+                Coord::new(XCoord::B, YCoord::Four),
+                PositionStatus::default(),
+            ),
+            (
+                Coord::new(XCoord::B, YCoord::Six),
+                PositionStatus::default(),
+            ),
             // C => 3, 4, 5
-            (Coord::new(XCoord::C, YCoord::Three), (false, None)),
-            (Coord::new(XCoord::C, YCoord::Four), (false, None)),
-            (Coord::new(XCoord::C, YCoord::Five), (false, None)),
+            (
+                Coord::new(XCoord::C, YCoord::Three),
+                PositionStatus::default(),
+            ),
+            (
+                Coord::new(XCoord::C, YCoord::Four),
+                PositionStatus::default(),
+            ),
+            (
+                Coord::new(XCoord::C, YCoord::Five),
+                PositionStatus::default(),
+            ),
             // D => 1, 2, 3, 5, 6, 7
-            (Coord::new(XCoord::D, YCoord::One), (false, None)),
-            (Coord::new(XCoord::D, YCoord::Two), (false, None)),
-            (Coord::new(XCoord::D, YCoord::Three), (false, None)),
-            (Coord::new(XCoord::D, YCoord::Five), (false, None)),
-            (Coord::new(XCoord::D, YCoord::Six), (false, None)),
-            (Coord::new(XCoord::D, YCoord::Seven), (false, None)),
+            (
+                Coord::new(XCoord::D, YCoord::One),
+                PositionStatus::default(),
+            ),
+            (
+                Coord::new(XCoord::D, YCoord::Two),
+                PositionStatus::default(),
+            ),
+            (
+                Coord::new(XCoord::D, YCoord::Three),
+                PositionStatus::default(),
+            ),
+            (
+                Coord::new(XCoord::D, YCoord::Five),
+                PositionStatus::default(),
+            ),
+            (
+                Coord::new(XCoord::D, YCoord::Six),
+                PositionStatus::default(),
+            ),
+            (
+                Coord::new(XCoord::D, YCoord::Seven),
+                PositionStatus::default(),
+            ),
             // E => 3, 4, 5
-            (Coord::new(XCoord::E, YCoord::Three), (false, None)),
-            (Coord::new(XCoord::E, YCoord::Four), (false, None)),
-            (Coord::new(XCoord::E, YCoord::Five), (false, None)),
+            (
+                Coord::new(XCoord::E, YCoord::Three),
+                PositionStatus::default(),
+            ),
+            (
+                Coord::new(XCoord::E, YCoord::Four),
+                PositionStatus::default(),
+            ),
+            (
+                Coord::new(XCoord::E, YCoord::Five),
+                PositionStatus::default(),
+            ),
             // F => 2, 4, 6
-            (Coord::new(XCoord::F, YCoord::Two), (false, None)),
-            (Coord::new(XCoord::F, YCoord::Four), (false, None)),
-            (Coord::new(XCoord::F, YCoord::Six), (false, None)),
+            (
+                Coord::new(XCoord::F, YCoord::Two),
+                PositionStatus::default(),
+            ),
+            (
+                Coord::new(XCoord::F, YCoord::Four),
+                PositionStatus::default(),
+            ),
+            (
+                Coord::new(XCoord::F, YCoord::Six),
+                PositionStatus::default(),
+            ),
             // G => 1, 4, 7
-            (Coord::new(XCoord::G, YCoord::One), (false, None)),
-            (Coord::new(XCoord::G, YCoord::Four), (false, None)),
-            (Coord::new(XCoord::G, YCoord::Seven), (false, None)),
+            (
+                Coord::new(XCoord::G, YCoord::One),
+                PositionStatus::default(),
+            ),
+            (
+                Coord::new(XCoord::G, YCoord::Four),
+                PositionStatus::default(),
+            ),
+            (
+                Coord::new(XCoord::G, YCoord::Seven),
+                PositionStatus::default(),
+            ),
         ]
         .iter()
         .cloned()
@@ -233,6 +351,10 @@ impl Manager {
 
     pub fn poll(act: Action, opts: GameOpts) -> Board {
         unimplemented!()
+    }
+
+    pub fn get_board(self) -> Board {
+        self.state.board.clone()
     }
 }
 
