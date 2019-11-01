@@ -444,3 +444,63 @@
       + [ ] currently are epic-y, need to be more specific and decomposable
     - [ ] Generate acceptance criterions from new refinements + issues discussed in today's meeting
       + [ ] add as items to issues/sprint 2 board on GH
+** meeting 2019.11.01 (tenth) (2 hr)
+   - duration: 2 hours
+   - Location: Miller Nichols Library
+*** Agenda
+     - updates on back-end
+     - discuss change of server structure
+     - code review
+     - refinement user stories
+     - refinement acceptance criteria
+     - matching browser to server requirements
+*** back-end updates
+    - made a [[https://github.com/amadeusine/CS449GroupProject/issues/22][tracking issue]] on GH for all requirements of sprint2 with respect to back-end
+    - consists of multiple tasks derived from acceptance criterion and user story relevant to
+      game board
+      + #23: align back-end types with front-end types due to requirement changes (DONE)
+      + #28: add file reader utility (DONE)
+      + #24: exporting rust types to js equivs (Nearly done)
+      + #25: importing js types to rust equivs (TODO)
+      + #26: game validation logic (#)
+    - *NOTE about game movement*
+      * No longer have PieceSwitch/PieceMove enums.
+      * Instead, option will yield a player and a position
+      * backend will know from gamestate whether this is a piece moving OUT or INTO a position
+      * will check accordingly
+*** server structure changes
+    - Four changes coming out:
+      1. break out static files from server
+         - tightly coupled with server currently
+         - as if local app
+      2. adding 3 endpoints for:
+         - logic
+         - theme
+         - setup: (reach stuff for sprint3)
+      3. new structures and classes (issue #31)
+         - client connection class
+           + browser & networking validation
+           + putting in place design necessary to allow program to be extended to client-client
+             interactions
+           + separation of game and web-server
+         - onclick request (Browser side)
+           + setup structure for binding between browser and server, 1:1
+           + each event calls back to browser's main function for getRequest
+             * send off payload to server, which sends to rust module export
+         - browser needs its own board manager, separate from ManagerGlue
+           + allows for state to be accepted on browser side
+         - BoardReceptor (server)
+           + scaffold for endpoint components
+           + allows browser to hit endpoints/communicate with server
+*** code review
+    - documented in sprint2_writeup.org
+*** matching browser-server reqs
+    - Reference: server structure changes list item 3
+    - triggers are sent from server to browser
+      + new components are entered on display
+        * menu item
+        * removal of input during player's turn, on opponent
+        * game over
+        * restart
+*** TODO
+    - refinement (grooming) of US, AC, and tasks.
