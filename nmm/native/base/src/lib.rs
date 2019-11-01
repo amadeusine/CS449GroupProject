@@ -342,16 +342,16 @@ impl GameState {
         }
     }
 
-    fn get_handle(self) -> Handle {
+    fn get_handle(&self) -> Handle {
         self.handle
     }
 
-    fn get_trigger(self) -> Trigger {
+    fn get_trigger(&self) -> Trigger {
         self.trigger
     }
 
-    fn get_board(self) -> Board {
-        self.board
+    fn get_board(&self) -> Board {
+        self.board.clone()
     }
 }
 
@@ -369,25 +369,9 @@ impl Manager {
     // has a limited set of methods that will compute the necessary logic on the game state hidden
     // within the exported rust module.
     pub fn poll(&mut self, act: Action, opts: GameOpts) -> (Handle, Trigger, Board) {
-        // Rust is protesting because of move semantics.
-
-        // By just accessing `state` via self is a move operation because `GameState` doesn't
-        // derive copy (`Board`, a type within `GameState`, is a hashmap can't can't derive clone).
-        // So not sure best way around this right now outside of wrapping in an Rc, I think?
-        // Otherwise dumb to deal with.
-
-        // This will work, but excessive imho because of all these damn clones?
-        // (
-        //     self.state.clone().get_handle(),
-        //     self.state.clone().get_trigger(),
-        //     self.state.clone().get_board(),
-        // )
-        //
-
-        // Currently, this will fail because self is a mutable ref in poll().
         (
-            self.state.get_handle(), // BUT! changing poll to plain `self` results in first one working w/o clone.
-            self.state.get_trigger(), // HOWEVER! That means `state` got moved ^^^ and henceforth the next two will fail.
+            self.state.get_handle(),
+            self.state.get_trigger(),
             self.state.get_board(),
         )
     }
