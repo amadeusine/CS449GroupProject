@@ -20,7 +20,7 @@ declare_types! {
                 // due to hashmap. I don't know how to move around this
                 // immediately without just wrapping it in an Rc so the clone
                 // is at least cheaper to perform.
-                mngr.clone().get_board()
+                mngr.get_board()
             };
 
             let js_board_arr = JsArray::new(&mut ctx, board.len());
@@ -40,5 +40,3 @@ declare_types! {
 }
 
 register_module!(mut cx, { cx.export_class::<JsManager>("Manager") });
-
-// register_module!(mut cx, { cx.export_function("hello", hello) });

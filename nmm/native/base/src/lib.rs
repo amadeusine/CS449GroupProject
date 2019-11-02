@@ -8,10 +8,6 @@ use strum_macros::Display;
 
 mod util;
 
-pub fn base_hello() -> String {
-    String::from("Hello from base")
-}
-
 #[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Display)]
 enum Player {
     PlayerOne,
@@ -199,7 +195,7 @@ impl Board {
         self.0.insert(k, v);
     }
 
-    pub fn len(&mut self) -> u32 {
+    pub fn len(&self) -> u32 {
         self.0.len() as u32
     }
 }
@@ -368,7 +364,8 @@ impl Manager {
     // exclusively through this `Manager` struct, which is getting exported as a Js Class and
     // has a limited set of methods that will compute the necessary logic on the game state hidden
     // within the exported rust module.
-    pub fn poll(&mut self, act: Action, opts: GameOpts) -> (Handle, Trigger, Board) {
+    // pub fn poll(&mut self, act: Action, opts: GameOpts) -> (Handle, Trigger, Board) {
+    pub fn poll(&self) -> (Handle, Trigger, Board) {
         (
             self.state.get_handle(),
             self.state.get_trigger(),
@@ -376,10 +373,8 @@ impl Manager {
         )
     }
 
-    // This was to figure out basic neon stuff in the exporting crate a level above,
-    // ignore this.
-    pub fn get_board(self) -> Board {
-        self.state.board.clone()
+    pub fn get_board(&self) -> Board {
+        self.state.get_board()
     }
 }
 
