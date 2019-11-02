@@ -1,15 +1,12 @@
 #![allow(non_snake_case)]
 #![allow(dead_code)]
 
+// ToString Needs to be in scope, do not believe the linter's lies.
 use std::string::ToString;
 use std::{cell::RefCell, collections::HashMap, rc::Rc};
 use strum_macros::Display;
 
 mod util;
-
-pub fn base_hello() -> String {
-    String::from("Hello from base")
-}
 
 #[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Display)]
 enum Player {
@@ -198,7 +195,7 @@ impl Board {
         self.0.insert(k, v);
     }
 
-    pub fn len(&mut self) -> u32 {
+    pub fn len(&self) -> u32 {
         self.0.len() as u32
     }
 }
@@ -340,6 +337,18 @@ impl GameState {
             mills: vec![],
         }
     }
+
+    fn get_handle(&self) -> Handle {
+        self.handle
+    }
+
+    fn get_trigger(&self) -> Trigger {
+        self.trigger
+    }
+
+    fn get_board(&self) -> Board {
+        self.board.clone()
+    }
 }
 
 impl Manager {
@@ -349,12 +358,23 @@ impl Manager {
         }
     }
 
-    pub fn poll(act: Action, opts: GameOpts) -> Board {
-        unimplemented!()
+    // poll() will eventually use Action and Opts together to figure out what game logic to compute
+    // from the attempted move. For now, just trying to figure out what an okay "public" "API" would
+    // look like when this gets exported into the node module. Main idea is that node/js interacts
+    // exclusively through this `Manager` struct, which is getting exported as a Js Class and
+    // has a limited set of methods that will compute the necessary logic on the game state hidden
+    // within the exported rust module.
+    // pub fn poll(&mut self, act: Action, opts: GameOpts) -> (Handle, Trigger, Board) {
+    pub fn poll(&self) -> (Handle, Trigger, Board) {
+        (
+            self.state.get_handle(),
+            self.state.get_trigger(),
+            self.state.get_board(),
+        )
     }
 
-    pub fn get_board(self) -> Board {
-        self.state.board.clone()
+    pub fn get_board(&self) -> Board {
+        self.state.get_board()
     }
 }
 
