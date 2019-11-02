@@ -5,7 +5,18 @@
     <link rel='stylesheet' href="/stylesheets/default.css" />
     <script type="text/javascript" src="/javascripts/board.js"></script>
     <script id="win.js">
-      let b = new Board();
+      const toWords = {
+        1: "one",
+        2: "two",
+        3: "three",
+        4: "four",
+        5: "five",
+        6: "six",
+        7: "seven",
+        8: "eight",
+        9: "nine",
+      };
+      let board = new Board();
       class Window {
         constructor() {
           this.numberOfMen = 9;
@@ -55,8 +66,8 @@
         win.eventPress(document.getElementById('A1'));
         return `${win.eventPress(document.getElementById('A1'))}` === "Error: Position A1 is occupied.";
       }
-      
-      function testFullBoardWithUnoccupiedPosition() {
+
+      function setupFullBoard() {
         win.eventPress(document.getElementById('A1'));
         win.eventPress(document.getElementById('A4'));
         win.eventPress(document.getElementById('A7'));
@@ -76,30 +87,15 @@
         win.eventPress(document.getElementById('E4'));
         win.eventPress(document.getElementById('E5'));
         win.eventPress(document.getElementById('F2'));
+      }
+      
+      function testFullBoardWithUnoccupiedPosition() {
+        setupFullBoard();
         return `${win.eventPress(document.getElementById('F4'))}` === "Error: Position F4 is occupied.";
       }
 
       function testFullBoardWithOccupiedPosition() {
-        win.eventPress(document.getElementById('A1'));
-        win.eventPress(document.getElementById('A4'));
-        win.eventPress(document.getElementById('A7'));
-        win.eventPress(document.getElementById('B2'));
-        win.eventPress(document.getElementById('B4'));
-        win.eventPress(document.getElementById('B6'));
-        win.eventPress(document.getElementById('C3'));
-        win.eventPress(document.getElementById('C4'));
-        win.eventPress(document.getElementById('C5'));
-        win.eventPress(document.getElementById('D1'));
-        win.eventPress(document.getElementById('D2'));
-        win.eventPress(document.getElementById('D3'));
-        win.eventPress(document.getElementById('D5'));
-        win.eventPress(document.getElementById('D6'));
-        win.eventPress(document.getElementById('D7'));
-        win.eventPress(document.getElementById('E3'));
-        win.eventPress(document.getElementById('E4'));
-        win.eventPress(document.getElementById('E5'));
-        win.eventPress(document.getElementById('F2'));
-        
+        setupFullBoard();
         return `${win.eventPress(document.getElementById('A1'))}` === "Error: Position A1 is occupied.";
       }
     </script>
@@ -110,40 +106,21 @@
       <div class="grid-board-view">
         <img class="board-view-background" src="images/board.png">
         <div class="board-view-piece-grid">
-          <div class="board-view-piece A one" id="A1" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece A four" id="A4" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece A seven" id="A7" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece B two" id="B2" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece B four" id="B4" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece B six" id="B6" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece C three" id="C3" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece C four" id="C4" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece C five" id="C5" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece D one" id="D1" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece D two" id="D2" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece D three" id="D3" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece D five" id="D5" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece D six" id="D6" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece D seven" id="D7" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece E three" id="E3" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece E four" id="E4" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece E five" id="E5" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece F two" id="F2" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece F four" id="F4" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece F six" id="F6" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece G one" id="G1" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece G four" id="G4" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece G seven" id="G7" onclick="win.eventPress(this)"></div>
+          <% for (let [i, arr] of Object.entries(validPositions)) {
+              for(let j of arr){ %>
+          <div class="board-view-piece <%= i %> <%= toWords[j] %>" id="<%= i+j %>" onclick="win.eventPress(this)"></div><% 
+              }
+            } %>
         </div>
       </div>
       <div class="grid-board-text">
         <p>
-          Player One is <b style="color: blue">blue</b>...<br>
-          Player Two is <b style="color: red">red</b>...<br>
+          Player One is <b style="color: <%color[0]%>"><%=color[0]%></b>...<br>
+          Player Two is <b style="color: <%=color[1]%>"><%=color[1]%></b>...<br>
           <br>
           <br>
           <br>
-          The current player is <b style="color: blue" id="current-player-color">blue</b>.<br>
+          The current player is <b style="color: <%=color[0]%>" id="current-player-color"><%=color[0]%></b>.<br>
         </p>
       </div>
     </div>
