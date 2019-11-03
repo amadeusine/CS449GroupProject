@@ -121,7 +121,7 @@ impl XCoord {
             'D' => XCoord::D,
             'E' => XCoord::E,
             'F' => XCoord::F,
-            'G' => XCoord::E,
+            'G' => XCoord::G,
             e => panic!("Invalid XCoord Character: {:?}", e),
         }
     }
@@ -379,9 +379,43 @@ impl Manager {
 }
 
 #[cfg(test)]
-mod tests {
+mod base_tests {
+
     #[test]
-    fn it_works() {
-        assert_eq!(2 + 2, 4);
+    fn test_X_from_char() {
+        use super::XCoord;
+
+        assert_eq!(XCoord::from_char('A'), XCoord::A);
+        assert_eq!(XCoord::from_char('G'), XCoord::G);
+    }
+
+    #[test]
+    fn test_Y_from_char() {
+        use super::YCoord;
+
+        assert_eq!(YCoord::from_char('1'), YCoord::One);
+        assert_eq!(YCoord::from_char('7'), YCoord::Seven);
+    }
+
+    #[test]
+    fn test_coord_from_str() {
+        use super::{Coord, XCoord, YCoord};
+
+        assert_eq!(Coord::from_str("A1"), Coord::new(XCoord::A, YCoord::One));
+        assert_eq!(Coord::from_str("G7"), Coord::new(XCoord::G, YCoord::Seven));
+    }
+
+    #[test]
+    fn test_coord_as_str() {
+        use super::{Coord, XCoord, YCoord};
+
+        assert_eq!(
+            Coord::new(XCoord::A, YCoord::One).as_string(),
+            String::from("A1")
+        );
+        assert_eq!(
+            Coord::new(XCoord::G, YCoord::Seven).as_string(),
+            String::from("G7")
+        );
     }
 }
