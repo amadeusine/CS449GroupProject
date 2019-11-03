@@ -16,3 +16,12 @@ console.log("\ngameState.trigger: ");
 console.log(gameState.trigger);
 console.log("\ngameState.board:\n");
 console.log(gameState.board);
+
+var options = {"user": 1, "opponent": 2};
+
+// console.log(man.get_user(options));
+console.log(Manager.prototype);
+console.log(man.get_user(options));
+console.log(man.get_opponent(options));
+
+// console.log(man.get_opponent(options));

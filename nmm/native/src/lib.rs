@@ -1,6 +1,18 @@
-use base::{GameState, Manager};
+use base::{GameOpts, GameState, Manager};
 use neon::prelude::*;
 use neon::{class_definition, declare_types, impl_managed, register_module};
+
+fn conv_js_gameopts_to_rust(
+    mut ctx: FunctionContext,
+    action: JsString,
+    opts: JsObject,
+) -> GameOpts {
+    unimplemented!()
+}
+
+fn conv_from_menu(mut cx: FunctionContext, options: JsObject) -> GameOpts {
+    unimplemented!()
+}
 
 declare_types! {
     pub class JsManager for Manager {
@@ -68,6 +80,66 @@ declare_types! {
             Ok(result_obj.as_value(&mut ctx))
 
         }
+
+        method get_user(mut ctx) {
+            let mut this = ctx.this();
+            let mut opts = ctx.argument::<JsObject>(0)?;
+            // let user = {
+            //     let mut guard = ctx.lock();
+            //     let mut mngr = this.borrow_mut(&guard);
+            //     // mngr::conv_player_option(&mut ctx, &mut opts, "user")
+            //     // Manager::conv_player_option(&mut ctx, &mut opts, "user")
+            //     conv_player_option(ctx, &mut opts, "user")
+
+            // };
+            let user = conv_player_option(&mut ctx, &mut opts, "user");
+            // let user = Manager::conv_player_option(&mut ctx, &mut opts, "user");
+            let user = ctx.number(user as f64);
+            // let res_num = ctx.number(user as f64);
+            Ok(user.upcast())
+        }
+        method get_opponent(mut ctx) {
+            let mut this = ctx.this();
+            let mut opts = ctx.argument::<JsObject>(0)?;
+            // let user = {
+            //     let mut guard = ctx.lock();
+            //     let mut mngr = this.borrow_mut(&guard);
+            //     // mngr::conv_player_option(&mut ctx, &mut opts, "user")
+            //     // Manager::conv_player_option(&mut ctx, &mut opts, "user")
+            //     conv_player_option(ctx, &mut opts, "user")
+
+            // };
+            let opponent = conv_player_option(&mut ctx, &mut opts, "opponent");
+            let opponent = ctx.number(opponent as f64);
+            // let user = Manager::conv_player_option(&mut ctx, &mut opts, "user");
+
+            // let res_num = ctx.number(user as f64);
+            Ok(opponent.upcast())
+        }
+    }
+}
+
+pub fn conv_player_option(
+    ctx: &mut MethodContext<JsManager>,
+    opts: &mut JsObject,
+    player: &str,
+) -> u32 {
+    match opts.get(ctx, player) {
+        Ok(js_handle) if js_handle.is_a::<JsNumber>() => match js_handle.downcast::<JsNumber>() {
+            Ok(num) => num.value() as u32,
+            Err(e) => panic!("Failed to convert JsNumber: {:#?}", e),
+        },
+        Ok(_) => {
+            // let js_handle = js_handle.upcast();
+            panic!(
+                "Property \"{}\" did not contain a JsNumber",
+                String::from(player)
+            )
+        }
+        Err(_) => panic!(
+            "Could not get \"{}\" property from options object.",
+            String::from(player)
+        ),
     }
 }
 
