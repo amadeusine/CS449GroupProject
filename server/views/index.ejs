@@ -5,32 +5,236 @@
     <link rel='stylesheet' href="/stylesheets/default.css" />
     <script type="text/javascript" src="/javascripts/board.js"></script>
     <script id="win.js">
-      let b = new Board();
+      const toWords = {
+        1: "one",
+        2: "two",
+        3: "three",
+        4: "four",
+        5: "five",
+        6: "six",
+        7: "seven",
+        8: "eight",
+        9: "nine",
+      };
+
+      const pairs = [
+        ['A1', 'A4'],
+        ['A1', 'D1'],
+        ['A4', 'A7'],
+        ['A4', 'B4'],
+        ['A7', 'D7'],
+        ['B2', 'B4'],
+        ['B2', 'D2'],
+        ['B4', 'C4'],
+        ['B4', 'B6'],
+        ['B6', 'D6'],
+        ['C3', 'C4'],
+        ['C3', 'D3'],
+        ['C4', 'C5'],
+        ['C5', 'D5'],
+        ['D1', 'G1'],
+        ['D1', 'D2'],
+        ['D2', 'F2'],
+        ['D2', 'D3'],
+        ['D3', 'E3'],
+        ['D5', 'E5'],
+        ['D5', 'D6'],
+        ['D6', 'F6'],
+        ['D6', 'D7'],
+        ['D7', 'G7'],
+        ['E3', 'E4'],
+        ['E4', 'F4'],
+        ['E4', 'E5'],
+        ['F2', 'F4'],
+        ['F4', 'G4'],
+        ['F4', 'F6'],
+        ['G1', 'G4'],
+        ['G4', 'G7'],
+      ];
+
+      const adjacents = {};
+
+      let board = new Board();
+
+      for (const pos of Object.keys(board.board)) {
+        adjacents[pos] = [];
+      }
+
+      for (const [lhs, rhs] of pairs) {
+        adjacents[lhs].push(rhs);
+        adjacents[rhs].push(lhs);
+      }
+
+      const mills = [];
+      for (const [alpha, num] of Object.keys(adjacents)) {
+        mills.push(Object.keys(adjacents).filter(x => x[0] === alpha && alpha !== 'D'));
+        mills.push(Object.keys(adjacents).filter(x => x[1] === num && num !== '4'));
+      }
+      mills.push(['D1', 'D2', 'D3']);
+      mills.push(['D5', 'D6', 'D7']);
+      mills.push(['A4', 'B4', 'C4']);
+      mills.push(['E4', 'F4', 'G4']);
+
       class Window {
         constructor() {
           this.numberOfMen = 9;
           this.piecesLeft = this.numberOfMen * 2;
-          this.playerColors = ['blue', 'red'];
+          this.playerColors = ['<%=color[0]%>','<%=color[1]%>'];
+          this.currentState = "placement";
+          this.eliminationContext = { from: "" };
         }
         calcPlayer(offset = undefined) {
           // index of player (0 or 1)
           let i = this.piecesLeft + (offset || 0);
           return i % 2;
         }
+
+        getCurrentPlayer() {
+          return document.getElementById("current-player-color");
+        }
+
+        getCurrentColor() {
+          return this.getCurrentPlayer().style.color;
+        }
+
+        triggerElimination() {
+          return this.piecesLeft === 0;
+        }
+
+        setupElimination() {
+          this.currentState = "elimination";
+          this.piecesLeft = {
+            '<%=color[0]%>': 9,
+            '<%=color[1]%>': 9,
+          };
+        }
+
+        triggerFlying() {
+          return this.piecesLeft[this.getCurrentColor()] === 3;
+        }
+
+        setupFlying() {
+          this.currentState = "flying";
+          // confirm("Now in flying mode...");
+        }
+
+        triggerEnd() {
+          return this.piecesLeft[this.getCurrentColor()] === 2;
+        }
+
+        setupEnd() {
+          this.currentState = "end";
+          this.advancePlayer();
+          document.getElementById("container").innerHTML = `
+          <h style="margin: 0 auto;"> ${this.getCurrentColor()} won! </h><br>
+          <button onclick="window.location.href = window.location.href">Restart game?</button><br><br><br><br>
+          `;
+        }
+
         eventPress(pieceElement) {
-          const pieceStyle = pieceElement.style;
-          if (pieceStyle.backgroundColor === "" && this.piecesLeft > 0) {
-            let i = this.calcPlayer();
-            let currentColor = document.getElementById("current-player-color");
-            currentColor.style.color = this.playerColors[this.calcPlayer(1)];
-            currentColor.innerText = this.playerColors[this.calcPlayer(1)];
-            this.piecesLeft--;
-            return pieceStyle.backgroundColor = this.playerColors[i];
-          } else {
-            return new Error(`Position ${pieceElement.id} is occupied.`);
+          if (this.currentState === "placement") {
+            if (this.triggerElimination()) this.setupElimination();
+            else return this.checkSetup(pieceElement);
+          }
+          if (this.currentState === "elimination") {
+            if (this.triggerFlying()) this.setupFlying();
+            else return this.checkElimination(pieceElement);
+          }
+          if (this.currentState === "flying") {
+            if (this.triggerEnd()) this.setupEnd();
+            else return this.checkFlying(pieceElement);
           }
         }
-      };
+        
+        advancePlayer() {
+          const currentPlayer = this.getCurrentPlayer();
+          let currentColor = this.getCurrentColor();
+          const nextColor = this.playerColors[(this.playerColors.indexOf(currentColor) + 1) % 2];
+          currentPlayer.style.color = nextColor;
+          currentPlayer.innerText = nextColor;
+        }
+
+        checkSetup(pieceElement) {
+          const pieceStyle = pieceElement.style;
+          if (pieceStyle.backgroundColor || !this.piecesLeft) {
+            return new Error(`Position ${pieceElement.id} is occupied.`);
+          }
+          const i = this.calcPlayer();
+
+          this.advancePlayer();
+
+          this.piecesLeft--;
+          return pieceStyle.backgroundColor = this.playerColors[i];
+        }
+
+        inValidMill(position) {
+          const relevantMills = Array.from(new Set(mills.filter(m => m.includes(position))));
+          console.log(`Relevant: ${relevantMills}`);
+          console.log(relevantMills
+                  .filter(mill => mill.filter(position =>
+                                                  document.getElementById(position).style.backgroundColor
+                                                  === this.getCurrentColor()
+                                                  ||
+                                                  (document.getElementById(position).style.backgroundColor
+                                                    === ""
+                                                    &&
+                                                    position === this.eliminationContext.from)).length === 3));
+          return relevantMills
+                  .filter(mill => mill.filter(position =>
+                                                  document.getElementById(position).style.backgroundColor
+                                                  === this.getCurrentColor()
+                                                  ||
+                                                  (document.getElementById(position).style.backgroundColor
+                                                    === ""
+                                                    &&
+                                                    position === this.eliminationContext.from))
+                                    .length === 3);
+        }
+
+        checkElimination(pieceElement) {
+          const { style, id } = pieceElement;
+          if (this.isEliminating) {
+            // cancel if double click
+            if (this.eliminationContext.from === id) {
+              style.backgroundColor = this.getCurrentColor();
+              this.isEliminating = false;
+            } else if (this.inValidMill(id) && adjacents[id].includes(this.eliminationContext.from) && style.backgroundColor !== this.getCurrentColor()) {
+              --this.piecesLeft[style.backgroundColor];
+              style.backgroundColor = this.getCurrentColor();
+              this.advancePlayer();
+              this.isEliminating = false;
+            } else if (adjacents[id].includes(this.eliminationContext.from) && style.backgroundColor === "") {
+              style.backgroundColor = this.getCurrentColor();
+              this.advancePlayer();
+              this.isEliminating = false;
+            }
+          } else if (style.backgroundColor === this.getCurrentColor()) {
+            this.eliminationContext.from = id;
+            this.isEliminating = true;
+            style.backgroundColor = "";
+          }
+        }
+
+        checkFlying(pieceElement) {
+          const { style, id } = pieceElement;
+          if (this.isEliminating) {
+            // cancel if double click
+            if (this.eliminationContext.from === id) {
+              style.backgroundColor = this.getCurrentColor();
+              this.isEliminating = false;
+            } else if (style.backgroundColor !== this.getCurrentColor()) {
+              --this.piecesLeft[style.backgroundColor];
+              style.backgroundColor = this.getCurrentColor();
+              this.advancePlayer();
+              this.isEliminating = false;
+            }
+          } else if (style.backgroundColor === this.getCurrentColor()) {
+            this.eliminationContext.from = id;
+            this.isEliminating = true;
+            style.backgroundColor = "";
+          }
+        }
+      }
 
       let win = new Window();
     </script>
@@ -55,8 +259,8 @@
         win.eventPress(document.getElementById('A1'));
         return `${win.eventPress(document.getElementById('A1'))}` === "Error: Position A1 is occupied.";
       }
-      
-      function testFullBoardWithUnoccupiedPosition() {
+
+      function setupFullBoard() {
         win.eventPress(document.getElementById('A1'));
         win.eventPress(document.getElementById('A4'));
         win.eventPress(document.getElementById('A7'));
@@ -75,32 +279,23 @@
         win.eventPress(document.getElementById('E3'));
         win.eventPress(document.getElementById('E4'));
         win.eventPress(document.getElementById('E5'));
-        win.eventPress(document.getElementById('F2'));
+      }
+      
+      function testFullBoardWithUnoccupiedPosition() {
+        setupFullBoard();
         return `${win.eventPress(document.getElementById('F4'))}` === "Error: Position F4 is occupied.";
       }
 
       function testFullBoardWithOccupiedPosition() {
-        win.eventPress(document.getElementById('A1'));
-        win.eventPress(document.getElementById('A4'));
-        win.eventPress(document.getElementById('A7'));
-        win.eventPress(document.getElementById('B2'));
-        win.eventPress(document.getElementById('B4'));
-        win.eventPress(document.getElementById('B6'));
-        win.eventPress(document.getElementById('C3'));
-        win.eventPress(document.getElementById('C4'));
-        win.eventPress(document.getElementById('C5'));
-        win.eventPress(document.getElementById('D1'));
-        win.eventPress(document.getElementById('D2'));
-        win.eventPress(document.getElementById('D3'));
-        win.eventPress(document.getElementById('D5'));
-        win.eventPress(document.getElementById('D6'));
-        win.eventPress(document.getElementById('D7'));
-        win.eventPress(document.getElementById('E3'));
-        win.eventPress(document.getElementById('E4'));
-        win.eventPress(document.getElementById('E5'));
-        win.eventPress(document.getElementById('F2'));
-        
+        setupFullBoard();
         return `${win.eventPress(document.getElementById('A1'))}` === "Error: Position A1 is occupied.";
+      }
+
+      function testMovingPiece() {
+        setupFullBoard();
+        win.eventPress(document.getElementById('E4'));
+        win.eventPress(document.getElementById('F4'));
+        return !document.getElementById('E4').style.backgroundColor && document.getElementById('F4').style.backgroundColor === 'blue';
       }
     </script>
     <!--link rel='stylesheet' href="/stylesheets/<%= theme %>.css" /-->
@@ -110,40 +305,20 @@
       <div class="grid-board-view">
         <img class="board-view-background" src="images/board.png">
         <div class="board-view-piece-grid">
-          <div class="board-view-piece A one" id="A1" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece A four" id="A4" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece A seven" id="A7" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece B two" id="B2" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece B four" id="B4" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece B six" id="B6" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece C three" id="C3" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece C four" id="C4" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece C five" id="C5" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece D one" id="D1" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece D two" id="D2" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece D three" id="D3" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece D five" id="D5" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece D six" id="D6" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece D seven" id="D7" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece E three" id="E3" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece E four" id="E4" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece E five" id="E5" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece F two" id="F2" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece F four" id="F4" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece F six" id="F6" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece G one" id="G1" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece G four" id="G4" onclick="win.eventPress(this)"></div>
-          <div class="board-view-piece G seven" id="G7" onclick="win.eventPress(this)"></div>
+        <% for (let [i, arr] of Object.entries(validPositions)) {
+            for(let j of arr){ %>
+          <div class="board-view-piece <%= i %> <%= toWords[j] %>" id="<%= i+j %>" onclick="win.eventPress(this)"></div><% 
+            }
+          } %>
         </div>
       </div>
       <div class="grid-board-text">
         <p>
-          Player One is <b style="color: blue">blue</b>...<br>
-          Player Two is <b style="color: red">red</b>...<br>
+          Player One is <b style="color: <%=color[0]%>"><%=color[0]%></b>...<br>
+          Player Two is <b style="color: <%=color[1]%>"><%=color[1]%></b>...<br>
           <br>
           <br>
-          <br>
-          The current player is <b style="color: blue" id="current-player-color">blue</b>.<br>
+          <br>The current player is <b style="color: <%=color[0]%>" id="current-player-color">blue</b>.<br>
         </p>
       </div>
     </div>
