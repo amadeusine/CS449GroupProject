@@ -93,8 +93,8 @@ pub struct GameState {
     mills: Vec<Mill>,
 }
 
-#[derive(Debug, Clone)]
-enum Agent {
+#[derive(Debug, Clone, Display)]
+pub enum Agent {
     Human,
     Auto,
 }

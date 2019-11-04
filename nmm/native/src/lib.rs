@@ -1,4 +1,4 @@
-use base::{GameOpts, GameState, Manager};
+use base::{Agent, Coord, GameOpts, GameState, Manager};
 use neon::prelude::*;
 use neon::{class_definition, declare_types, impl_managed, register_module};
 
@@ -116,6 +116,17 @@ declare_types! {
             // let res_num = ctx.number(user as f64);
             Ok(opponent.upcast())
         }
+
+        method get_agent(mut ctx) {
+            let mut this = ctx.this();
+            let mut opts = ctx.argument::<JsObject>(0)?;
+            let agent = conv_agent_option(&mut ctx, &mut opts);
+            let opponent = ctx.string(agent.to_string());
+            // let user = Manager::conv_player_option(&mut ctx, &mut opts, "user");
+
+            // let res_num = ctx.number(user as f64);
+            Ok(opponent.upcast())
+        }
     }
 }
 
@@ -142,5 +153,25 @@ pub fn conv_player_option(
         ),
     }
 }
+
+pub fn conv_agent_option(ctx: &mut MethodContext<JsManager>, opts: &mut JsObject) -> Agent {
+    match opts.get(ctx, "agent") {
+        Ok(js_handle) if js_handle.is_a::<JsString>() => match js_handle.downcast::<JsString>() {
+            Ok(s) if s.value() == String::from("auto") => Agent::Auto,
+            Ok(s) if s.value() == String::from("human") => Agent::Human,
+            Ok(_) => panic!("Invalid value for 'agent' property found."),
+            Err(_) => unreachable!(),
+        },
+        Ok(_) => panic!("Property 'agent' did not contain a valid agent value."),
+        Err(_) => panic!("Could not get 'agent' property from options object"),
+    }
+}
+
+// pub fn conv_coord_option(
+//     ctx: &mut MethodContext<JsManager>,
+//     opts: &mut JsObject
+// ) -> Coord {
+//     match opts.get(ctx, "")
+// }
 
 register_module!(mut cx, { cx.export_class::<JsManager>("Manager") });

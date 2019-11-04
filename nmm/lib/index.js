@@ -17,11 +17,11 @@ console.log(gameState.trigger);
 console.log("\ngameState.board:\n");
 console.log(gameState.board);
 
-var options = {"user": 1, "opponent": 2};
+var options = {"user": 1, "opponent": 2, "agent": "human"};
 
 // console.log(man.get_user(options));
 console.log(Manager.prototype);
 console.log(man.get_user(options));
 console.log(man.get_opponent(options));
-
+console.log(man.get_agent(options));
 // console.log(man.get_opponent(options));
