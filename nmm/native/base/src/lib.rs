@@ -54,10 +54,10 @@ struct Mill {
     Pieces: (Position, Position, Position),
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub struct PositionStatus(bool, Option<Player>);
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Board(HashMap<Coord, PositionStatus>);
 
 #[derive(Debug, Clone, Copy, PartialOrd, PartialEq, Display)]
@@ -84,7 +84,7 @@ pub enum Action {
 }
 
 // TODO: Make top level GameResult type that wraps GameState and custom GameErr types?
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct GameState {
     handle: Handle,
     trigger: Trigger,
@@ -92,13 +92,13 @@ pub struct GameState {
     mills: Vec<Mill>,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 enum Agent {
     Human,
     Auto,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct GameOpts {
     user: Option<Player>,
     opponent: Option<Player>,
@@ -107,7 +107,7 @@ pub struct GameOpts {
     Position: Option<Coord>,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Manager {
     state: GameState,
 }
@@ -121,7 +121,7 @@ impl XCoord {
             'D' => XCoord::D,
             'E' => XCoord::E,
             'F' => XCoord::F,
-            'G' => XCoord::E,
+            'G' => XCoord::G,
             e => panic!("Invalid XCoord Character: {:?}", e),
         }
     }
@@ -379,9 +379,67 @@ impl Manager {
 }
 
 #[cfg(test)]
-mod tests {
+mod base_tests {
+
     #[test]
-    fn it_works() {
-        assert_eq!(2 + 2, 4);
+    fn test_X_from_char() {
+        use super::XCoord;
+
+        assert_eq!(XCoord::from_char('A'), XCoord::A);
+        assert_eq!(XCoord::from_char('G'), XCoord::G);
+    }
+
+    #[test]
+    fn test_Y_from_char() {
+        use super::YCoord;
+
+        assert_eq!(YCoord::from_char('1'), YCoord::One);
+        assert_eq!(YCoord::from_char('7'), YCoord::Seven);
+    }
+
+    #[test]
+    fn test_coord_from_str() {
+        use super::{Coord, XCoord, YCoord};
+
+        assert_eq!(Coord::from_str("A1"), Coord::new(XCoord::A, YCoord::One));
+        assert_eq!(Coord::from_str("G7"), Coord::new(XCoord::G, YCoord::Seven));
+    }
+
+    #[test]
+    fn test_coord_as_str() {
+        use super::{Coord, XCoord, YCoord};
+
+        assert_eq!(
+            Coord::new(XCoord::A, YCoord::One).as_string(),
+            String::from("A1")
+        );
+        assert_eq!(
+            Coord::new(XCoord::G, YCoord::Seven).as_string(),
+            String::from("G7")
+        );
+    }
+
+    #[test]
+    fn test_board_len() {
+        use super::Board;
+
+        assert_eq!(Board::new().len(), 24u32);
+    }
+
+    #[test]
+    fn test_manager_new_poll() {
+        use super::{Board, Handle, Manager, Trigger};
+
+        assert_eq!(
+            Manager::new().poll(),
+            (Handle::Ok, Trigger::None, Board::new())
+        );
+    }
+
+    #[test]
+    fn test_manager_new_get_board() {
+        use super::{Board, Manager};
+
+        assert_eq!(Manager::new().get_board(), Board::new());
     }
 }

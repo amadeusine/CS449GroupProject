@@ -72,3 +72,6 @@ declare_types! {
 }
 
 register_module!(mut cx, { cx.export_class::<JsManager>("Manager") });
+
+#[cfg(test)]
+mod nmm_tests {}
