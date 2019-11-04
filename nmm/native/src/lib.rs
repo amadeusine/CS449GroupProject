@@ -1,4 +1,4 @@
-use base::{Agent, Coord, GameOpts, GameState, Manager};
+use base::{Action, Agent, Coord, GameOpts, GameState, Manager};
 use neon::prelude::*;
 use neon::{class_definition, declare_types, impl_managed, register_module};
 
@@ -84,36 +84,17 @@ declare_types! {
         method get_user(mut ctx) {
             let mut this = ctx.this();
             let mut opts = ctx.argument::<JsObject>(0)?;
-            // let user = {
-            //     let mut guard = ctx.lock();
-            //     let mut mngr = this.borrow_mut(&guard);
-            //     // mngr::conv_player_option(&mut ctx, &mut opts, "user")
-            //     // Manager::conv_player_option(&mut ctx, &mut opts, "user")
-            //     conv_player_option(ctx, &mut opts, "user")
-
-            // };
             let user = conv_player_option(&mut ctx, &mut opts, "user");
-            // let user = Manager::conv_player_option(&mut ctx, &mut opts, "user");
             let user = ctx.number(user as f64);
-            // let res_num = ctx.number(user as f64);
+
             Ok(user.upcast())
         }
         method get_opponent(mut ctx) {
             let mut this = ctx.this();
             let mut opts = ctx.argument::<JsObject>(0)?;
-            // let user = {
-            //     let mut guard = ctx.lock();
-            //     let mut mngr = this.borrow_mut(&guard);
-            //     // mngr::conv_player_option(&mut ctx, &mut opts, "user")
-            //     // Manager::conv_player_option(&mut ctx, &mut opts, "user")
-            //     conv_player_option(ctx, &mut opts, "user")
-
-            // };
             let opponent = conv_player_option(&mut ctx, &mut opts, "opponent");
             let opponent = ctx.number(opponent as f64);
-            // let user = Manager::conv_player_option(&mut ctx, &mut opts, "user");
 
-            // let res_num = ctx.number(user as f64);
             Ok(opponent.upcast())
         }
 
@@ -122,10 +103,16 @@ declare_types! {
             let mut opts = ctx.argument::<JsObject>(0)?;
             let agent = conv_agent_option(&mut ctx, &mut opts);
             let opponent = ctx.string(agent.to_string());
-            // let user = Manager::conv_player_option(&mut ctx, &mut opts, "user");
-
-            // let res_num = ctx.number(user as f64);
             Ok(opponent.upcast())
+        }
+
+        method get_req_type(mut ctx) {
+            let mut this = ctx.this();
+            let mut _type = ctx.argument::<JsString>(0)?;
+            let _type = conv_type(&mut ctx, &mut _type);
+            let _type = ctx.string(_type.to_string());
+            Ok(_type.upcast())
+
         }
     }
 }
@@ -164,6 +151,16 @@ pub fn conv_agent_option(ctx: &mut MethodContext<JsManager>, opts: &mut JsObject
         },
         Ok(_) => panic!("Property 'agent' did not contain a valid agent value."),
         Err(_) => panic!("Could not get 'agent' property from options object"),
+    }
+}
+
+pub fn conv_type(ctx: &mut MethodContext<JsManager>, _type: &mut JsString) -> Action {
+    if _type.value() == "Menu" {
+        return Action::Menu;
+    } else if _type.value() == "Piece" {
+        return Action::Piece;
+    } else {
+        panic!("Invalid value for ElementType: {:#?}", _type.value())
     }
 }
 
