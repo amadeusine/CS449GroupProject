@@ -869,7 +869,6 @@
     | #2   | Fixed  | pub fn poll        | Manager's hidden gamestate moves instead of copy/clone when using basic accessors. | Ownership defined for accessors in GameState resulted in unnecessary moves of Manager's hidden Gamestate                    |
     |      |        |                    |                                                                                    |                                                                                                                             |
 
-
 * Implementation Tasks
   :PROPERTIES:
   :CUSTOM_ID: S5
@@ -880,11 +879,15 @@
 
 ** Summary of Production Code
 
-   #+ATTR_LaTeX: :align |p{4.5cm}|c|p{3.5cm}|p{4.5cm}|c|
-   |                            |          | Class         |        |
-   | SID & Name                 | ACID     | Name(s)       | Status |
-   |----------------------------+----------+---------------+--------|
-   | 2 User Input and Selection | 2.1, 2.1 | [[#PID1][Window, Board]] | Done   |
+   #+ATTR_LaTeX: :align |p{4.5cm}|p{3.5cm}|p{4.5cm}|c|
+   |                                         |                | Class         |        |
+   | SID & Name                              | ACID           | Name(s)       | Status |
+   |-----------------------------------------+----------------+---------------+--------|
+   | [[#SID3][S3]] Player Selection                     | [[#ACID3][A3]]             | [[#PID1][Window, Board]] | Done   |
+   | [[#SID1][S1]], [[#SID8][S8]], [[#SID9][S9]] Default Layout and Positions | [[#ACID1][A1]], [[#ACID8][A8]], [[#ACID9][A9]]     | [[#PID2][Manager]]       | Done   |
+   | [[#SID2][S2]] Coordinate System                    | [[#ACID2][A2]]             | [[#PID3][Coord]]         | Done   |
+   | [[#SID3][S3]], [[#SID4][S4]], [[#SID8][S8]], [[#SID9][S9]], [[#SID10][S10]]                     | [[#ACID3][A3]], [[#ACID4][A4]], [[#ACID8][A8]], [[#ACID9][A9]] | [[#PID4][Board]] (Rust)  | Done   |
+
 
 *** Class =Window=, =Board=
     :PROPERTIES:
@@ -898,7 +901,38 @@
     | 1. =eventPress= | These functions relate to a pseudo-epic, and thus the testing will be   |
     | 2. =at=         | generic.                                                                |
     |               |                                                                         |
-    
+*** Class =Manager=
+    :PROPERTIES:
+    :CUSTOM_ID: PID2
+    :END:
+
+    #+ATTR_LaTeX: :align |l|l|
+    |              | <71>                                                                    |
+    | Method       | Notes                                                                   |
+    |--------------+-------------------------------------------------------------------------|
+    | 1. =poll=      | Called by JS front-end to query, check, and get the next game state.    |
+    | 2. =get_board= | Returns the current game board layout..                                 |
+*** Class =Coord=
+    :PROPERTIES:
+    :CUSTOM_ID: PID3
+    :END:
+
+    #+ATTR_LaTeX: :align |l|l|
+    |              | <71>                                                                    |
+    | Method       | Notes                                                                   |
+    |--------------+-------------------------------------------------------------------------|
+    | 1. =as_string= | String representation of =Coord= value.                                   |
+*** Class =Board= (Rust)
+    :PROPERTIES:
+    :CUSTOM_ID: PID4
+    :END:
+
+    #+ATTR_LaTeX: :align |l|l|
+    |        | <71>                                                                    |
+    | Method | Notes                                                                   |
+    |--------+-------------------------------------------------------------------------|
+    | 1. =len= | Gets the length of the board.                                           |
+
 ** Automated Test Code
 
    There were no automated tests for this sprint.
@@ -908,7 +942,14 @@
    | SID & Name | ACID | Name(s) | Name(s) | Description | Status | Developer |
    |------------+------+---------+---------+-------------+--------+-----------|
    |            |      |         |         |             |        |           |
-** Manual Test Code   
+** Manual Test Code 
+   
+   All manual tests before M7 are from the previous sprint and no longer accurately link to their
+   issues earlier in the documentation due to refinement changes.
+
+   *All missing tests are to still be found within the source code provided with the Sprint 2*
+   *Submission. Lack of documentation in this artifact is not lack of existence*
+
    #+ATTR_LaTeX: :align |p{4.5cm}|c|c|c|p{3.0cm}|
    |                             |        |      |        |                 |
    | SID & Name                  | ACID   | MTID | Status | Developer(s)    |
@@ -919,6 +960,12 @@
    | [[#SID5][S5]] Piece Placement          | [[#ACID5][A5.1.2]] | [[#MTID4][M4]]   | DONE   | Samuel, Michael |
    | [[#SID5][S5]] Piece Placement          | [[#ACID5][A5.2.1]] | [[#MTID5][M5]]   | DONE   | Samuel, Michael |
    | [[#SID5][S5]] Piece Placement          | [[#ACID5][A5.2.2]] | [[#MTID6][M6]]   | DONE   | Samuel, Michael |
+   | [[#SID3][S3]] Player Selection         | [[#ACID3][A3]]     | [[#MTID7][M7]]   | DONE   | Samuel, Michael |
+   | [[#SID4][S4]] Piece Assignment         | [[#ACID4][A4]]     | [[#MTID8][M8]]   | DONE   | Samuel, Michael |
+   | [[#SID7][S7]] Player Turn Assignment   | [[#ACID7][A7]]     | [[#MTID9][M9]]   | DONE   | Samuel, Michael |
+   | [[#SID10][S10]] Position Movement       | [[#ACID10][A10]]    | [[#MTID10][M10]]  | DONE   | Samuel, Michael |
+   |                             |        |      |        |                 |
+   |                             |        |      |        |                 |
 *** Manual Test 1
     :PROPERTIES:
     :CUSTOM_ID: MTID1
@@ -992,6 +1039,39 @@
     |            |                         |                                      |
     |            |                         | GUI will show piece placed in bottom |
     |            |                         | left corner.                         |
+*** Manual Test 7
+    :PROPERTIES:
+    :CUSTOM_ID: MTID7
+    :END:
+    #+BEGIN_SRC js
+    document.getElementsByClass("turn-button")
+    [...].includes(pieceElement)
+    Choose the turn order
+    #+END_SRC
+*** Manual Test 8
+    :PROPERTIES:
+    :CUSTOM_ID: MTID8
+    :END:
+    
+    #+BEGIN_SRC js
+    document.getElementById('E4')
+    (setupFullBoard() && move('E4', 'F4')) && document.getElementById('F4').style.backgroundColor === 'blue'
+    #+END_SRC
+*** Manual Test 8
+    :PROPERTIES:
+    :CUSTOM_ID: MTID9
+    :END:
+
+    #+BEGIN_SRC js
+    document.getElementById('E4')
+    (setupFullBoard() && formMill('red') && move('E4', 'F4')) && document.getElementById('F4').style.backgroundColor === 'red'
+    #+END_SRC
+
+*** Manual Test 9
+    :PROPERTIES:
+    :CUSTOM_ID: MTID10
+    :END:
+
 ** Other Manual Test Code
 
    There were no other manual tests for this sprint.
