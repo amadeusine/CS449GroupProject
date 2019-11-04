@@ -1,4 +1,4 @@
-% Created 2019-11-03 Sun 22:57
+% Created 2019-11-03 Sun 23:19
 % Intended LaTeX compiler: pdflatex
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
@@ -18,11 +18,11 @@
 \usepackage{array}
 \author{Team \textbf{Misael's} Project Submission}
 \date{\today}
-\title{CS449 Sprint 1 Report\\\medskip
+\title{CS449 Sprint 2 Report\\\medskip
 \large Michael Cu, Elias Julian Marko Garcia, Samuel Lim}
 \hypersetup{
  pdfauthor={Team \textbf{Misael's} Project Submission},
- pdftitle={CS449 Sprint 1 Report},
+ pdftitle={CS449 Sprint 2 Report},
  pdfkeywords={},
  pdfsubject={},
  pdfcreator={Emacs 26.3 (Org mode 9.1.9)}, 
@@ -34,24 +34,24 @@
 
 
 \section{Micro Charter}
-\label{sec:org884c74f}
+\label{sec:orgdab0ecd}
 \subsection{Project Name}
-\label{sec:org3f47d10}
+\label{sec:orgf84b588}
 N Men Morris
 \subsection{Vision Statement}
-\label{sec:org19b528a}
+\label{sec:orgd00b525}
 Create a extensible framework for board game web apps with scalability and performance.
 \subsection{Mission Statement}
-\label{sec:orgd866ec3}
+\label{sec:org8cfbf0c}
 To play Nine Men's Morris on the web browser using a composable web technology stack that allows
 for future modularity while not foregoing performance.
 \subsection{Elevator Pitch and Business Value}
-\label{sec:org05f6ceb}
+\label{sec:org7f1fd9d}
 We are creating Nine Men's Morris on a board game framework using Express.js and Neon for
 Rust. This allows for a data and type safe application that is capable of composability,
 scalability, extensibility, and performance.
 \subsection{Customers and Users}
-\label{sec:org08544e7}
+\label{sec:org595f161}
 \begin{itemize}
 \item Customers: Entrepreneurs and ventures that want to deploy board games on the web with low
 overhead, latency, and maintenance.
@@ -59,7 +59,7 @@ overhead, latency, and maintenance.
 they can take and play wherever they go with their friends.
 \end{itemize}
 \subsection{Metrics}
-\label{sec:org9c941e4}
+\label{sec:org5c52d38}
 By benchmarking N Men Morris, we can compare our solution to other products on the market on:
 \begin{enumerate}
 \item latency
@@ -67,7 +67,7 @@ By benchmarking N Men Morris, we can compare our solution to other products on t
 \item up-time
 \end{enumerate}
 \subsection{Milestones}
-\label{sec:org2b584a9}
+\label{sec:org78f7ab6}
 \begin{enumerate}
 \item First MVP
 \item First Offline N Men's Morris
@@ -75,21 +75,21 @@ By benchmarking N Men Morris, we can compare our solution to other products on t
 \item Player versus Player (Online)
 \end{enumerate}
 \subsection{Risks}
-\label{sec:org145c0e0}
+\label{sec:org1285945}
 \begin{enumerate}
 \item Inherent complexity of technology stack.
 \item Inability to cooperate with teammates.
 \item Plausibility of orphaning project due to development team size.
 \end{enumerate}
 \subsection{Authors}
-\label{sec:org65d1ac1}
+\label{sec:org7b23b28}
 \begin{itemize}
 \item Michael Cu
 \item Elias Julian Marko Garcia
 \item Samuel Lim
 \end{itemize}
 \section{User Stories}
-\label{sec:org19a8ead}
+\label{sec:org936b8b2}
 Below you will find a table that makes up our "User Story Board", with some simplifications taken
 with respect to the total contents of the board. With respect to the final formal documentation,
 i.e. this paper, we only keep the basic qualitative and quantitative values for each story in the
@@ -102,200 +102,200 @@ respective story, which also helps with navigating this section.
  &  &  & Time Est. & Actual &  & \\
 SID & Story Name & Priority & (hr) & (hr) & Status & Developer(s)\\
 \hline
-\hyperref[sec:org2e69c3c]{S1} & Default Board Layout & high & 10 & 4 & DONE & Sam, Michael, Elias\\
+\hyperref[sec:orgd1e2bba]{S1} & Default Board Layout & high & 10 & 4 & DONE & Sam, Michael, Elias\\
 \hline
-\hyperref[sec:orgcfd7241]{S2} & Mills Board & high & 10 & 4 & DONE & Sam\\
+\hyperref[sec:orgd6599cb]{S2} & Mills Board & high & 10 & 4 & DONE & Sam\\
  & Coordinate System &  &  &  &  & \\
 \hline
-\hyperref[sec:org9bfcf82]{S3} & Player Selection & medium & 10 & - & TODO & -\\
+\hyperref[sec:org9e6eb22]{S3} & Player Selection & medium & 10 & - & TODO & -\\
 \hline
-\hyperref[sec:org51384f7]{S4} & Piece Assignment & medium & 10 & - & TODO & -\\
+\hyperref[sec:orgb3c0aac]{S4} & Piece Assignment & medium & 10 & - & TODO & -\\
 \hline
-\hyperref[sec:org12ec2a3]{S5} & Game Menu Prompt & high & 10 & 2 & TODO & Sam, Michael\\
+\hyperref[sec:org0471e5d]{S5} & Game Menu Prompt & high & 10 & 2 & TODO & Sam, Michael\\
 \hline
-\hyperref[sec:org55888a8]{S6} & Start Game Prompt & medium & 10 & - & TODO & -\\
+\hyperref[sec:org28d8056]{S6} & Start Game Prompt & medium & 10 & - & TODO & -\\
 \hline
-\hyperref[sec:org14c9873]{S7} & Player Turn Assignment & medium & 10 & - & TODO & -\\
+\hyperref[sec:orgeff0565]{S7} & Player Turn Assignment & medium & 10 & - & TODO & -\\
 \hline
-\hyperref[sec:orgb4f1d0d]{S8} & Position Selection & medium & 10 & - & TODO & -\\
+\hyperref[sec:org416b787]{S8} & Position Selection & medium & 10 & - & TODO & -\\
 \hline
-\hyperref[sec:orgf08f22e]{S9} & Position Placement & medium & 10 & - & TODO & -\\
+\hyperref[sec:orgee17678]{S9} & Position Placement & medium & 10 & - & TODO & -\\
 \hline
-\hyperref[sec:orgfbf235b]{S10} & Position Movement & medium & 10 & - & TODO & -\\
+\hyperref[sec:orgfd789cc]{S10} & Position Movement & medium & 10 & - & TODO & -\\
 \hline
-\hyperref[sec:orgae401d1]{S11} & Elimination Movement & medium & 10 & - & TODO & -\\
+\hyperref[sec:orgc4913f5]{S11} & Elimination Movement & medium & 10 & - & TODO & -\\
 \hline
-\hyperref[sec:org3dd4275]{S12} & Mill Definition & medium & 10 & - & TODO & -\\
+\hyperref[sec:org52c57a1]{S12} & Mill Definition & medium & 10 & - & TODO & -\\
 \hline
-\hyperref[sec:orgd47f600]{S13} & Mill Attack Attribute & medium & 10 & - & TODO & -\\
+\hyperref[sec:org8566249]{S13} & Mill Attack Attribute & medium & 10 & - & TODO & -\\
 \hline
-\hyperref[sec:org4711d5c]{S14} & Mill Defense Attribute & medium & 10 & - & TODO & -\\
+\hyperref[sec:orgf4a278d]{S14} & Mill Defense Attribute & medium & 10 & - & TODO & -\\
 \hline
-\hyperref[sec:org6d75e89]{S15} & Mill Piece Movement & medium & 10 & - & TODO & -\\
+\hyperref[sec:orge1cbf81]{S15} & Mill Piece Movement & medium & 10 & - & TODO & -\\
 \hline
-\hyperref[sec:org66a15d9]{S16} & Elimination with Mills & medium & 10 & - & TODO & -\\
+\hyperref[sec:org5f129a0]{S16} & Elimination with Mills & medium & 10 & - & TODO & -\\
 \hline
-\hyperref[sec:org00575e6]{S17} & Flying Definition & medium & 10 & - & TODO & -\\
+\hyperref[sec:org95824c3]{S17} & Flying Definition & medium & 10 & - & TODO & -\\
 \hline
-\hyperref[sec:org237bc81]{S18} & Flying Piece Ability & medium & 10 & - & TODO & -\\
+\hyperref[sec:org5592fe6]{S18} & Flying Piece Ability & medium & 10 & - & TODO & -\\
 \hline
-\hyperref[sec:orgfacc9f9]{S19} & End Game: Loss & medium & 10 & - & TODO & -\\
+\hyperref[sec:orgceb1ed0]{S19} & End Game: Loss & medium & 10 & - & TODO & -\\
 \hline
-\hyperref[sec:org2499880]{S20} & End Game: Win & medium & 10 & - & TODO & -\\
+\hyperref[sec:orga0c7c0a]{S20} & End Game: Win & medium & 10 & - & TODO & -\\
 \hline
-\hyperref[sec:org4681e30]{S21} & End Game: Tie & medium & 10 & - & TODO & -\\
+\hyperref[sec:org4c987ec]{S21} & End Game: Tie & medium & 10 & - & TODO & -\\
 \hline
-\hyperref[sec:org6052ad6]{S22} & Reset Board & medium & 10 & - & TODO & -\\
+\hyperref[sec:orga218382]{S22} & Reset Board & medium & 10 & - & TODO & -\\
 \hline
-\hyperref[sec:orgbcc4f5b]{S23} & Start New Game & medium & 10 & - & TODO & -\\
+\hyperref[sec:org67fb19f]{S23} & Start New Game & medium & 10 & - & TODO & -\\
 \end{tabular}
 \end{center}
 
 \subsection{Default Board Layout}
-\label{sec:org2e69c3c}
+\label{sec:orgd1e2bba}
 \subsubsection*{Description}
-\label{sec:org3d71ef5}
+\label{sec:org9ba12ae}
 As a user, I need a game board with 4 expanded squares, each with 8 equidistant positions, to
 play a game of Nine Men's Morris.
 \subsection{Mills Board Coordinate System}
-\label{sec:orgcfd7241}
+\label{sec:orgd6599cb}
 \subsubsection*{Description}
-\label{sec:orgd64dc08}
+\label{sec:org9fd5c21}
 As a user, I need a way to navigate and read the board to play a game of Nine Men's Morris.
 \subsection{Player Selection}
-\label{sec:org9bfcf82}
+\label{sec:org9e6eb22}
 \subsubsection*{Description}
-\label{sec:org25621cf}
+\label{sec:org0522cc9}
 As a user, I want to choose a distinct color for my player.
 
 \subsection{Piece Assignment}
-\label{sec:org51384f7}
+\label{sec:orgb3c0aac}
 \subsubsection*{Description}
-\label{sec:orgd5bb32b}
+\label{sec:org7ac790c}
 As a user, I want to receive 9 distinct pieces to place on the board.
 \subsection{Game Menu Prompt}
-\label{sec:org12ec2a3}
+\label{sec:org0471e5d}
 \subsubsection*{Description}
-\label{sec:orga134f15}
+\label{sec:org465a170}
 As a user, I am prompted with a GUI that shows the game board along with menu items.
 
 \subsection{Start Game Prompt}
-\label{sec:org55888a8}
+\label{sec:org28d8056}
 \subsubsection*{Description}
-\label{sec:orga2be7db}
+\label{sec:org962e9dd}
 As a user, I need a GUI to prompt me with the options to start a game with either another human
 or against the computer.
 \subsection{Player Turn Assignment}
-\label{sec:org14c9873}
+\label{sec:orgeff0565}
 \subsubsection*{Description}
-\label{sec:org0f68aea}
+\label{sec:org0b2a8d1}
 As a user, I want to receive either the first or second player's move at the beginning of the game.
 \subsection{Position Selection}
-\label{sec:orgb4f1d0d}
+\label{sec:org416b787}
 \subsubsection*{Description}
-\label{sec:orgbbc82e1}
+\label{sec:org4c3b48b}
 As a user, I need to be able to select an empty position to choose it for piece placement.
 
 \subsection{Position Placement}
-\label{sec:orgf08f22e}
+\label{sec:orgee17678}
 \subsubsection*{Description}
-\label{sec:org563c68c}
+\label{sec:org80c3d70}
 As a user, I need to be able to place a piece on an empty position to finish my turn.
 
 \subsection{Position Movement}
-\label{sec:orgfbf235b}
+\label{sec:orgfd789cc}
 \subsubsection*{Description}
-\label{sec:orga84826f}
+\label{sec:orga3cc478}
 As a user, I want to be able to move my pieces to unoccupied positions.
 
 \subsection{Elimination Movement}
-\label{sec:orgae401d1}
+\label{sec:orgc4913f5}
 \subsubsection*{Description}
-\label{sec:org573a42e}
+\label{sec:org5fd16ea}
 As a user, I want to be able to move my pieces into enemy positions should I qualify.
 
 \subsection{Mill Definition}
-\label{sec:org3dd4275}
+\label{sec:org52c57a1}
 \subsubsection*{Description}
-\label{sec:org4ec35d5}
+\label{sec:orgd9612a0}
 As a user, I need the game to recognize when three of my pieces are placed in adjacent positions in order to form a mill.
 
 \subsection{Mill Attack Attribute}
-\label{sec:orgd47f600}
+\label{sec:org8566249}
 \subsubsection*{Description}
-\label{sec:org59953cf}
+\label{sec:orge8fb6c3}
 As a user, I need the ability to eliminate an enemy piece to attack as a player.
 
 \subsection{Mill Defense Attribute}
-\label{sec:org4711d5c}
+\label{sec:orgf4a278d}
 \subsubsection*{Description}
-\label{sec:org6cb4c87}
+\label{sec:org1ee5e07}
 As a user, I need pieces within a recognized mill to be immune from elimination to defend as a
 player.
 
 \subsection{Mill Piece Movement}
-\label{sec:org6d75e89}
+\label{sec:orge1cbf81}
 \subsubsection*{Description}
-\label{sec:orga31cfc5}
+\label{sec:org4721d1b}
 As a user, I want to move pieces that make up mills into any position not occupied by one of my
 other pieces.
 
 \subsection{Elimination With Mills}
-\label{sec:org66a15d9}
+\label{sec:org5f129a0}
 \subsubsection*{Description}
-\label{sec:org058d52e}
+\label{sec:orged001ca}
 As a user, I want my pieces to remove opponent pieces from the board individually.
 
 \subsection{Flying Definition}
-\label{sec:org00575e6}
+\label{sec:org95824c3}
 \subsubsection*{Description}
-\label{sec:orgcc8571c}
+\label{sec:org9d2916e}
 As a user, I need the game to recognize when I have less than 4 pieces to gain the ability to
 "fly" my pieces.
 
 \subsection{Flying Piece Ability}
-\label{sec:org237bc81}
+\label{sec:org5592fe6}
 \subsubsection*{Description}
-\label{sec:orgbb71ec3}
+\label{sec:org8128190}
 As a user, I need the ability to move a piece to any empty position on the map when I only have
 3 pieces to fly.
 
 \subsection{End Game: Loss}
-\label{sec:orgfacc9f9}
+\label{sec:orgceb1ed0}
 \subsubsection*{Description}
-\label{sec:orgf7536c0}
+\label{sec:org1339d3b}
 As a user, the game must recognize when I reach less than 3 pieces to declare me a loser.
 
 \subsection{End Game: Win}
-\label{sec:org2499880}
+\label{sec:orga0c7c0a}
 \subsubsection*{Description}
-\label{sec:orgb83c9ed}
+\label{sec:org4e673a4}
 As a user, the game must recognize when my opponent reaches less than 3 pieces to declare me the
 winner.
 
 \subsection{End Game: Tie}
-\label{sec:org4681e30}
+\label{sec:org4c987ec}
 \subsubsection*{Description}
-\label{sec:org6478eb3}
+\label{sec:orgae83553}
 As a user, the game must recognize when the board state has repeated the same layout N times
 after a player has reached less than 4 players in order to declare the game a tie ("Remis").
 
 \subsection{Reset Board}
-\label{sec:org6052ad6}
+\label{sec:orga218382}
 \subsubsection*{Description}
-\label{sec:org33ce586}
+\label{sec:org6b56d3b}
 As a user, I want to be able to restart a game with a new, empty board.
 
 \subsection{Start New Game}
-\label{sec:orgbcc4f5b}
+\label{sec:org67fb19f}
 \subsubsection*{Description}
-\label{sec:orgca8b771}
+\label{sec:orgbff676a}
 As a user, I want to be able to start a new game with the default configuration as before I started the game.
 
 \section{Acceptance Criteria}
-\label{sec:orgf3b05e3}
+\label{sec:org474812d}
 The following section covers the acceptance criteria enumerated in response to the User Stories
-discovered and documented in \hyperref[sec:org19a8ead]{\(\S{2}\)}. In a similar fashion to \(\S{2}\), the table documenting these
+discovered and documented in \hyperref[sec:org936b8b2]{\(\S{2}\)}. In a similar fashion to \(\S{2}\), the table documenting these
 acceptance criteria is in a simplified form. Every Acceptance Criterion has an Acceptance
 Criterion ID (\texttt{ACID}), which is associated in the table below with its respective \texttt{SID}, development
 status, and the developers responsible for implementing it. Each \texttt{ACID} is linked to its respective
@@ -305,57 +305,57 @@ subsection below for viewing the description of each criterion.
 \begin{tabular}{|l|c|c|c|}
 SID \& Name & ACID & Status & Developer(s)\\
 \hline
-\hyperref[sec:org2e69c3c]{S1} Default Board Layout & \hyperref[sec:org8331435]{A1} & DONE & Sam, Elias, Michael\\
+\hyperref[sec:orgd1e2bba]{S1} Default Board Layout & \hyperref[sec:org260f8ef]{A1} & DONE & Sam, Elias, Michael\\
 \hline
-\hyperref[sec:orgcfd7241]{S2} Mills Board Coordinate & \hyperref[sec:org9d287a9]{A2} & DONE & Sam, Elias, Michael\\
+\hyperref[sec:orgd6599cb]{S2} Mills Board Coordinate & \hyperref[sec:org437cc74]{A2} & DONE & Sam, Elias, Michael\\
 \(\hspace{0.4cm}\) System &  &  & \\
 \hline
-\hyperref[sec:org9bfcf82]{S3} Player Selection & \hyperref[sec:orgfe7436e]{A3} & TODO & -\\
+\hyperref[sec:org9e6eb22]{S3} Player Selection & \hyperref[sec:orgb241cdf]{A3} & TODO & -\\
 \hline
-\hyperref[sec:org51384f7]{S4} Piece Assignment & \hyperref[sec:org1d6fcc1]{A4} & TODO & -\\
+\hyperref[sec:orgb3c0aac]{S4} Piece Assignment & \hyperref[sec:orga0aa0ee]{A4} & TODO & -\\
 \hline
-\hyperref[sec:org12ec2a3]{S5} Game Menu Prompt & \hyperref[sec:org7127071]{A5} & DONE & Sam, Michael\\
+\hyperref[sec:org0471e5d]{S5} Game Menu Prompt & \hyperref[sec:orgd0c6e2b]{A5} & DONE & Sam, Michael\\
 \hline
-\hyperref[sec:org55888a8]{S6} Start Game Prompt & \hyperref[sec:orgbd3d764]{A6} & TODO & -\\
+\hyperref[sec:org28d8056]{S6} Start Game Prompt & \hyperref[sec:org40252d3]{A6} & TODO & -\\
 \hline
-\hyperref[sec:org14c9873]{S7} Player Turn Assignment & \hyperref[sec:orgf0c079e]{A7} & TODO & -\\
+\hyperref[sec:orgeff0565]{S7} Player Turn Assignment & \hyperref[sec:org951ad61]{A7} & TODO & -\\
 \hline
-\hyperref[sec:orgb4f1d0d]{S8} Position Selection & \hyperref[sec:org5a6f108]{A8} & TODO & -\\
+\hyperref[sec:org416b787]{S8} Position Selection & \hyperref[sec:orgd0a976a]{A8} & TODO & -\\
 \hline
-\hyperref[sec:orgf08f22e]{S9} Position Placement & \hyperref[sec:org186b528]{A9} & TODO & -\\
+\hyperref[sec:orgee17678]{S9} Position Placement & \hyperref[sec:org3b59a01]{A9} & TODO & -\\
 \hline
-\hyperref[sec:orgfbf235b]{S10} Position Movement & \hyperref[sec:org5467ac1]{A10} & TODO & -\\
+\hyperref[sec:orgfd789cc]{S10} Position Movement & \hyperref[sec:org60051c2]{A10} & TODO & -\\
 \hline
-\hyperref[sec:orgae401d1]{S11} Elimination Movement & \hyperref[sec:org3e37ee7]{A11} & TODO & -\\
+\hyperref[sec:orgc4913f5]{S11} Elimination Movement & \hyperref[sec:orga816ac6]{A11} & TODO & -\\
 \hline
-\hyperref[sec:org3dd4275]{S12} Mill Definition & \hyperref[sec:org2720abb]{A12} & TODO & -\\
+\hyperref[sec:org52c57a1]{S12} Mill Definition & \hyperref[sec:org0b72d46]{A12} & TODO & -\\
 \hline
-\hyperref[sec:orgd47f600]{S13} Mill Attack Attribute & \hyperref[sec:org8606157]{A13} & TODO & -\\
+\hyperref[sec:org8566249]{S13} Mill Attack Attribute & \hyperref[sec:org663d0dc]{A13} & TODO & -\\
 \hline
-\hyperref[sec:org4711d5c]{S14} Mill Defense Attribute & \hyperref[sec:org5be5169]{A14} & TODO & -\\
+\hyperref[sec:orgf4a278d]{S14} Mill Defense Attribute & \hyperref[sec:org582ccb1]{A14} & TODO & -\\
 \hline
-\hyperref[sec:org6d75e89]{S15} Mill Piece Movement & \hyperref[sec:org7b77aa7]{A15} & TODO & -\\
+\hyperref[sec:orge1cbf81]{S15} Mill Piece Movement & \hyperref[sec:org846595b]{A15} & TODO & -\\
 \hline
-\hyperref[sec:org66a15d9]{S16} Elimination with Mills & \hyperref[sec:orgc1330b0]{A16} & TODO & -\\
+\hyperref[sec:org5f129a0]{S16} Elimination with Mills & \hyperref[sec:org4747209]{A16} & TODO & -\\
 \hline
-\hyperref[sec:org00575e6]{S17} Flying Definition & \hyperref[sec:orgb1bdbb8]{A17} & TODO & -\\
+\hyperref[sec:org95824c3]{S17} Flying Definition & \hyperref[sec:org16682ac]{A17} & TODO & -\\
 \hline
-\hyperref[sec:org237bc81]{S18} Flying Piece Ability & \hyperref[sec:org28a05ab]{A18} & TODO & -\\
+\hyperref[sec:org5592fe6]{S18} Flying Piece Ability & \hyperref[sec:org8cc7b6e]{A18} & TODO & -\\
 \hline
-\hyperref[sec:orgfacc9f9]{S19} End Game: Loss & \hyperref[sec:org4d675dd]{A19} & TODO & -\\
+\hyperref[sec:orgceb1ed0]{S19} End Game: Loss & \hyperref[sec:org75dab15]{A19} & TODO & -\\
 \hline
-\hyperref[sec:org2499880]{S20} End Game: Win & \hyperref[sec:org21be741]{A20} & TODO & -\\
+\hyperref[sec:orga0c7c0a]{S20} End Game: Win & \hyperref[sec:org5a26f03]{A20} & TODO & -\\
 \hline
-\hyperref[sec:org4681e30]{S21} End Game: Tie & \hyperref[sec:orgfe74ea8]{A21} & TODO & -\\
+\hyperref[sec:org4c987ec]{S21} End Game: Tie & \hyperref[sec:orgca54d03]{A21} & TODO & -\\
 \hline
-\hyperref[sec:org6052ad6]{S22} Reset Board & \hyperref[sec:org95d0ebd]{A22} & TODO & -\\
+\hyperref[sec:orga218382]{S22} Reset Board & \hyperref[sec:orgd046a46]{A22} & TODO & -\\
 \hline
-\hyperref[sec:orgbcc4f5b]{S23} Start New Game & \hyperref[sec:orgab428bf]{A23} & TODO & -\\
+\hyperref[sec:org67fb19f]{S23} Start New Game & \hyperref[sec:org23e5e2f]{A23} & TODO & -\\
 \end{tabular}
 \end{center}
 
 \subsection{Criterion 1}
-\label{sec:org8331435}
+\label{sec:org260f8ef}
 \begin{center}
 \begin{tabular}{|c|p{12.0cm}|}
 ACID & Description\\
@@ -369,7 +369,7 @@ ACID & Description\\
 \end{center}
 
 \subsection{Criterion 2}
-\label{sec:org9d287a9}
+\label{sec:org437cc74}
 \begin{center}
 \begin{tabular}{|c|p{12.0cm}|}
 ACID & Description\\
@@ -383,7 +383,7 @@ ACID & Description\\
 \end{center}
 
 \subsection{Criterion 3}
-\label{sec:orgfe7436e}
+\label{sec:orgb241cdf}
 \begin{center}
 \begin{tabular}{|c|p{12.0cm}|}
 ACID & Description\\
@@ -402,7 +402,7 @@ ACID & Description\\
 \end{center}
 
 \subsection{Criterion 4}
-\label{sec:org1d6fcc1}
+\label{sec:orga0aa0ee}
 \begin{center}
 \begin{tabular}{|c|p{12.0cm}|}
 ACID & Description\\
@@ -418,7 +418,7 @@ ACID & Description\\
 \end{center}
 
 \subsection{Criterion 5}
-\label{sec:org7127071}
+\label{sec:orgd0c6e2b}
 \begin{center}
 \begin{tabular}{|c|p{12.0cm}|}
 ACID & Description\\
@@ -432,7 +432,7 @@ ACID & Description\\
 \end{center}
 
 \subsection{Criterion 6}
-\label{sec:orgbd3d764}
+\label{sec:org40252d3}
 \begin{center}
 \begin{tabular}{|c|p{12.0cm}|}
 ACID & Description\\
@@ -446,7 +446,7 @@ ACID & Description\\
 \end{center}
 
 \subsection{Criterion 7}
-\label{sec:orgf0c079e}
+\label{sec:org951ad61}
 \begin{center}
 \begin{tabular}{|c|p{12.0cm}|}
 ACID & Description\\
@@ -462,7 +462,7 @@ ACID & Description\\
 \end{center}
 
 \subsection{Criterion 8}
-\label{sec:org5a6f108}
+\label{sec:orgd0a976a}
 \begin{center}
 \begin{tabular}{|c|p{12.0cm}|}
 ACID & Description\\
@@ -476,7 +476,7 @@ ACID & Description\\
 \end{center}
 
 \subsection{Criterion 9}
-\label{sec:org186b528}
+\label{sec:org3b59a01}
 \begin{center}
 \begin{tabular}{|c|p{12.0cm}|}
 ACID & Description\\
@@ -490,7 +490,7 @@ ACID & Description\\
 \end{center}
 
 \subsection{Criterion 10}
-\label{sec:org5467ac1}
+\label{sec:org60051c2}
 \begin{center}
 \begin{tabular}{|c|p{12.0cm}|}
 ACID & Description\\
@@ -506,7 +506,7 @@ ACID & Description\\
 \end{center}
 
 \subsection{Criterion 11}
-\label{sec:org3e37ee7}
+\label{sec:orga816ac6}
 \begin{center}
 \begin{tabular}{|c|p{12.0cm}|}
 ACID & Description\\
@@ -519,7 +519,7 @@ ACID & Description\\
 \end{center}
 
 \subsection{Criterion 12}
-\label{sec:org2720abb}
+\label{sec:org0b72d46}
 \begin{center}
 \begin{tabular}{|c|p{12.0cm}|}
 ACID & Description\\
@@ -534,7 +534,7 @@ ACID & Description\\
 \end{tabular}
 \end{center}
 \subsection{Criterion 13}
-\label{sec:org8606157}
+\label{sec:org663d0dc}
 \begin{center}
 \begin{tabular}{|c|p{12.0cm}|}
 ACID & Description\\
@@ -555,7 +555,7 @@ ACID & Description\\
 \end{tabular}
 \end{center}
 \subsection{Criterion 14}
-\label{sec:org5be5169}
+\label{sec:org582ccb1}
 \begin{center}
 \begin{tabular}{|c|p{12.0cm}|}
 ACID & Description\\
@@ -576,7 +576,7 @@ ACID & Description\\
 \end{tabular}
 \end{center}
 \subsection{Criterion 15}
-\label{sec:org7b77aa7}
+\label{sec:org846595b}
 \begin{center}
 \begin{tabular}{|c|p{12.0cm}|}
 ACID & Description\\
@@ -593,7 +593,7 @@ ACID & Description\\
 \end{center}
 
 \subsection{Criterion 16}
-\label{sec:orgc1330b0}
+\label{sec:org4747209}
 \begin{center}
 \begin{tabular}{|c|p{12.0cm}|}
 ACID & Description\\
@@ -609,7 +609,7 @@ ACID & Description\\
 \end{center}
 
 \subsection{Criterion 17}
-\label{sec:orgb1bdbb8}
+\label{sec:org16682ac}
 \begin{center}
 \begin{tabular}{|c|p{12.0cm}|}
 ACID & Description\\
@@ -630,7 +630,7 @@ ACID & Description\\
 \end{tabular}
 \end{center}
 \subsection{Criterion 18}
-\label{sec:org28a05ab}
+\label{sec:org8cc7b6e}
 \begin{center}
 \begin{tabular}{|c|p{12.0cm}|}
 ACID & Description\\
@@ -652,7 +652,7 @@ ACID & Description\\
 \end{center}
 
 \subsection{Criterion 19}
-\label{sec:org4d675dd}
+\label{sec:org75dab15}
 \begin{center}
 \begin{tabular}{|c|p{12.0cm}|}
 ACID & Description\\
@@ -668,7 +668,7 @@ ACID & Description\\
 \end{center}
 
 \subsection{Criterion 20}
-\label{sec:org21be741}
+\label{sec:org5a26f03}
 \begin{center}
 \begin{tabular}{|c|p{12.0cm}|}
 ACID & Description\\
@@ -683,7 +683,7 @@ ACID & Description\\
 \end{tabular}
 \end{center}
 \subsection{Criterion 21}
-\label{sec:orgfe74ea8}
+\label{sec:orgca54d03}
 \begin{center}
 \begin{tabular}{|c|p{12.0cm}|}
 ACID & Description\\
@@ -701,7 +701,7 @@ ACID & Description\\
 \end{center}
 
 \subsection{Criterion 22}
-\label{sec:org95d0ebd}
+\label{sec:orgd046a46}
 \begin{center}
 \begin{tabular}{|c|p{12.0cm}|}
 ACID & Description\\
@@ -718,7 +718,7 @@ ACID & Description\\
 \end{center}
 
 \subsection{Criterion 23}
-\label{sec:orgab428bf}
+\label{sec:org23e5e2f}
 \begin{center}
 \begin{tabular}{|c|p{12.0cm}|}
 ACID & Description\\
@@ -736,9 +736,9 @@ ACID & Description\\
 
 \newpage
 \section{Code Review}
-\label{sec:org701f908}
+\label{sec:org57f140c}
 \subsection{Checklist}
-\label{sec:org9d4bdcf}
+\label{sec:org938b978}
 \begin{longtable}{|m{2.0cm}|m{3.0cm}|m{8.0cm}|}
  &  & \\
 Checklist & Item & Findings\\
@@ -804,7 +804,7 @@ Code Smells &  & \\
 \hline
 \end{longtable}
 \subsection{Bugs Discovered}
-\label{sec:orgfd41f98}
+\label{sec:orgc06f526}
 \begin{center}
 \begin{tabular}{|l|l|m{2.0cm}|m{3.5cm}|m{5.0cm}|}
 Bugs & Status & buggy code snippet & bug summary & bug logic\\
@@ -818,24 +818,24 @@ Bugs & Status & buggy code snippet & bug summary & bug logic\\
 
 
 \section{Implementation Tasks}
-\label{sec:org830c270}
+\label{sec:org58c1d6c}
 This section summarizes the details of implementation tasks for the project. You will find in each
-subsection a table similar to those found in \hyperref[sec:orgcfd7241]{\(\S{2}\)} and \hyperref[sec:org9bfcf82]{\(\S{3}\)}.
+subsection a table similar to those found in \hyperref[sec:orgd6599cb]{\(\S{2}\)} and \hyperref[sec:org9e6eb22]{\(\S{3}\)}.
 
 \subsection{Summary of Production Code}
-\label{sec:org6448f68}
+\label{sec:orgb0ef9ee}
 
 \begin{center}
 \begin{tabular}{|p{4.5cm}|c|p{3.5cm}|p{4.5cm}|c|}
  &  & Class & \\
 SID \& Name & ACID & Name(s) & Status\\
 \hline
-2 User Input and Selection & 2.1, 2.1 & \hyperref[sec:org3c84eb0]{Window, Board} & Done\\
+2 User Input and Selection & 2.1, 2.1 & \hyperref[sec:org572a9c0]{Window, Board} & Done\\
 \end{tabular}
 \end{center}
 
 \subsubsection{Class \texttt{Window}, \texttt{Board}}
-\label{sec:org3c84eb0}
+\label{sec:org572a9c0}
 \begin{center}
 \begin{tabular}{|l|l|}
 Method & Notes\\
@@ -847,7 +847,7 @@ Method & Notes\\
 \end{center}
 
 \subsection{Automated Test Code}
-\label{sec:org759e076}
+\label{sec:orga4796e2}
 
 There were no automated tests for this sprint.
 
@@ -860,22 +860,22 @@ SID \& Name & ACID & Name(s) & Name(s) & Description & Status & Developer\\
 \end{tabular}
 \end{center}
 \subsection{Manual Test Code}
-\label{sec:org90e7a5d}
+\label{sec:org2abe717}
 \begin{center}
 \begin{tabular}{|p{4.5cm}|c|c|c|p{3.0cm}|}
  &  &  &  & \\
 SID \& Name & ACID & MTID & Status & Developer(s)\\
 \hline
-\hyperref[sec:orgcfd7241]{S2} User Input and Selection & \hyperref[sec:org9d287a9]{A2.1} & \hyperref[sec:org66a3fbf]{M1} & DONE & Samuel, Michael\\
-\hyperref[sec:orgcfd7241]{S2} User Input and Selection & \hyperref[sec:org9d287a9]{A2.2} & \hyperref[sec:org7596e08]{M2} & DONE & Samuel, Michael\\
-\hyperref[sec:org12ec2a3]{S5} Piece Placement & \hyperref[sec:org7127071]{A5.1.1} & \hyperref[sec:org9920769]{M3} & DONE & Samuel, Michael\\
-\hyperref[sec:org12ec2a3]{S5} Piece Placement & \hyperref[sec:org7127071]{A5.1.2} & \hyperref[sec:orgde533b7]{M4} & DONE & Samuel, Michael\\
-\hyperref[sec:org12ec2a3]{S5} Piece Placement & \hyperref[sec:org7127071]{A5.2.1} & \hyperref[sec:org6511935]{M5} & DONE & Samuel, Michael\\
-\hyperref[sec:org12ec2a3]{S5} Piece Placement & \hyperref[sec:org7127071]{A5.2.2} & \hyperref[sec:org42c96c7]{M6} & DONE & Samuel, Michael\\
+\hyperref[sec:orgd6599cb]{S2} User Input and Selection & \hyperref[sec:org437cc74]{A2.1} & \hyperref[sec:org49c9b71]{M1} & DONE & Samuel, Michael\\
+\hyperref[sec:orgd6599cb]{S2} User Input and Selection & \hyperref[sec:org437cc74]{A2.2} & \hyperref[sec:org9208220]{M2} & DONE & Samuel, Michael\\
+\hyperref[sec:org0471e5d]{S5} Piece Placement & \hyperref[sec:orgd0c6e2b]{A5.1.1} & \hyperref[sec:org20222c3]{M3} & DONE & Samuel, Michael\\
+\hyperref[sec:org0471e5d]{S5} Piece Placement & \hyperref[sec:orgd0c6e2b]{A5.1.2} & \hyperref[sec:org5ec88ae]{M4} & DONE & Samuel, Michael\\
+\hyperref[sec:org0471e5d]{S5} Piece Placement & \hyperref[sec:orgd0c6e2b]{A5.2.1} & \hyperref[sec:org0928961]{M5} & DONE & Samuel, Michael\\
+\hyperref[sec:org0471e5d]{S5} Piece Placement & \hyperref[sec:orgd0c6e2b]{A5.2.2} & \hyperref[sec:orgd85c240]{M6} & DONE & Samuel, Michael\\
 \end{tabular}
 \end{center}
 \subsubsection{Manual Test 1}
-\label{sec:org66a3fbf}
+\label{sec:org49c9b71}
 \begin{center}
 \begin{tabular}{|p{6.0cm}|p{4.0cm}|p{3.0cm}|}
 Test Input & Test Oracle & Notes\\
@@ -887,7 +887,7 @@ document & function onclick() & Checks if element clickable.\\
 \end{center}
 
 \subsubsection{Manual Test 2}
-\label{sec:org7596e08}
+\label{sec:org9208220}
 \begin{center}
 \begin{tabular}{|p{6.0cm}|p{4.0cm}|p{3.0cm}|}
 Test Input & Test Oracle & Notes\\
@@ -899,7 +899,7 @@ document & "undefined" & Checks if element clickable.\\
 \end{center}
 
 \subsubsection{Manual Test 3}
-\label{sec:org9920769}
+\label{sec:org20222c3}
 \begin{center}
 \begin{tabular}{|p{4.0cm}|p{6.0cm}|p{3.0cm}|}
 Test Input & Test Oracle & Notes\\
@@ -912,7 +912,7 @@ Test Input & Test Oracle & Notes\\
 \end{center}
 
 \subsubsection{Manual Test 4}
-\label{sec:orgde533b7}
+\label{sec:org5ec88ae}
 \begin{center}
 \begin{tabular}{|p{2.0cm}|p{8.0cm}|p{3.0cm}|}
 Test Input & Test Oracle & Notes\\
@@ -924,7 +924,7 @@ Test Input & Test Oracle & Notes\\
 \end{tabular}
 \end{center}
 \subsubsection{Manual Test 5}
-\label{sec:org6511935}
+\label{sec:org0928961}
 \begin{center}
 \begin{tabular}{|p{4.0cm}|p{6.0cm}|p{3.0cm}|}
 Test Input & Test Oracle & Notes\\
@@ -936,7 +936,7 @@ Test Input & Test Oracle & Notes\\
 \end{tabular}
 \end{center}
 \subsubsection{Manual Test 6}
-\label{sec:org42c96c7}
+\label{sec:orgd85c240}
 \begin{center}
 \begin{tabular}{|p{4.0cm}|p{6.0cm}|p{3.0cm}|}
 Test Input & Test Oracle & Notes\\
@@ -948,7 +948,7 @@ Test Input & Test Oracle & Notes\\
 \end{tabular}
 \end{center}
 \subsection{Other Manual Test Code}
-\label{sec:org7238467}
+\label{sec:org38aa604}
 
 There were no other manual tests for this sprint.
 
@@ -963,15 +963,15 @@ ID & Test Input & Result & Name & of Test & Status & Developer\\
 \end{center}
 
 \section{Meeting Minutes}
-\label{sec:org97c0159}
+\label{sec:org3162aad}
 \subsection{Meeting 2019.09.04}
-\label{sec:orgda7ee5d}
+\label{sec:org776aa5f}
 \begin{itemize}
 \item Duration: 1 Hour
 \item Location: Miller Nichols Library
 \end{itemize}
 \subsubsection*{Agenda}
-\label{sec:orgc501247}
+\label{sec:org31cc3cc}
 \begin{itemize}
 \item going over project pdf as group
 \begin{itemize}
@@ -993,7 +993,7 @@ ID & Test Input & Result & Name & of Test & Status & Developer\\
 \end{itemize}
 \end{itemize}
 \subsubsection*{project 1 report}
-\label{sec:org2534368}
+\label{sec:org371f770}
 \begin{itemize}
 \item want to get scrum documentation done
 \item get general idea down by end of this friday (2019.09.06)
@@ -1010,13 +1010,13 @@ per individual)
 \item generating cards, user stories
 \end{itemize}
 \subsection{Meeting 2019.09.06}
-\label{sec:org75f6402}
+\label{sec:orga66718e}
 \begin{itemize}
 \item Duration: 1 Hour
 \item Location: Miller Nichols Library
 \end{itemize}
 \subsubsection*{Agenda}
-\label{sec:org32e473b}
+\label{sec:orgd948bc6}
 \begin{itemize}
 \item discussing game rules
 \item discussing/writing user stories
@@ -1024,7 +1024,7 @@ per individual)
 \item discussing design
 \end{itemize}
 \subsubsection*{Game Rules}
-\label{sec:orgdd0f27e}
+\label{sec:orgf953534}
 \begin{itemize}
 \item watched a video demo'ing the game
 \item discussed/clarify mechanics
@@ -1035,7 +1035,7 @@ per individual)
 \end{itemize}
 \end{itemize}
 \subsubsection*{User stories}
-\label{sec:orgf86e0be}
+\label{sec:org23886da}
 \begin{itemize}
 \item elias wrote user stories in a new org mode file called kanban.org on the
 repository
@@ -1045,13 +1045,13 @@ sprint 1
 cards for the project
 \end{itemize}
 \subsubsection*{Tooling \& Design}
-\label{sec:orgf318ebc}
+\label{sec:orgdcf217d}
 \begin{itemize}
 \item did not achieve agenda, did not get to these topics because of the time
 it took to discuss our epics/user stories.
 \end{itemize}
 \subsubsection*{{\bfseries\sffamily TODO} }
-\label{sec:orge33c287}
+\label{sec:org1ee6f36}
 \begin{itemize}
 \item[{$\square$}] discuss tooling
 \begin{itemize}
@@ -1067,13 +1067,13 @@ architecture.
 \end{itemize}
 \end{itemize}
 \subsection{Meeting 2019.09.27}
-\label{sec:orgdf09912}
+\label{sec:org0a1cb80}
 \begin{itemize}
 \item Duration: 1 Hour, 30 minutes
 \item Location: Miller Nichols Library
 \end{itemize}
 \subsubsection*{Agenda}
-\label{sec:org0af4c31}
+\label{sec:orgada5e7b}
 \begin{itemize}
 \item discuss project structure
 \item acceptance criteria
@@ -1081,7 +1081,7 @@ architecture.
 \item remaining TODOs
 \end{itemize}
 \subsubsection*{Project Structure}
-\label{sec:org6874821}
+\label{sec:org477828b}
 \begin{itemize}
 \item express.js has a lot of dependencies, only really need connect.js
 \begin{itemize}
@@ -1156,19 +1156,19 @@ given move is allowed
 \end{itemize}
 \end{itemize}
 \subsubsection*{Acceptance Criteria}
-\label{sec:org68f1be3}
+\label{sec:orgd4bc47f}
 \begin{itemize}
 \item realized we need to add numbering to the board GUI (a-g, 1-7)
 \item (deferred, Sam will begin working on before next meeting)
 \end{itemize}
 \subsubsection*{Work Assignment}
-\label{sec:orgaa39862}
+\label{sec:org45be7b3}
 \begin{itemize}
 \item elias will begin on exploratory work for the backend (board, entity management, etc)
 \item sam, michael will begin exploratory work for the frontend (GUI, communicating with backend)
 \end{itemize}
 \subsubsection*{{\bfseries\sffamily TODO} }
-\label{sec:orge175a35}
+\label{sec:org22e214e}
 \begin{itemize}
 \item[{$\square$}] kanban board setup, finalization of workflow for documentation
 \begin{itemize}
@@ -1183,23 +1183,23 @@ board accordingly; actual refinement can be delegated to within \texttt{kanban.o
 \end{itemize}
 \end{itemize}
 \subsection{Meeting 2019.10.02}
-\label{sec:org831300d}
+\label{sec:org8877061}
 \begin{itemize}
 \item Duration: 1 Hour, 40 Minutes
 \item Location: Miller Nichols Library
 \end{itemize}
 \subsubsection*{Agenda}
-\label{sec:orgab163bf}
+\label{sec:org9d4b5dc}
 \begin{itemize}
 \item addressing tagged issues generated on GitHub
 \item settling on how front-end talks to back-end
 \item documentation/design stuff
 \end{itemize}
 \subsubsection*{Issues on GitHub}
-\label{sec:org59dc12c}
+\label{sec:org079ea48}
 \begin{itemize}
 \item issue \#3: determine communication channel between js and rust
-\label{sec:orga9c5e03}
+\label{sec:org6ff4e2a}
 \begin{itemize}
 \item event polling seems overkill for what we need
 \item even handler on front-end which speaks to an entity ManagerGlue, which will be the JS that
@@ -1214,7 +1214,7 @@ actions are no longer needed or valid, i.e. button inputs or game state continua
 \end{itemize}
 \begin{itemize}
 \item issue \#4 is largely tagged to \#3, so this resolves that
-\label{sec:org5277c4d}
+\label{sec:org032a034}
 \begin{itemize}
 \item \texttt{State}: Input Handle + BoardStruct + Trigger)
 \item \texttt{BoardState}
@@ -1229,7 +1229,7 @@ actions are no longer needed or valid, i.e. button inputs or game state continua
 \end{itemize}
 \end{itemize}
 \item issue \#6: Front-end/GUI Skeleton, Basic Design
-\label{sec:org65cbc34}
+\label{sec:orgd624e8b}
 \begin{enumerate}
 \item Neon builds a node module
 \item This is sent to express.js
@@ -1244,14 +1244,14 @@ statically served to end user (i.e. browser)
 \item Stretch goal: being able to set different themes on the front-end
 \end{enumerate}
 \item issue \#8: CI/CD
-\label{sec:orgb7eced2}
+\label{sec:orgb3d37a2}
 \begin{itemize}
 \item GitHub has native CI/CD now via it's Action's service.
 \item can impl for both Rust and Node.js
 \end{itemize}
 \end{itemize}
 \subsubsection*{{\bfseries\sffamily TODO} }
-\label{sec:orgb7b2942}
+\label{sec:org680afc4}
 \begin{itemize}
 \item[{$\square$}] Design docs(?)
 \begin{itemize}
@@ -1264,13 +1264,13 @@ statically served to end user (i.e. browser)
 \end{itemize}
 \end{itemize}
 \subsection{Meeting 2019.10.03}
-\label{sec:org7c845ba}
+\label{sec:orgb0e1a68}
 \begin{itemize}
 \item Discord: 1 Hour, 53 Minutes
 \item Location: Video Call
 \end{itemize}
 \subsubsection*{Agenda}
-\label{sec:orgba00eb7}
+\label{sec:org1c42630}
 \begin{itemize}
 \item how to branch
 \item branching basic\(_{\text{gui}}\)
@@ -1278,7 +1278,7 @@ statically served to end user (i.e. browser)
 \item styling format
 \end{itemize}
 \subsubsection*{GitHub PR format}
-\label{sec:orgba6b1a2}
+\label{sec:org65e423a}
 \begin{itemize}
 \item Show Michael how to create a branch
 \item name the branch and pull from remote
@@ -1287,40 +1287,40 @@ statically served to end user (i.e. browser)
 \item checkout a branch
 \end{itemize}
 \subsubsection*{Branching \texttt{basic\_gui}}
-\label{sec:org992fb82}
+\label{sec:org3a7ebf7}
 \begin{itemize}
 \item created a branch \texttt{basic\_gui}
 \item set up an issue with the branch for PR
 \item push a commit from local to remote branch
 \end{itemize}
 \subsubsection*{GitHub PR format}
-\label{sec:orga9a8fe3}
+\label{sec:org2eb750a}
 \begin{itemize}
 \item went through how to form a PR from different branches
 \item how to further commit to the compare branch
 \end{itemize}
 \subsubsection*{Styling Format}
-\label{sec:org9879ee7}
+\label{sec:org66a830b}
 \begin{itemize}
 \item no bootstrap, no jquery
 \item setup proper layouts for the GUI
 \item discussed how we want to handle events onclick
 \end{itemize}
 \subsubsection*{{\bfseries\sffamily TODO} }
-\label{sec:orgaa22fae}
+\label{sec:orgbb383cf}
 \begin{itemize}
 \item push scaffolds for the website GUI
 \item handle basic logic for pushing items to back-end storage
 \item create mock of Rust functionality in TypeScript for further discussion
 \end{itemize}
 \subsection{Meeting 2019.10.05}
-\label{sec:orga4d0c9d}
+\label{sec:org069b7fd}
 \begin{itemize}
 \item Duration: 1 Hour, 16 Minutes
 \item Location: Video Call
 \end{itemize}
 \subsubsection*{Agenda}
-\label{sec:org3e3e7fa}
+\label{sec:org6ff4abd}
 \begin{itemize}
 \item CSS Grid
 \item SASS
@@ -1329,7 +1329,7 @@ statically served to end user (i.e. browser)
 \item proper layout for GUI
 \end{itemize}
 \subsubsection*{CSS Grid}
-\label{sec:org051e6ce}
+\label{sec:orgcbf3099}
 \begin{itemize}
 \item teach Michael about CSS Grid
 \item pure CSS, not bootstrap (Elias)
@@ -1337,7 +1337,7 @@ statically served to end user (i.e. browser)
 \item no need for floats / flexbox
 \end{itemize}
 \subsubsection*{SASS}
-\label{sec:orgff9cf4c}
+\label{sec:org4790c90}
 \begin{itemize}
 \item transpiler for CSS
 \item allows nested functionality
@@ -1345,7 +1345,7 @@ statically served to end user (i.e. browser)
 \item use \texttt{watch} script to sync changes
 \end{itemize}
 \subsubsection*{TypeScript}
-\label{sec:orgc0af3bd}
+\label{sec:org00c6079}
 \begin{itemize}
 \item better able to handle equivalence mocking to Rust
 \item easy to push onto browser
@@ -1353,14 +1353,14 @@ statically served to end user (i.e. browser)
 \item push to public folder for site access
 \end{itemize}
 \subsubsection*{Build Script Compilation and Runtime}
-\label{sec:orge471cb3}
+\label{sec:orgccd4211}
 \begin{itemize}
 \item use watch and start scripts to build site
 \item separate scripts will be run for Rust beforehand
 \item build scripts allow for synced changes between folders (see above)
 \end{itemize}
 \subsubsection*{Proper Layout for GUI}
-\label{sec:orgd417942}
+\label{sec:orgfb85dba}
 \begin{itemize}
 \item use column areas in CSS Grid
 \item main column for game
@@ -1368,7 +1368,7 @@ statically served to end user (i.e. browser)
 \item proportion text for board side-by-side
 \end{itemize}
 \subsubsection*{{\bfseries\sffamily TODO} }
-\label{sec:org31222a3}
+\label{sec:org02a97cf}
 \begin{itemize}
 \item design docs
 \item microcharter
@@ -1376,20 +1376,20 @@ statically served to end user (i.e. browser)
 \item event keys on front-end (browser)
 \end{itemize}
 \subsection{Meeting 2019.10.06}
-\label{sec:orgd66bd7e}
+\label{sec:org549629c}
 \begin{itemize}
 \item Duration: 7 hours
 \item Location: Video Call
 \end{itemize}
 \subsubsection*{Agenda}
-\label{sec:org6cbd959}
+\label{sec:orged52d11}
 \begin{itemize}
 \item Tying up loose ends with respect to documentation and write up
 \item Tying up loose ends with respect to UI/JS end of the application
 \item Discussing what is left to do with the project
 \end{itemize}
 \subsubsection*{Documentation and Write-up}
-\label{sec:org8cfe68d}
+\label{sec:orgb4d7e0b}
 \begin{itemize}
 \item Figured out how to format the tables given that many of the ones provided do not play well
 with latex/org-mode markdown
@@ -1397,7 +1397,7 @@ with latex/org-mode markdown
 \item Discussed the remaining things left undocumented, particularly pair ratings.
 \end{itemize}
 \subsubsection*{UI/JS Loose Ends}
-\label{sec:orgc79dddd}
+\label{sec:org90c7920}
 \begin{itemize}
 \item Complete manual testing of interacting elements
 \item Finalize positions of clickable elements on the board grid.
@@ -1405,10 +1405,10 @@ with latex/org-mode markdown
 \item Limiting piece placement to nine.
 \end{itemize}
 \subsubsection*{Discussing Future Sprint/Direction of Project}
-\label{sec:org01de224}
+\label{sec:org64f7354}
 \begin{itemize}
 \item Current User Stories are pseudo-Epics and need to be refined into better User stories aside
-from \hyperref[sec:org2e69c3c]{S1}. As they stand, discussing the current user stories makes for overly generic/abstract
+from \hyperref[sec:orgd1e2bba]{S1}. As they stand, discussing the current user stories makes for overly generic/abstract
 discussion and doesn't meaningfully translate into logic/behavior to implement and actual
 engineering tasks.
 \item Currently, the front end mocks all of the behavior/functionality that would otherwise be
@@ -1426,8 +1426,507 @@ write-up file
 \item How to test more of the functionality given that a major component of this application is
 running directly on the browser.
 \end{itemize}
+\subsection{Meeting 2019.10.11}
+\label{sec:org437714e}
+\begin{itemize}
+\item Duration: 2 hour
+\item Location: Miller Nichols Library
+\end{itemize}
+\subsubsection*{Agenda}
+\label{sec:org08413c6}
+\begin{itemize}
+\item review sprint 1
+\begin{itemize}
+\item bugs
+\end{itemize}
+\item roadmap sprint 2
+\begin{itemize}
+\item outline what is needed
+\item setup project board
+\item issues
+\item interface between front/end
+\end{itemize}
+\end{itemize}
+\subsubsection*{Review of Sprint 1}
+\label{sec:org8960800}
+\begin{itemize}
+\item GUI
+\begin{itemize}
+\item coordinate system
+\item testing was not fun w/ current setup
+\end{itemize}
+\item backend
+\begin{itemize}
+\item types, not much else
+\end{itemize}
+\item documentation
+\begin{itemize}
+\item implemented a decent workflow for putting together and compiling a documentation artifact
+for submission
+\end{itemize}
+\item complains
+\begin{itemize}
+\item mostly just not having enough meetings despite getting 6 of them in before deadline.
+\begin{itemize}
+\item had one right before submission, was clearly heavily crunch oriented.
+\item documentation was a major pain point given the ratio of code/work to actual required
+documentation.
+\end{itemize}
+\end{itemize}
+\end{itemize}
+\subsubsection*{Sprint 2 Roadmap}
+\label{sec:orgb44a424}
+\begin{itemize}
+\item bugs
+\label{sec:org70668bd}
+\begin{itemize}
+\item Wrong current player display
+\item Bad formatting of org mode files on GH
+\begin{itemize}
+\item won't fix bc final artifact pdf, that looks fine
+\end{itemize}
+\item Bad formatting of code inputs/outputs on manual tests within tables as currently.
+\end{itemize}
+\item submission requirements of Sprint 2
+\label{sec:org9f4567b}
+\begin{itemize}
+\item full human player vs human player functionality
+\begin{itemize}
+\item piece movement
+\item piece elimination
+\item mill formation
+\item (optional) piece flying
+\item end game
+\end{itemize}
+\item All proper documentation wrt to above new functionality and its implementation
+\begin{itemize}
+\item User story refinements
+\begin{itemize}
+\item side note: this is actually more sizeable then what it appears
+\end{itemize}
+\item AC and respective refinements
+\begin{itemize}
+\item at least one manual \textbf{or} automatic
+\end{itemize}
+\item all test code and documentation
+\begin{itemize}
+\item aside from manual/automatic requirements, all units of code should have a accompanying
+unit test.
+\end{itemize}
+\end{itemize}
+\end{itemize}
+\item project board (backlog/requirement refinement)
+\label{sec:org5137d4f}
+\begin{enumerate}
+\item Front End -> Backend communication
+\begin{itemize}
+\item JS speaks to rust
+\begin{itemize}
+\item Struct will have a position struct and an event enum that dictates to backend what to
+do next.
+\item let's call this object a \texttt{PushEventStruct}
+\item This represents the attempted inputs/moves of the current player
+\end{itemize}
+\end{itemize}
+\item Backend -> Front end communication
+\begin{itemize}
+\item backend runs actual logic and validation
+\item upon receiving a \texttt{PushEventStruct}, the back-end:
+\begin{enumerate}
+\item Does a validation:
+\begin{itemize}
+\item Checks whether requested action is valid in the current game state
+\item When not valid, immediate returns:
+\begin{enumerate}
+\item Original \texttt{BoardStruct}
+\item \texttt{InputHandle} -> Error that rust handles, and returns "none" to JS
+\item \texttt{Trigger} dependent on game state transition
+\end{enumerate}
+\end{itemize}
+\item Game Manager handles event:
+\begin{itemize}
+\item Processes game events and generates resulting new game state
+\end{itemize}
+\item Back-end returns new \texttt{State}, where:
+\begin{itemize}
+\item \texttt{InputHandle} is \texttt{Success}
+\item \texttt{BoardStruct} is the new \texttt{State}
+\item \texttt{Trigger} of the condition of the phase is satisfied
+\begin{itemize}
+\item \texttt{none}
+\item \texttt{elimination}
+\item \texttt{flying}
+\item \texttt{gameover}
+\end{itemize}
+\end{itemize}
+\end{enumerate}
+\end{itemize}
+\item Proper GUI styling
+\begin{itemize}
+\item Add Game meta information
+\begin{itemize}
+\item how many pieces left for each player
+\item current phase (turn)
+\item (optional/idea) GUI indicates existing mills
+\end{itemize}
+\item game menu
+\begin{itemize}
+\item theme options
+\item game options
+\item how to play
+\end{itemize}
+\item mobile/responsive design
+\end{itemize}
+\end{enumerate}
+\item snow plow form sprint 1
+\label{sec:org0290783}
+\begin{enumerate}
+\item design docs
+\item Development Workflow
+\begin{itemize}
+\item CI/CD with GitHub Actions
+\begin{itemize}
+\item CI
+\begin{itemize}
+\item need front-end GH Action
+\item need back-end GH Action
+\item figure out action for integration between front/back components
+\end{itemize}
+\end{itemize}
+\item Development environment documentation
+\begin{itemize}
+\item How to setup local machine to build both the front and back-end
+\end{itemize}
+\end{itemize}
+\end{enumerate}
+\end{itemize}
+\subsection{Meeting 2019.10.25}
+\label{sec:orgebd1387}
+\begin{itemize}
+\item Duration: 2 hours
+\item Location: Miller Nichols Library
+\end{itemize}
+\subsubsection*{Agenda}
+\label{sec:org9c9a469}
+\begin{itemize}
+\item new project format
+\item testing
+\begin{itemize}
+\item server
+\item gui
+\item unit testing
+\end{itemize}
+\item interop/ffi/interfaces
+\begin{itemize}
+\item managerGlue
+\end{itemize}
+\item general development/programming
+\end{itemize}
+\subsubsection*{Project Format}
+\label{sec:org055c55a}
+\begin{itemize}
+\item rust projects using neon have a default layout
+\begin{itemize}
+\item not friendly for testing the rust specific code
+\item similarly, not friendly for testing the node/js/front-end code not involved with rust
+exported module
+\end{itemize}
+\item solution: rust workspaces
+\begin{itemize}
+\item simply change top level to have cargo file with workspace member declarations
+\item well documented here: \url{https://github.com/neon-bindings/examples/tree/master/workspace}
+\end{itemize}
+\item benefits:
+\begin{itemize}
+\item can now run rust tests independent of node/js via traditional \texttt{cargo test} and \texttt{cargo check}
+\item furthermore, now have backend code organized as:
+\begin{verse}
+.\\
+├── Cargo.lock\\
+├── Cargo.toml\\
+├── lib\\
+│   └── index.js\\
+├── native\\
+\hspace*{4em}├── artifacts.json\\
+\hspace*{4em}├── base\\
+\hspace*{4em}│   ├── Cargo.toml\\
+\hspace*{4em}│   └── src\\
+\hspace*{4em}├── build.rs\\
+\hspace*{4em}├── Cargo.toml\\
+\hspace*{4em}├── index.node\\
+\hspace*{4em}├── src\\
+\hspace*{4em}│   └── lib.rs\\
+\hspace*{4em}└── target\\
+\end{verse}
+\item This allows us to move all logic into a sub-crate, \texttt{base}, which is private and internal to
+the backend. An API for the module that provides the backend functionality is the only thing
+exposed in the main \texttt{native/src/lib.rs} file, which is what is compiled and exported to node.
+\begin{itemize}
+\item i.e. we keep our code enapsulated and enforce demeter's law
+\end{itemize}
+\item finally, means all integrations tests on node side only test the actual interopability logic
+and functionality rather than any of the rust specific code and logic.
+\end{itemize}
+\end{itemize}
+\subsubsection*{Testing}
+\label{sec:orgc452ee4}
+\begin{itemize}
+\item ibid project format for overall structure's effect on testing approach
+\item server (node):
+\begin{itemize}
+\item no browser tests
+\item check if all functions are translated properly
+\begin{itemize}
+\item node functions get translated to plaintext js functions
+\end{itemize}
+\item request testing
+\begin{itemize}
+\item extra assets (GET stuff)
+\item further research/parking lot:
+\begin{itemize}
+\item coop and multiple clients
+\end{itemize}
+\end{itemize}
+\end{itemize}
+\item gui (client stuff):
+\begin{itemize}
+\item test functions within test module:
+\begin{itemize}
+\item master functions that assert all tests at instantiation
+\item i.e. when browser pulls the plain js
+\item pull from dev endpoint
+\end{itemize}
+\item manual testing:
+\begin{itemize}
+\item automated testing on browser is pretty bad/gross
+\item getting setup not really worth it, so opting for manual tests as necessary.
+\end{itemize}
+\item three layer testing (\texttt{eventPress}):
+\begin{itemize}
+\item log input events from divs
+\item validation testing on newly retrieved \texttt{BoardState}
+\end{itemize}
+\end{itemize}
+\item unit testing:
+\begin{itemize}
+\item \textbf{reminder}: 1:1 ratio between functions and tests at minimum, 2:3 ideally
+\item rust is pretty straight forward, built in as first class feature.
+\begin{itemize}
+\item managerGlue
+\begin{itemize}
+\item dedicated interop testing
+\item mutation of state from rust
+\item this is probably going to mocking
+\end{itemize}
+\end{itemize}
+\end{itemize}
+\end{itemize}
+\subsubsection*{Interop/FFI/Interface}
+\label{sec:orgb506021}
+\begin{itemize}
+\item rust -> neon -> index.node -> yields an array of exports, i.e. \texttt{register\_module!}
+\item managerGlue
+\begin{itemize}
+\item pulls rust functions into script source, i.e. require
+\item completely server side
+\item browser does not support at current level
+\begin{itemize}
+\item node has a virtual dom representation that browsers simply don't support
+\item this is why node gets trans to strings, saved as asset/js,  and pulled into browser
+\end{itemize}
+\end{itemize}
+\end{itemize}
+\subsubsection*{{\bfseries\sffamily TODO} action items}
+\label{sec:org906ed22}
+\begin{itemize}
+\item refine user stories generally
+\begin{itemize}
+\item currently are epic-y, need to be more specific and decomposable
+\end{itemize}
+\item Generate acceptance criterions from new refinements + issues discussed in today's meeting
+\begin{itemize}
+\item add as items to issues/sprint 2 board on GH
+\end{itemize}
+\end{itemize}
+\subsection{Meeting 2019.11.01}
+\label{sec:org6fb13a4}
+\begin{itemize}
+\item duration: 2 hours
+\item Location: Miller Nichols Library
+\end{itemize}
+\subsubsection*{Agenda}
+\label{sec:orgbb79de6}
+\begin{itemize}
+\item updates on back-end
+\item discuss change of server structure
+\item code review
+\item refinement user stories
+\item refinement acceptance criteria
+\item matching browser to server requirements
+\end{itemize}
+\subsubsection*{Back-end Updates}
+\label{sec:orga727e93}
+\begin{itemize}
+\item made a \href{https://github.com/amadeusine/CS449GroupProject/issues/22}{tracking issue} on GH for all requirements of sprint2 with respect to back-end
+\item consists of multiple tasks derived from acceptance criterion and user story relevant to
+game board
+\begin{itemize}
+\item \#23: align back-end types with front-end types due to requirement changes (DONE)
+\item \#28: add file reader utility (DONE)
+\item \#24: exporting rust types to js equivs (Nearly done)
+\item \#25: importing js types to rust equivs (TODO)
+\item \#26: game validation logic (\#)
+\end{itemize}
+\item \textbf{NOTE about game movement}
+\begin{itemize}
+\item No longer have PieceSwitch/PieceMove enums.
+\item Instead, option will yield a player and a position
+\item backend will know from gamestate whether this is a piece moving OUT or INTO a position
+\item will check accordingly
+\end{itemize}
+\end{itemize}
+\subsubsection*{Server Structure Changes}
+\label{sec:org273d2b1}
+\begin{itemize}
+\item Four changes coming out:
+\begin{enumerate}
+\item break out static files from server
+\begin{itemize}
+\item tightly coupled with server currently
+\item as if local app
+\end{itemize}
+\item adding 3 endpoints for:
+\begin{itemize}
+\item logic
+\item theme
+\item setup: (reach stuff for sprint3)
+\end{itemize}
+\item new structures and classes (issue \#31)
+\begin{itemize}
+\item client connection class
+\begin{itemize}
+\item browser \& networking validation
+\item putting in place design necessary to allow program to be extended to client-client
+interactions
+\item separation of game and web-server
+\end{itemize}
+\item onclick request (Browser side)
+\begin{itemize}
+\item setup structure for binding between browser and server, 1:1
+\item each event calls back to browser's main function for getRequest
+\begin{itemize}
+\item send off payload to server, which sends to rust module export
+\end{itemize}
+\end{itemize}
+\item browser needs its own board manager, separate from ManagerGlue
+\begin{itemize}
+\item allows for state to be accepted on browser side
+\end{itemize}
+\item BoardReceptor (server)
+\begin{itemize}
+\item scaffold for endpoint components
+\item allows browser to hit endpoints/communicate with server
+\end{itemize}
+\end{itemize}
+\end{enumerate}
+\end{itemize}
+\subsubsection*{Code Review}
+\label{sec:org7888dc2}
+\begin{itemize}
+\item documented in sprint2\(_{\text{writeup.org}}\)
+\end{itemize}
+\subsubsection*{Matching Browser-Server Reqs}
+\label{sec:org00c8456}
+\begin{itemize}
+\item Reference: server structure changes list item 3
+\item triggers are sent from server to browser
+\begin{itemize}
+\item new components are entered on display
+\begin{itemize}
+\item menu item
+\item removal of input during player's turn, on opponent
+\item game over
+\item restart
+\end{itemize}
+\end{itemize}
+\end{itemize}
+\subsubsection*{{\bfseries\sffamily TODO} }
+\label{sec:org813f270}
+\begin{itemize}
+\item refinement (grooming) of US, AC, and tasks.
+\end{itemize}
+\subsection{Meeting 2019.11.02}
+\label{sec:orge2bab62}
+\begin{itemize}
+\item Duration: 2 hour
+\item Location: Voice Chat
+\end{itemize}
+\subsubsection*{Agenda}
+\label{sec:orge751e6d}
+\begin{itemize}
+\item refactor server templating
+\item add endpoints
+\item revise UI
+\end{itemize}
+\subsubsection*{Refactor Server Templating}
+\label{sec:orgfeb5f01}
+\begin{itemize}
+\item board grid elements can be iterated
+\item colors can be templated
+\item tests can be separated
+\item scripts can be separated
+\end{itemize}
+\subsubsection*{Add Endpoints}
+\label{sec:orgdf83b8c}
+\begin{itemize}
+\item see last meeting (endpoint list)
+\item logic receives payload, returns native response
+\item BoardReceptor now implied, soon to be implemented (sprint \#3)
+\item error component templates on bad payload
+\end{itemize}
+\subsubsection*{Revise UI}
+\label{sec:org6ef047b}
+\begin{itemize}
+\item Figma for design mockups
+\item Get menu bar up and running (Michael)
+\item Reconfigure game site layout
+\item information page?
+\end{itemize}
+\subsubsection*{{\bfseries\sffamily TODO} }
+\label{sec:org16b5e84}
+\begin{itemize}
+\item add final endpoints for talkback
+\item browser's `Window`/`Board` needs HTTP adhesion to server
+\item design reconfiguration
+\end{itemize}
+\subsection{Meeting 2019.11.03}
+\label{sec:orgdd34e4b}
+\begin{itemize}
+\item Duration: 7 hour
+\item Location: Voice Chat
+\end{itemize}
+\subsubsection*{agenda}
+\label{sec:org32cc65f}
+\begin{itemize}
+\item Blitzing remaining issues
+\item Blitzing documentation
+\end{itemize}
+\subsubsection*{Remaining Issues}
+\label{sec:org8f1f2a6}
+\begin{itemize}
+\item Mocking final game logic with typescript
+\item Adding tests
+\item Definition of Done: Hit all story points that have been listed thus far.
+\end{itemize}
+\subsubsection*{Blitzing Documentation}
+\label{sec:orga550ed1}
+\begin{itemize}
+\item Updating all tables
+\item Fixing formatting on code review tables
+\item Adding new meeting minutes
+\end{itemize}
 \section{Team Ratings}
-\label{sec:org905b311}
+\label{sec:org638b8fb}
 Submission document does not specify scale, so it is assumed out of 5 with 1 being "Worst" and 5
 being "Excellent".
 

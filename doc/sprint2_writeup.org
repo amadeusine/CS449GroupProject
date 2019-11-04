@@ -1370,6 +1370,352 @@
       write-up file
     - How to test more of the functionality given that a major component of this application is
       running directly on the browser.
+** Meeting 2019.10.11
+   - Duration: 2 hour
+   - Location: Miller Nichols Library
+*** Agenda
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - review sprint 1
+      + bugs
+    - roadmap sprint 2
+      + outline what is needed
+      + setup project board
+      + issues
+      + interface between front/end
+*** Review of Sprint 1
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - GUI
+      + coordinate system
+      + testing was not fun w/ current setup
+    - backend
+      + types, not much else
+    - documentation
+      + implemented a decent workflow for putting together and compiling a documentation artifact
+        for submission
+    - complains
+      + mostly just not having enough meetings despite getting 6 of them in before deadline.
+        * had one right before submission, was clearly heavily crunch oriented.
+        * documentation was a major pain point given the ratio of code/work to actual required
+          documentation.
+*** Sprint 2 Roadmap 
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+**** bugs
+     - Wrong current player display
+     - Bad formatting of org mode files on GH
+       + won't fix bc final artifact pdf, that looks fine
+     - Bad formatting of code inputs/outputs on manual tests within tables as currently.
+**** submission requirements of Sprint 2
+     - full human player vs human player functionality
+       + piece movement
+       + piece elimination
+       + mill formation
+       + (optional) piece flying
+       + end game
+     - All proper documentation wrt to above new functionality and its implementation
+       + User story refinements
+         * side note: this is actually more sizeable then what it appears
+       + AC and respective refinements
+         * at least one manual *or* automatic
+       + all test code and documentation
+         * aside from manual/automatic requirements, all units of code should have a accompanying
+           unit test.
+**** project board (backlog/requirement refinement)
+     1. Front End -> Backend communication
+        - JS speaks to rust
+          + Struct will have a position struct and an event enum that dictates to backend what to
+            do next.
+          + let's call this object a =PushEventStruct=
+          + This represents the attempted inputs/moves of the current player
+     2. Backend -> Front end communication
+        - backend runs actual logic and validation
+        - upon receiving a =PushEventStruct=, the back-end:
+          1. Does a validation:
+             - Checks whether requested action is valid in the current game state
+             - When not valid, immediate returns:
+               1. Original =BoardStruct=
+               2. =InputHandle= -> Error that rust handles, and returns "none" to JS
+               3. =Trigger= dependent on game state transition
+          2. Game Manager handles event:
+             - Processes game events and generates resulting new game state
+          3. Back-end returns new =State=, where:
+             - =InputHandle= is =Success=
+             - =BoardStruct= is the new =State=
+             - =Trigger= of the condition of the phase is satisfied
+               + =none=
+               + =elimination=
+               + =flying=
+               + =gameover=
+     3. Proper GUI styling
+        - Add Game meta information
+          + how many pieces left for each player
+          + current phase (turn)
+          + (optional/idea) GUI indicates existing mills
+        - game menu
+          + theme options
+          + game options
+          + how to play
+        - mobile/responsive design
+**** snow plow form sprint 1
+     1. design docs
+     2. Development Workflow
+        - CI/CD with GitHub Actions
+          + CI
+            * need front-end GH Action
+            * need back-end GH Action
+            * figure out action for integration between front/back components
+        - Development environment documentation
+          + How to setup local machine to build both the front and back-end
+** Meeting 2019.10.25
+   - Duration: 2 hours
+   - Location: Miller Nichols Library
+*** Agenda
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - new project format
+    - testing
+      + server
+      + gui
+      + unit testing
+    - interop/ffi/interfaces
+      + managerGlue
+    - general development/programming
+*** Project Format
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - rust projects using neon have a default layout
+      + not friendly for testing the rust specific code
+      + similarly, not friendly for testing the node/js/front-end code not involved with rust
+        exported module
+    - solution: rust workspaces
+      + simply change top level to have cargo file with workspace member declarations
+      + well documented here: https://github.com/neon-bindings/examples/tree/master/workspace
+    - benefits:
+      + can now run rust tests independent of node/js via traditional ~cargo test~ and ~cargo check~
+      + furthermore, now have backend code organized as:
+        #+begin_verse
+        .
+        ├── Cargo.lock
+        ├── Cargo.toml
+        ├── lib
+        │   └── index.js
+        ├── native
+            ├── artifacts.json
+            ├── base
+            │   ├── Cargo.toml
+            │   └── src
+            ├── build.rs
+            ├── Cargo.toml
+            ├── index.node
+            ├── src
+            │   └── lib.rs
+            └── target
+        #+end_verse
+      + This allows us to move all logic into a sub-crate, =base=, which is private and internal to
+         the backend. An API for the module that provides the backend functionality is the only thing
+         exposed in the main ~native/src/lib.rs~ file, which is what is compiled and exported to node.
+        - i.e. we keep our code enapsulated and enforce demeter's law
+      + finally, means all integrations tests on node side only test the actual interopability logic
+        and functionality rather than any of the rust specific code and logic.
+*** Testing
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - ibid project format for overall structure's effect on testing approach
+    - server (node):
+      + no browser tests
+      + check if all functions are translated properly
+        * node functions get translated to plaintext js functions
+      + request testing
+        * extra assets (GET stuff)
+        * further research/parking lot:
+          - coop and multiple clients
+    - gui (client stuff):
+      + test functions within test module:
+        * master functions that assert all tests at instantiation
+        * i.e. when browser pulls the plain js
+        * pull from dev endpoint
+      + manual testing:
+        * automated testing on browser is pretty bad/gross
+        * getting setup not really worth it, so opting for manual tests as necessary.
+      + three layer testing (~eventPress~):
+        * log input events from divs
+        * validation testing on newly retrieved ~BoardState~
+    - unit testing:
+      + *reminder*: 1:1 ratio between functions and tests at minimum, 2:3 ideally
+      + rust is pretty straight forward, built in as first class feature.
+        * managerGlue
+          - dedicated interop testing
+          - mutation of state from rust
+          - this is probably going to mocking
+*** Interop/FFI/Interface
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - rust -> neon -> index.node -> yields an array of exports, i.e. ~register_module!~
+    - managerGlue
+      + pulls rust functions into script source, i.e. require
+      + completely server side
+      + browser does not support at current level
+        * node has a virtual dom representation that browsers simply don't support
+        * this is why node gets trans to strings, saved as asset/js,  and pulled into browser
+*** TODO action items
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - refine user stories generally
+      + currently are epic-y, need to be more specific and decomposable
+    - Generate acceptance criterions from new refinements + issues discussed in today's meeting
+      + add as items to issues/sprint 2 board on GH
+** Meeting 2019.11.01
+   - duration: 2 hours
+   - Location: Miller Nichols Library
+*** Agenda
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+     - updates on back-end
+     - discuss change of server structure
+     - code review
+     - refinement user stories
+     - refinement acceptance criteria
+     - matching browser to server requirements
+*** Back-end Updates
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - made a [[https://github.com/amadeusine/CS449GroupProject/issues/22][tracking issue]] on GH for all requirements of sprint2 with respect to back-end
+    - consists of multiple tasks derived from acceptance criterion and user story relevant to
+      game board
+      + #23: align back-end types with front-end types due to requirement changes (DONE)
+      + #28: add file reader utility (DONE)
+      + #24: exporting rust types to js equivs (Nearly done)
+      + #25: importing js types to rust equivs (TODO)
+      + #26: game validation logic (#)
+    - *NOTE about game movement*
+      * No longer have PieceSwitch/PieceMove enums.
+      * Instead, option will yield a player and a position
+      * backend will know from gamestate whether this is a piece moving OUT or INTO a position
+      * will check accordingly
+*** Server Structure Changes
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - Four changes coming out:
+      1. break out static files from server
+         - tightly coupled with server currently
+         - as if local app
+      2. adding 3 endpoints for:
+         - logic
+         - theme
+         - setup: (reach stuff for sprint3)
+      3. new structures and classes (issue #31)
+         - client connection class
+           + browser & networking validation
+           + putting in place design necessary to allow program to be extended to client-client
+             interactions
+           + separation of game and web-server
+         - onclick request (Browser side)
+           + setup structure for binding between browser and server, 1:1
+           + each event calls back to browser's main function for getRequest
+             * send off payload to server, which sends to rust module export
+         - browser needs its own board manager, separate from ManagerGlue
+           + allows for state to be accepted on browser side
+         - BoardReceptor (server)
+           + scaffold for endpoint components
+           + allows browser to hit endpoints/communicate with server
+*** Code Review
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - documented in sprint2_writeup.org
+*** Matching Browser-Server Reqs
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - Reference: server structure changes list item 3
+    - triggers are sent from server to browser
+      + new components are entered on display
+        * menu item
+        * removal of input during player's turn, on opponent
+        * game over
+        * restart
+*** TODO
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - refinement (grooming) of US, AC, and tasks.
+** Meeting 2019.11.02
+   - Duration: 2 hour
+   - Location: Voice Chat
+*** Agenda
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+ - refactor server templating
+ - add endpoints
+ - revise UI
+*** Refactor Server Templating
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+     - board grid elements can be iterated
+     - colors can be templated
+     - tests can be separated
+     - scripts can be separated
+*** Add Endpoints
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+     - see last meeting (endpoint list)
+     - logic receives payload, returns native response
+     - BoardReceptor now implied, soon to be implemented (sprint #3)
+     - error component templates on bad payload
+*** Revise UI
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+     - Figma for design mockups
+     - Get menu bar up and running (Michael)
+     - Reconfigure game site layout
+     - information page?
+*** TODO
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+     - add final endpoints for talkback
+     - browser's `Window`/`Board` needs HTTP adhesion to server
+     - design reconfiguration
+** Meeting 2019.11.03
+   - Duration: 7 hour
+   - Location: Voice Chat
+*** agenda
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - Blitzing remaining issues
+    - Blitzing documentation
+*** Remaining Issues
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - Mocking final game logic with typescript
+    - Adding tests
+    - Definition of Done: Hit all story points that have been listed thus far.
+*** Blitzing Documentation
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - Updating all tables
+    - Fixing formatting on code review tables
+    - Adding new meeting minutes
 * Team Ratings
   :PROPERTIES:
   :CUSTOM_ID: S7
