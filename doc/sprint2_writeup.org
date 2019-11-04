@@ -1,6 +1,6 @@
 #+TITLE: CS449 Sprint 1 Report
-#+AUTHOR: Michael Cu, Elias Julian Marko Garcia, Samual Lim
-#+SUBTITLE: Team \textbf{Misael's} Project Submission
+#+AUTHOR: Team \textbf{Misael's} Project Submission
+#+SUBTITLE: Michael Cu, Elias Julian Marko Garcia, Samual Lim
 #+LATEX_HEADER: \usepackage{float}
 #+LATEX_HEADER: \usepackage{array}
 
