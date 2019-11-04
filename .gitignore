@@ -8,3 +8,12 @@
 
 #/target
 #**/*.rs.bk
+
+
+# Latex
+*.bbl
+*blx.bib
+*.aux
+*.log
+*.toc
+*.out
