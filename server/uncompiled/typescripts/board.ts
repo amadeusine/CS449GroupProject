@@ -43,11 +43,11 @@ class Position {
         return this._owner !== undefined;
     }
 
-    public set owner(player: Player | undefined) {
+    public setOwner(player: Player | undefined) {
         this._owner = player;
     }
 
-    public get owner(): Player | undefined {
+    public getOwner(): Player | undefined {
         return this._owner;
     }
 
@@ -94,14 +94,7 @@ class Board {
         });
     }
 
-    public at(position: Coord | Position | string): Position {
-        let coord: string;
-        if (position instanceof Position)
-            position = position.position;
-        if (typeof(position) === 'string')
-            coord = position;
-        else
-            coord = position.x + position.y;
-        return this.board[coord];
+    public at(position: string): Position {
+        return this.board[position];
     }
 }
