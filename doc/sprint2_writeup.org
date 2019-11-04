@@ -1,6 +1,6 @@
 #+TITLE: CS449 Sprint 1 Report
 #+AUTHOR: Team \textbf{Misael's} Project Submission
-#+SUBTITLE: Michael Cu, Elias Julian Marko Garcia, Samual Lim
+#+SUBTITLE: Michael Cu, Elias Julian Marko Garcia, Samuel Lim
 #+LATEX_HEADER: \usepackage{float}
 #+LATEX_HEADER: \usepackage{array}
 
@@ -59,7 +59,7 @@
    :END:
    - Michael Cu
    - Elias Julian Marko Garcia
-   - Samual Lim
+   - Samuel Lim
 * User Stories
   :PROPERTIES:
   :CUSTOM_ID: S2
@@ -372,72 +372,82 @@
   subsection below for viewing the description of each criterion.
 
    #+ATTR_LaTeX: :align |l|c|c|c|
-   | SID & Name                   | ACID | Status | Developer(s)        |
-   |------------------------------+------+--------+---------------------|
-   | [[#SID1][S1]] Mills Board               | [[#ACID1][A1]]   | DONE   | Sam, Elias, Michael |
-   |------------------------------+------+--------+---------------------|
-   | [[#SID2][S2]] User Input and Selection  | [[#ACID2][A2]]   | DONE   | Sam, Elias, Michael |
-   |------------------------------+------+--------+---------------------|
-   | [[#SID3][S3]] Starting a Game           | [[#ACID3][A3]]   | TODO   | -                   |
-   |------------------------------+------+--------+---------------------|
-   | [[#SID4][S4]] Assigning Players         | [[#ACID4][A4]]   | TODO   | -                   |
-   |------------------------------+------+--------+---------------------|
-   | [[#SID5][S5]] Piece Placement           | [[#ACID5][A5]]   | DONE   | Sam, Michael        |
-   |------------------------------+------+--------+---------------------|
-   | [[#SID6][S6]] Piece Movement            | [[#ACID6][A6]]   | TODO   | -                   |
-   |------------------------------+------+--------+---------------------|
-   | [[#SID7][S7]] Mill Formation            | [[#ACID7][A7]]   | TODO   | -                   |
-   |------------------------------+------+--------+---------------------|
-   | [[#SID8][S8]] Piece Elimination         | [[#ACID8][A8]]   | TODO   | -                   |
-   |------------------------------+------+--------+---------------------|
-   | [[#SID9][S9]] Flying Pieces             | [[#ACID9][A9]]   | TODO   | -                   |
-   |------------------------------+------+--------+---------------------|
-   | [[#SID10][S10]] Defining End Game        | [[#ACID10][A10]]  | TODO   | -                   |
-   |------------------------------+------+--------+---------------------|
-   | [[#SID11][S11]] Restarting/Replaying     | [[#ACID11][A11]]  | TODO   | -                   |
-   | $\hspace{0.4cm}$ Game        |      |        |                     |
-
+   | SID & Name                 | ACID | Status | Developer(s)        |
+   |----------------------------+------+--------+---------------------|
+   | [[#SID1][S1]] Default Board Layout    | [[#ACID1][A1]]   | DONE   | Sam, Elias, Michael |
+   |----------------------------+------+--------+---------------------|
+   | [[#SID2][S2]] Mills Board Coordinate  | [[#ACID2][A2]]   | DONE   | Sam, Elias, Michael |
+   | $\hspace{0.4cm}$ System    |      |        |                     |
+   |----------------------------+------+--------+---------------------|
+   | [[#SID3][S3]] Player Selection        | [[#ACID3][A3]]   | TODO   | -                   |
+   |----------------------------+------+--------+---------------------|
+   | [[#SID4][S4]] Piece Assignment        | [[#ACID4][A4]]   | TODO   | -                   |
+   |----------------------------+------+--------+---------------------|
+   | [[#SID5][S5]] Game Menu Prompt        | [[#ACID5][A5]]   | DONE   | Sam, Michael        |
+   |----------------------------+------+--------+---------------------|
+   | [[#SID6][S6]] Start Game Prompt       | [[#ACID6][A6]]   | TODO   | -                   |
+   |----------------------------+------+--------+---------------------|
+   | [[#SID7][S7]] Player Turn Assignment  | [[#ACID7][A7]]   | TODO   | -                   |
+   |----------------------------+------+--------+---------------------|
+   | [[#SID8][S8]] Position Selection      | [[#ACID8][A8]]   | TODO   | -                   |
+   |----------------------------+------+--------+---------------------|
+   | [[#SID9][S9]] Position Placement      | [[#ACID9][A9]]   | TODO   | -                   |
+   |----------------------------+------+--------+---------------------|
+   | [[#SID10][S10]] Position Movement      | [[#ACID10][A10]]  | TODO   | -                   |
+   |----------------------------+------+--------+---------------------|
+   | [[#SID11][S11]] Elimination Movement   | [[#ACID11][A11]]  | TODO   | -                   |
+   |----------------------------+------+--------+---------------------|
+   | [[#SID12][S12]] Mill Definition        | [[#ACID12][A12]]  | TODO   | -                   |
+   |----------------------------+------+--------+---------------------|
+   | [[#SID13][S13]] Mill Attack Attribute  | [[#ACID13][A13]]  | TODO   | -                   |
+   |----------------------------+------+--------+---------------------|
+   | [[#SID14][S14]] Mill Defense Attribute | [[#ACID14][A14]]  | TODO   | -                   |
+   |----------------------------+------+--------+---------------------|
+   | [[#SID15][S15]] Mill Piece Movement    | [[#ACID15][A15]]  | TODO   | -                   |
+   |----------------------------+------+--------+---------------------|
+   | [[#SID16][S16]] Elimination with Mills | [[#ACID16][A16]]  | TODO   | -                   |
+   |----------------------------+------+--------+---------------------|
+   | [[#SID17][S17]] Flying Definition      | [[#ACID17][A17]]  | TODO   | -                   |
+   |----------------------------+------+--------+---------------------|
+   | [[#SID18][S18]] Flying Piece Ability   | [[#ACID18][A18]]  | TODO   | -                   |
+   |----------------------------+------+--------+---------------------|
+   | [[#SID19][S19]] End Game: Loss         | [[#ACID19][A19]]  | TODO   | -                   |
+   |----------------------------+------+--------+---------------------|
+   | [[#SID20][S20]] End Game: Win          | [[#ACID20][A20]]  | TODO   | -                   |
+   |----------------------------+------+--------+---------------------|
+   | [[#SID21][S21]] End Game: Tie          | [[#ACID21][A21]]  | TODO   | -                   |
+   |----------------------------+------+--------+---------------------|
+   | [[#SID22][S22]] Reset Board            | [[#ACID22][A22]]  | TODO   | -                   |
+   |----------------------------+------+--------+---------------------|
+   | [[#SID23][S23]] Start New Game         | [[#ACID23][A23]]  | TODO   | -                   |
+   
 ** Criterion 1
    :PROPERTIES:
    :CUSTOM_ID: ACID1
    :END:
-   #+ATTR_LaTeX: :align |c|p{12.0cm}|
-   | ACID | Description                                                                |
-   |------+----------------------------------------------------------------------------|
-   |  1.0 | Given a User...                                                            |
-   |------+----------------------------------------------------------------------------|
-   |  1.1 | When the User visits our site (IP), then an interactive board will appear. |
-   |      |                                                                            |
-   |  1.2 | When the User does not visit our site (IP), our board will not appear.     |
-   
-*** Further Notes
-    :PROPERTIES:
-    :UNNUMBERED: t
-    :END:
-
-    None for now.
+    #+ATTR_LaTeX: :align |c|p{12.0cm}|
+    |      | <71>                                                                    |
+    | ACID | Description                                                             |
+    |------+-------------------------------------------------------------------------|
+    |  1.0 | Given a User...                                                         |
+    |------+-------------------------------------------------------------------------|
+    |  1.1 | When the board appears, it will render the default layout for Nine Men's Morris |
+    |      |                                                                         |
+    |  1.2 | When the User does not visit our site (IP), the board will not appear.  |
 
 ** Criterion 2
    :PROPERTIES:
    :CUSTOM_ID: ACID2
    :END:
    #+ATTR_LaTeX: :align |c|p{12.0cm}|
-   | ACID | Description                                                            |
-   |------+------------------------------------------------------------------------|
-   |  2.0 | Given a User using the application...                                  |
-   |------+------------------------------------------------------------------------|
-   |  2.1 | When a user clicks on an interactive button of the application's page, |
-   |      | then the application will detect the user input event.                 |
-   |      |                                                                        |
-   |  2.2 | When a user clicks on a non-interactive button of the application's    |
-   |      | page, then the application will not detect any input.                  |
-   
-*** Further Notes
-    :PROPERTIES:
-    :UNNUMBERED: t
-    :END:
-
-    None for now.
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   |  2.0 | Given a User...                                                         |
+   |------+-------------------------------------------------------------------------|
+   |  2.1 | When the board is rendered, it will include a coordinate system along the axis. |
+   |      |                                                                         |
+   |  2.2 | When the board is not rendered, there will be no coordinate system.     |
 
 ** Criterion 3
    :PROPERTIES:
@@ -447,25 +457,16 @@
    |      | <71>                                                                    |
    | ACID | Description                                                             |
    |------+-------------------------------------------------------------------------|
-   |  3.0 | Given a User using the application...                                   |
+   |  3.0 | Given a user...                                                         |
    |------+-------------------------------------------------------------------------|
-   |  3.1 | When a user enters HUMAN as an opponent, then the application will      |
-   |      | allow for a second human player.                                        |
+   |  3.1 | When a user chooses one of two colors, then their player pieces will    |
+   |      | be the chosen color.                                                    |
    |      |                                                                         |
-   |  3.2 | When a user enters AI as an opponent, then the application will assign  |
-   |      | an AI as a second player.                                               |
+   |  3.2 | When a user chooses one of the two colors, and it is already taken,     |
+   |      | then they will not be the chosen color.                                 |
    |      |                                                                         |
-   |  3.3 | When a user chooses neither a HUMAN or AI as an opponent then the       |
-   |      | application will not choose and will re-prompt the user to choose an    |
-   |      | opponent type.                                                          |
-   #+TBLFM: 
-
-*** Further Notes
-    :PROPERTIES:
-    :UNNUMBERED: t
-    :END:
-
-    None for now.
+   |  3.3 | When a user does not choose one of the two colors, then they will not   |
+   |      | be assigned a color.                                                    |
 
 ** Criterion 4
    :PROPERTIES:
@@ -475,56 +476,27 @@
    |      | <71>                                                                    |
    | ACID | Description                                                             |
    |------+-------------------------------------------------------------------------|
-   |  4.0 | Given a User using the application...                                   |
+   |  4.0 | Given a user...                                                         |
    |------+-------------------------------------------------------------------------|
-   |  4.1 | When a user chooses player one, then the application will assign the    |
-   |      | role of player one to the user.                                         |
+   |  4.1 | When users chooses one of two players, then the users will be assigned  |
+   |      | N pieces of their color.                                                |
    |      |                                                                         |
-   |  4.2 | When a user chooses player 2, then the application will assign the      |
-   |      | role of player two to the user.                                         |
-   |      |                                                                         |
-   |  4.3 | When a user chooses neither player one or player two then the           |
-   |      | application will not will not assign a player and the player will       |
-   |      | be re-prompted                                                          |
-   
-*** Further Notes
-    :PROPERTIES:
-    :UNNUMBERED: t
-    :END:
-    
-    None for now.
+   |  4.2 | When a user does not choose one of the two players, then the user will  |
+   |      | not be assigned N pieces of their color.                                |
 
 ** Criterion 5
    :PROPERTIES:
    :CUSTOM_ID: ACID5
    :END:
    #+ATTR_LaTeX: :align |c|p{12.0cm}|
-   |       | <71>                                                                    |
-   |  ACID | Description                                                             |
-   |-------+-------------------------------------------------------------------------|
-   | 5.1.0 | Given a User playing a game with unassigned pieces...                   |
-   |-------+-------------------------------------------------------------------------|
-   | 5.1.1 | When the user enters an unoccupied position, then a piece of the users  |
-   |       | color will be placed in the position.                                   |
-   |       |                                                                         |
-   | 5.1.2 | When the user enters an occupied position, a piece of the users color   |
-   |       | will not be placed in the position.                                     |
-   |-------+-------------------------------------------------------------------------|
-   | 5.2.0 | Given a User playing a game with no unassigned pieces...                |
-   |-------+-------------------------------------------------------------------------|
-   | 5.2.1 | When the user enters an unoccupied position, then a piece of the users  |
-   |       | color will not be placed in the position.                               |
-   |       |                                                                         |
-   | 5.2.2 | When the user enters an occupied position, then a piece of the users    |
-   |       | color will not be placed in the position.                               |
-
-   
-*** Further Notes
-    :PROPERTIES:
-    :UNNUMBERED: t
-    :END:
-   
-    None for now.
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   |  5.0 | Given a User...                                                         |
+   |------+-------------------------------------------------------------------------|
+   |  5.1 | When the website is loaded, it will show the game along with a menu buttons. |
+   |      |                                                                         |
+   |  5.2 | When the website is not loaded, it will not show the game or the game menu system.. |
 
 ** Criterion 6
    :PROPERTIES:
@@ -534,50 +506,29 @@
    |      | <71>                                                                    |
    | ACID | Description                                                             |
    |------+-------------------------------------------------------------------------|
-   |  6.0 | Given a user playing the game during their turn...                      |
+   |  6.0 | Given a User...                                                         |
    |------+-------------------------------------------------------------------------|
-   |  6.1 | When the user moves his piece to an unoccupied position not adjacent    |
-   |      | to an opponent mill, then the piece will be shifted.                    |
+   |  6.1 | When the menu options are rendered, there is a button that displays start game. |
    |      |                                                                         |
-   |  6.2 | When the user moves his piece to an occupied position not adjacent to   |
-   |      | an opponent mill, then the piece will not be shifted.                   |
-   |      |                                                                         |
-   |  6.3 | When the user moves his piece to an unoccupied position, adjacent to    |
-   |      | an opponent mill, then the  piece will not be shifted.                  |
-   |      |                                                                         |
-   |  6.4 | When the user moves his piece to an occupied position, adjacent to an   |
-   |      | opponent mill, then the  piece will not be shifted.                     |
-   
-*** Further Notes
-    :PROPERTIES:
-    :UNNUMBERED: t
-    :END:
-
-    None for now.
+   |  6.2 | When the menu options are not rendered, it will not show a button to start the game. |
 
 ** Criterion 7
    :PROPERTIES:
    :CUSTOM_ID: ACID7
    :END:
+  
    #+ATTR_LaTeX: :align |c|p{12.0cm}|
    |      | <71>                                                                    |
    | ACID | Description                                                             |
    |------+-------------------------------------------------------------------------|
-   |  7.0 | Given a User is playing their turn...                                   |
+   |  7.0 | Given a user...                                                         |
    |------+-------------------------------------------------------------------------|
-   |  7.1 | When the user places a piece in a valid position adjacent to two other  |
-   |      | pieces of their color, then a mill will be formed.                      |
+   |  7.1 | When a user chooses which turn to play, then a user will recieve the    |
+   |      | corresponding turn.                                                     |
    |      |                                                                         |
-   |  7.2 | When the user places a piece in an invalid position adjacent to two     |
-   |      | other pieces of their color, then a mill will not be formed.            |
+   |  7.2 | When a user does not choose a turn to play, then a user will not        |
+   |      | receive the corresponding turn.                                         |
    
-*** Further Notes
-    :PROPERTIES:
-    :UNNUMBERED: t
-    :END:
-
-    None for now.
-
 ** Criterion 8
    :PROPERTIES:
    :CUSTOM_ID: ACID8
@@ -586,25 +537,12 @@
    |      | <71>                                                                    |
    | ACID | Description                                                             |
    |------+-------------------------------------------------------------------------|
-   |  8.0 | Given a User is playing their turn...                                   |
+   |  8.0 | Given a User...                                                         |
    |------+-------------------------------------------------------------------------|
-   |  8.1 | When the user moves a piece from his mill into an opponent's piece not  |
-   |      | in a mill, the opponent's piece will be replaced by the user's piece.   |
+   |  8.1 | When it is my turn, I can click on a empty board position.              |
    |      |                                                                         |
-   |  8.2 | When the user moves a piece from his mill into an opponent's            |
-   |      | piece in a mill, the opponent's piece will be not replaced by           |
-   |      | the user's piece.                                                       |
-   |      |                                                                         |
-   |  8.3 | When the user moves a piece from his mill into a vacant                 |
-   |      | space, no opponent's piece will be replaced by the user's piece.        |
+   |  8.2 | When it is not my turn, I cannot click on an empty board position.      |
    
-*** Further Notes
-    :PROPERTIES:
-    :UNNUMBERED: t
-    :END:
-
-    None for now.
-
 ** Criterion 9
    :PROPERTIES:
    :CUSTOM_ID: ACID9
@@ -613,22 +551,11 @@
    |      | <71>                                                                    |
    | ACID | Description                                                             |
    |------+-------------------------------------------------------------------------|
-   |  9.0 | Given a User is playing their turn...                                   |
+   |  9.0 | Given a User...                                                         |
    |------+-------------------------------------------------------------------------|
-   |  9.1 | When the user loses a piece such that they only have three pieces       |
-   |      | remaining on the board, then the application will allow them to "fly"   |
-   |      | their pieces to any open and valid position on the board.               |
+   |  9.1 | When it is my turn, I can place a piece on an empty position I have selected. |
    |      |                                                                         |
-   |  9.2 | When the user loses a piece such that they have more than three pieces  |
-   |      | remaining on the board, then the application will not allow them to     |
-   |      | "fly" their pieces to any open and valid position on the board.         |
-   
-*** Further Notes
-    :PROPERTIES:
-    :UNNUMBERED: t
-    :END:
-
-    None for now.
+   |  9.2 | When it is not my turn, I cannot place a piece on an empty position.    |
 
 ** Criterion 10
    :PROPERTIES:
@@ -638,20 +565,13 @@
    |      | <71>                                                                    |
    | ACID | Description                                                             |
    |------+-------------------------------------------------------------------------|
-   | 10.0 | Given a User is playing their turn...                                   |
+   | 10.0 | Given a user...                                                         |
    |------+-------------------------------------------------------------------------|
-   | 10.1 | When the user eliminates an opponent's pieces down to two pieces,       |
-   |      | then the user wins.                                                     |
+   | 10.1 | When a user moves a piece to an unoccupied position, then the user's    |
+   |      | piece assumes the new position.                                         |
    |      |                                                                         |
-   | 10.2 | When the user's pieces are eliminated down to two pieces,               |
-   |      | then the user loses.                                                    |
-
-*** Further Notes
-    :PROPERTIES:
-    :UNNUMBERED: t
-    :END:
-
-    None for now.
+   | 10.2 | When a user moves a piece to an occupied position of their own, then    |
+   |      | the user's piece is not moved to the new position.                      |
 
 ** Criterion 11
    :PROPERTIES:
@@ -661,20 +581,228 @@
    |      | <71>                                                                    |
    | ACID | Description                                                             |
    |------+-------------------------------------------------------------------------|
-   | 11.0 | Given a user after they have completed a game...                        |
+   | 11.0 | Given a user...                                                         |
    |------+-------------------------------------------------------------------------|
-   | 11.1 | When the user chooses to play again, then the board will be reset and   |
-   |      | game count incremented.                                                 |
-   |      |                                                                         |
-   | 11.2 | When the user chooses not to play again, then the board will not be     |
-   |      | reset and game count not incremented.                                   |
-   
-*** Further Notes
-    :PROPERTIES:
-    :UNNUMBERED: t
-    :END:
+   | 11.1 | When a user moves their piece into an enemy position, then the user's   |
+   |      | move will not qualify.                                                  |
 
-    None for now.
+** Criterion 12
+   :PROPERTIES:
+   :CUSTOM_ID: ACID12
+   :END:
+   #+ATTR_LaTeX: :align |c|p{12.0cm}|
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   | 12.0 | Given a User...                                                         |
+   |------+-------------------------------------------------------------------------|
+   | 12.1 | When I place three pieces adjacent to each other, the game recognizes   |
+   |      | it as a mill.                                                           |
+   |      |                                                                         |
+   | 12.2 | When I do not place a piece that forms three adjacent occupied          |
+   |      | positions, it is not recognized as a mill.                              |
+** Criterion 13
+   :PROPERTIES:
+   :CUSTOM_ID: ACID13
+   :END:
+   #+ATTR_LaTeX: :align |c|p{12.0cm}|
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   | 13.0 | Given a User...                                                         |
+   |------+-------------------------------------------------------------------------|
+   | 13.1 | When it is my turn, and I have a mill formed, then I have the ability   |
+   |      | to eliminate an opponent's piece.                                       |
+   |      |                                                                         |
+   | 13.2 | When it is my turn, and I do not have a mill formed, then I do not      |
+   |      | have the ability to attack.                                             |
+   |      |                                                                         |
+   | 13.3 | When it is not my turn, and I have a mill formed, then I do not have    |
+   |      | the ability to attack.                                                  |
+   |      |                                                                         |
+   | 13.4 | When it is not my turn, and I do not have a mill formed, then I do      |
+   |      | not have the ability to attack.                                         |
+** Criterion 14
+   :PROPERTIES:
+   :CUSTOM_ID: ACID14
+   :END:
+   #+ATTR_LaTeX: :align |c|p{12.0cm}|
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   | 14.0 | Given a User...                                                         |
+   |------+-------------------------------------------------------------------------|
+   | 14.1 | When it is my turn, and I have a mill formed, then the pieces in my     |
+   |      | mill are defended from elimination.                                     |
+   |      |                                                                         |
+   | 14.2 | When it is my turn, and I do not have a mill formed, then my pieces     |
+   |      | are not defended from elimination.                                      |
+   |      |                                                                         |
+   | 14.3 | When it is not my turn, and I have a mill formed, then the pieces       |
+   |      | in my mill are defended from elimination.                               |
+   |      |                                                                         |
+   | 14.4 | When it is not my turn, and I do not have a mill formed, then my pieces |
+   |      | are not defended from elimination.                                      |
+** Criterion 15
+   :PROPERTIES:
+   :CUSTOM_ID: ACID15
+   :END:
+   #+ATTR_LaTeX: :align |c|p{12.0cm}|
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   | 15.0 | Given a User...                                                         |
+   |------+-------------------------------------------------------------------------|
+   | 15.1 | When a user selects a piece in a mill to move to an open position, then |
+   |      | the piece will be moved to that new position outside of the mill        |
+   |      |                                                                         |
+   | 15.2 | When a user selects a piece in a mill to move to an invalid position,   |
+   |      | then the piece will not be moved.                                       |
+   |      |                                                                         |
+
+** Criterion 16
+   :PROPERTIES:
+   :CUSTOM_ID: ACID16
+   :END:
+   #+ATTR_LaTeX: :align |c|p{12.0cm}|
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   | 16.0 | Given a User...                                                         |
+   |------+-------------------------------------------------------------------------|
+   | 16.1 | When a user removes opponent pieces from the board, then the opponent's |
+   |      | piece will no longer appear on the board.                               |
+   |      |                                                                         |
+   | 16.2 | When a user removes their own piece from the board, then the piece will |
+   |      | not be removed from the board.                                          |
+
+** Criterion 17
+   :PROPERTIES:
+   :CUSTOM_ID: ACID17
+   :END:
+   #+ATTR_LaTeX: :align |c|p{12.0cm}|
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   | 17.0 | Given a User...                                                         |
+   |------+-------------------------------------------------------------------------|
+   | 17.1 | When it is my turn, and I only have three pieces, then I gain the       |
+   |      | ability to "fly" across the board.                                      |
+   |      |                                                                         |
+   | 17.2 | When it is my turn, and I have more than three pieces, then I do not    |
+   |      | gain the ability to "fly" across the board.                             |
+   |      |                                                                         |
+   | 17.3 | When it is not my turn, and I only have three pieces, then I do not     |
+   |      | gain the ability to "fly" across the board.                             |
+   |      |                                                                         |
+   | 17.4 | When it is not my turn, and I have more than three pieces, then I do    |
+   |      | not gain the ability to "fly" across the board.                         |
+** Criterion 18
+   :PROPERTIES:
+   :CUSTOM_ID: ACID18
+   :END:
+   #+ATTR_LaTeX: :align |c|p{12.0cm}|
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   | 18.0 | Given a User...                                                         |
+   |------+-------------------------------------------------------------------------|
+   | 18.1 | When it is my turn, and I only have three pieces, then I can "fly"      |
+   |      | a piece I own to any open position on the board.                        |
+   |      |                                                                         |
+   | 18.2 | When it is my turn, and I have more than three pieces, then I can't     |
+   |      | "fly" a piece I own to any open position.                               |
+   |      |                                                                         |
+   | 18.3 | When it is not my turn, and I only have three pieces, then I can't      |
+   |      | "fly" my piece across the board.                                        |
+   |      |                                                                         |
+   | 18.4 | When it is not my turn, and I have more than three pieces, then I can't |
+   |      | "fly" my piece across the board.                                        |
+
+** Criterion 19
+   :PROPERTIES:
+   :CUSTOM_ID: ACID19
+   :END:
+   #+ATTR_LaTeX: :align |c|p{12.0cm}|
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   | 19.0 | Given a User...                                                         |
+   |------+-------------------------------------------------------------------------|
+   | 19.1 | When I am reduced to less than three pieces, the game must declare me   |
+   |      | the loser and end the game.                                             |
+   |      |                                                                         |
+   | 19.2 | When I am not reduced to less than three pieces, then the game does not |
+   |      | declare me the loser nor end the game.                                  |
+
+** Criterion 20
+   :PROPERTIES:
+   :CUSTOM_ID: ACID20
+   :END:
+   #+ATTR_LaTeX: :align |c|p{12.0cm}|
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   | 20.0 | Given a User...                                                         |
+   |------+-------------------------------------------------------------------------|
+   | 20.1 | When I reduce my opponent to less than three pieces, the game must      |
+   |      | declare me the winner and end the game.                                 |
+   |      |                                                                         |
+   | 20.2 | When I do not reduced my opponent to less than three pieces, then the   |
+   |      | game does not declare me the winner nor end the game.                   |
+** Criterion 21
+   :PROPERTIES:
+   :CUSTOM_ID: ACID21
+   :END:
+   #+ATTR_LaTeX: :align |c|p{12.0cm}|
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   | 21.0 | Given a User...                                                         |
+   |------+-------------------------------------------------------------------------|
+   | 21.1 | When neither my opponent and I are reduced to less than three pieces    |
+   |      | and we repeat the same board arrangement more than N times, then the    |
+   |      | game is declared a "Remi", e.g. a tie, and the game is ended.           |
+   |      |                                                                         |
+   | 21.2 | When neither my opponent and I are reduced to less than three pieces    |
+   |      | and we do not repeat the same board arrangement more than N times,      |
+   |      | then the game is not declared "Remi" and is not ended.                  |
+
+** Criterion 22
+   :PROPERTIES:
+   :CUSTOM_ID: ACID22
+   :END:
+   #+ATTR_LaTeX: :align |c|p{12.0cm}|
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   | 22.0 | Given a User...                                                         |
+   |------+-------------------------------------------------------------------------|
+   | 22.1 | When a user restarts the game, then the board will restart with an      |
+   |      | empty board.                                                            |
+   |      |                                                                         |
+   |      |                                                                         |
+   | 22.2 | When a user does not restart the game, then the board will retain the   |
+   |      | current layout it contains.                                             |
+
+** Criterion 23
+   :PROPERTIES:
+   :CUSTOM_ID: ACID23
+   :END:
+   #+ATTR_LaTeX: :align |c|p{12.0cm}|
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   | 22.0 | Given a User...                                                         |
+   |------+-------------------------------------------------------------------------|
+   | 22.1 | When a user starts a new game, then a user's default configuration will |
+   |      | be used when a new game is started.                                     |
+   |      |                                                                         |
+   |      |                                                                         |
+   | 22.2 | When a user does not start a new game, then the configuration will      |
+   |      | remain unchanged.                                                       |
+
+
 * Code Review
    #+ATTR_LaTeX: :align |l|c|c|
    | Checklist         | Item                                | Findings                                                                                                                                                                                                                                                                                                                                |

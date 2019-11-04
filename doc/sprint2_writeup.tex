@@ -1,0 +1,1423 @@
+% Created 2019-11-03 Sun 22:16
+% Intended LaTeX compiler: pdflatex
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{array}
+\author{Team \textbf{Misael's} Project Submission}
+\date{\today}
+\title{CS449 Sprint 1 Report\\\medskip
+\large Michael Cu, Elias Julian Marko Garcia, Samual Lim}
+\hypersetup{
+ pdfauthor={Team \textbf{Misael's} Project Submission},
+ pdftitle={CS449 Sprint 1 Report},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 26.3 (Org mode 9.1.9)}, 
+ pdflang={English}}
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+
+\section{Micro Charter}
+\label{sec:org03efa7c}
+\subsection{Project Name}
+\label{sec:org4cbc42f}
+N Men Morris
+\subsection{Vision Statement}
+\label{sec:orgccccd0a}
+Create a extensible framework for board game web apps with scalability and performance.
+\subsection{Mission Statement}
+\label{sec:orgf43ae6a}
+To play Nine Men's Morris on the web browser using a composable web technology stack that allows
+for future modularity while not foregoing performance.
+\subsection{Elevator Pitch and Business Value}
+\label{sec:orgf4d267d}
+We are creating Nine Men's Morris on a board game framework using Express.js and Neon for
+Rust. This allows for a data and type safe application that is capable of composability,
+scalability, extensibility, and performance.
+\subsection{Customers and Users}
+\label{sec:org904de16}
+\begin{itemize}
+\item Customers: Entrepreneurs and ventures that want to deploy board games on the web with low
+overhead, latency, and maintenance.
+\item Users: Individuals who are passionate about board games and want a new online experience that
+they can take and play wherever they go with their friends.
+\end{itemize}
+\subsection{Metrics}
+\label{sec:org24602e8}
+By benchmarking N Men Morris, we can compare our solution to other products on the market on:
+\begin{enumerate}
+\item latency
+\item binary size
+\item up-time
+\end{enumerate}
+\subsection{Milestones}
+\label{sec:orgfd9d165}
+\begin{enumerate}
+\item First MVP
+\item First Offline N Men's Morris
+\item Player versus Player (Offline)
+\item Player versus Player (Online)
+\end{enumerate}
+\subsection{Risks}
+\label{sec:org4abca82}
+\begin{enumerate}
+\item Inherent complexity of technology stack.
+\item Inability to cooperate with teammates.
+\item Plausibility of orphaning project due to development team size.
+\end{enumerate}
+\subsection{Authors}
+\label{sec:org5f28614}
+\begin{itemize}
+\item Michael Cu
+\item Elias Julian Marko Garcia
+\item Samual Lim
+\end{itemize}
+\section{User Stories}
+\label{sec:orgc3bb395}
+Below you will find a table that makes up our "User Story Board", with some simplifications taken
+with respect to the total contents of the board. With respect to the final formal documentation,
+i.e. this paper, we only keep the basic qualitative and quantitative values for each story in the
+table while giving each user story proper its own section. This makes documenting each story
+less unruly while also easier to read. Each Story I.D. (SID) value is internally linked to its
+respective story, which also helps with navigating this section.
+
+\begin{center}
+\begin{tabular}{|c|m{3.5cm}|c|c|c|c|m{2.0cm}|}
+ &  &  & Time Est. & Actual &  & \\
+SID & Story Name & Priority & (hr) & (hr) & Status & Developer(s)\\
+\hline
+\hyperref[sec:org185d3d8]{S1} & Default Board Layout & high & 10 & 4 & DONE & Sam, Michael, Elias\\
+\hline
+\hyperref[sec:orge86b24b]{S2} & Mills Board & high & 10 & 4 & DONE & Sam\\
+ & Coordinate System &  &  &  &  & \\
+\hline
+\hyperref[sec:org238b313]{S3} & Player Selection & medium & 10 & - & TODO & -\\
+\hline
+\hyperref[sec:org824b916]{S4} & Piece Assignment & medium & 10 & - & TODO & -\\
+\hline
+\hyperref[sec:org012f380]{S5} & Game Menu Prompt & high & 10 & 2 & TODO & Sam, Michael\\
+\hline
+\hyperref[sec:orgaa8cbb6]{S6} & Start Game Prompt & medium & 10 & - & TODO & -\\
+\hline
+\hyperref[sec:orgec50704]{S7} & Player Turn Assignment & medium & 10 & - & TODO & -\\
+\hline
+\hyperref[sec:org613d395]{S8} & Position Selection & medium & 10 & - & TODO & -\\
+\hline
+\hyperref[sec:orgb515b1d]{S9} & Position Placement & medium & 10 & - & TODO & -\\
+\hline
+\hyperref[sec:org4903fb9]{S10} & Position Movement & medium & 10 & - & TODO & -\\
+\hline
+\hyperref[sec:org79847f8]{S11} & Elimination Movement & medium & 10 & - & TODO & -\\
+\hline
+\hyperref[sec:orgcc59d5e]{S12} & Mill Definition & medium & 10 & - & TODO & -\\
+\hline
+\hyperref[sec:org2e98d6e]{S13} & Mill Attack Attribute & medium & 10 & - & TODO & -\\
+\hline
+\hyperref[sec:orga9b8e36]{S14} & Mill Defense Attribute & medium & 10 & - & TODO & -\\
+\hline
+\hyperref[sec:org0d68487]{S15} & Mill Piece Movement & medium & 10 & - & TODO & -\\
+\hline
+\hyperref[sec:org9b9afd9]{S16} & Elimination with Mills & medium & 10 & - & TODO & -\\
+\hline
+\hyperref[sec:org81a44de]{S17} & Flying Definition & medium & 10 & - & TODO & -\\
+\hline
+\hyperref[sec:org12c7919]{S18} & Flying Piece Ability & medium & 10 & - & TODO & -\\
+\hline
+\hyperref[sec:org0f7ec34]{S19} & End Game: Loss & medium & 10 & - & TODO & -\\
+\hline
+\hyperref[sec:org2bef84f]{S20} & End Game: Win & medium & 10 & - & TODO & -\\
+\hline
+\hyperref[sec:org1c023db]{S21} & End Game: Tie & medium & 10 & - & TODO & -\\
+\hline
+\hyperref[sec:org449cd2e]{S22} & Reset Board & medium & 10 & - & TODO & -\\
+\hline
+\hyperref[sec:orga6843e1]{S23} & Start New Game & medium & 10 & - & TODO & -\\
+\end{tabular}
+\end{center}
+
+\subsection{Default Board Layout}
+\label{sec:org185d3d8}
+\subsubsection*{Description}
+\label{sec:orgb38897e}
+As a user, I need a game board with 4 expanded squares, each with 8 equidistant positions, to
+play a game of Nine Men's Morris.
+\subsection{Mills Board Coordinate System}
+\label{sec:orge86b24b}
+\subsubsection*{Description}
+\label{sec:orgb589874}
+As a user, I need a way to navigate and read the board to play a game of Nine Men's Morris.
+\subsection{Player Selection}
+\label{sec:org238b313}
+\subsubsection*{Description}
+\label{sec:org515e2db}
+As a user, I want to choose a distinct color for my player.
+
+\subsection{Piece Assignment}
+\label{sec:org824b916}
+\subsubsection*{Description}
+\label{sec:orgca993e5}
+As a user, I want to receive 9 distinct pieces to place on the board.
+\subsection{Game Menu Prompt}
+\label{sec:org012f380}
+\subsubsection*{Description}
+\label{sec:orgb30a3eb}
+As a user, I am prompted with a GUI that shows the game board along with menu items.
+
+\subsection{Start Game Prompt}
+\label{sec:orgaa8cbb6}
+\subsubsection*{Description}
+\label{sec:org0181d47}
+As a user, I need a GUI to prompt me with the options to start a game with either another human
+or against the computer.
+\subsection{Player Turn Assignment}
+\label{sec:orgec50704}
+\subsubsection*{Description}
+\label{sec:org2280f95}
+As a user, I want to receive either the first or second player's move at the beginning of the game.
+\subsection{Position Selection}
+\label{sec:org613d395}
+\subsubsection*{Description}
+\label{sec:org6335123}
+As a user, I need to be able to select an empty position to choose it for piece placement.
+
+\subsection{Position Placement}
+\label{sec:orgb515b1d}
+\subsubsection*{Description}
+\label{sec:org21a401f}
+As a user, I need to be able to place a piece on an empty position to finish my turn.
+
+\subsection{Position Movement}
+\label{sec:org4903fb9}
+\subsubsection*{Description}
+\label{sec:orgcc5e23e}
+As a user, I want to be able to move my pieces to unoccupied positions.
+
+\subsection{Elimination Movement}
+\label{sec:org79847f8}
+\subsubsection*{Description}
+\label{sec:org409f88f}
+As a user, I want to be able to move my pieces into enemy positions should I qualify.
+
+\subsection{Mill Definition}
+\label{sec:orgcc59d5e}
+\subsubsection*{Description}
+\label{sec:orgc1bedf3}
+As a user, I need the game to recognize when three of my pieces are placed in adjacent positions in order to form a mill.
+
+\subsection{Mill Attack Attribute}
+\label{sec:org2e98d6e}
+\subsubsection*{Description}
+\label{sec:org464e57e}
+As a user, I need the ability to eliminate an enemy piece to attack as a player.
+
+\subsection{Mill Defense Attribute}
+\label{sec:orga9b8e36}
+\subsubsection*{Description}
+\label{sec:org39aee87}
+As a user, I need pieces within a recognized mill to be immune from elimination to defend as a
+player.
+
+\subsection{Mill Piece Movement}
+\label{sec:org0d68487}
+\subsubsection*{Description}
+\label{sec:org6fdf8a5}
+As a user, I want to move pieces that make up mills into any position not occupied by one of my
+other pieces.
+
+\subsection{Elimination With Mills}
+\label{sec:org9b9afd9}
+\subsubsection*{Description}
+\label{sec:orgf4ea9ae}
+As a user, I want my pieces to remove opponent pieces from the board individually.
+
+\subsection{Flying Definition}
+\label{sec:org81a44de}
+\subsubsection*{Description}
+\label{sec:orga16e246}
+As a user, I need the game to recognize when I have less than 4 pieces to gain the ability to
+"fly" my pieces.
+
+\subsection{Flying Piece Ability}
+\label{sec:org12c7919}
+\subsubsection*{Description}
+\label{sec:org8f5ae7a}
+As a user, I need the ability to move a piece to any empty position on the map when I only have
+3 pieces to fly.
+
+\subsection{End Game: Loss}
+\label{sec:org0f7ec34}
+\subsubsection*{Description}
+\label{sec:orgf7d435a}
+As a user, the game must recognize when I reach less than 3 pieces to declare me a loser.
+
+\subsection{End Game: Win}
+\label{sec:org2bef84f}
+\subsubsection*{Description}
+\label{sec:org4ab8a09}
+As a user, the game must recognize when my opponent reaches less than 3 pieces to declare me the
+winner.
+
+\subsection{End Game: Tie}
+\label{sec:org1c023db}
+\subsubsection*{Description}
+\label{sec:org29ff4d2}
+As a user, the game must recognize when the board state has repeated the same layout N times
+after a player has reached less than 4 players in order to declare the game a tie ("Remis").
+
+\subsection{Reset Board}
+\label{sec:org449cd2e}
+\subsubsection*{Description}
+\label{sec:orgda98134}
+As a user, I want to be able to restart a game with a new, empty board.
+
+\subsection{Start New Game}
+\label{sec:orga6843e1}
+\subsubsection*{Description}
+\label{sec:org4bd0804}
+As a user, I want to be able to start a new game with the default configuration as before I started the game.
+
+\section{Acceptance Criteria}
+\label{sec:org2dd0ece}
+The following section covers the acceptance criteria enumerated in response to the User Stories
+discovered and documented in \hyperref[sec:orgc3bb395]{\(\S{2}\)}. In a similar fashion to \(\S{2}\), the table documenting these
+acceptance criteria is in a simplified form. Every Acceptance Criterion has an Acceptance
+Criterion ID (\texttt{ACID}), which is associated in the table below with its respective \texttt{SID}, development
+status, and the developers responsible for implementing it. Each \texttt{ACID} is linked to its respective
+subsection below for viewing the description of each criterion.
+
+\begin{center}
+\begin{tabular}{|l|c|c|c|}
+SID \& Name & ACID & Status & Developer(s)\\
+\hline
+\hyperref[sec:org185d3d8]{S1} Default Board Layout & \hyperref[sec:org9e22520]{A1} & DONE & Sam, Elias, Michael\\
+\hline
+\hyperref[sec:orge86b24b]{S2} Mills Board Coordinate & \hyperref[sec:orgac4415a]{A2} & DONE & Sam, Elias, Michael\\
+\(\hspace{0.4cm}\) System &  &  & \\
+\hline
+\hyperref[sec:org238b313]{S3} Player Selection & \hyperref[sec:org737989f]{A3} & TODO & -\\
+\hline
+\hyperref[sec:org824b916]{S4} Piece Assignment & \hyperref[sec:org34fe424]{A4} & TODO & -\\
+\hline
+\hyperref[sec:org012f380]{S5} Game Menu Prompt & \hyperref[sec:org7be564f]{A5} & DONE & Sam, Michael\\
+\hline
+\hyperref[sec:orgaa8cbb6]{S6} Start Game Prompt & \hyperref[sec:org003392a]{A6} & TODO & -\\
+\hline
+\hyperref[sec:orgec50704]{S7} Player Turn Assignment & \hyperref[sec:org9b83780]{A7} & TODO & -\\
+\hline
+\hyperref[sec:org613d395]{S8} Position Selection & \hyperref[sec:org1f59693]{A8} & TODO & -\\
+\hline
+\hyperref[sec:orgb515b1d]{S9} Position Placement & \hyperref[sec:org4b5e6f2]{A9} & TODO & -\\
+\hline
+\hyperref[sec:org4903fb9]{S10} Position Movement & \hyperref[sec:org1aa4a4f]{A10} & TODO & -\\
+\hline
+\hyperref[sec:org79847f8]{S11} Elimination Movement & \hyperref[sec:orgc9f538a]{A11} & TODO & -\\
+\hline
+\hyperref[sec:orgcc59d5e]{S12} Mill Definition & \hyperref[sec:org1f543b8]{A12} & TODO & -\\
+\hline
+\hyperref[sec:org2e98d6e]{S13} Mill Attack Attribute & \hyperref[sec:org9a1feb3]{A13} & TODO & -\\
+\hline
+\hyperref[sec:orga9b8e36]{S14} Mill Defense Attribute & \hyperref[sec:org78d9dad]{A14} & TODO & -\\
+\hline
+\hyperref[sec:org0d68487]{S15} Mill Piece Movement & \hyperref[sec:org3951182]{A15} & TODO & -\\
+\hline
+\hyperref[sec:org9b9afd9]{S16} Elimination with Mills & \hyperref[sec:org5410e8c]{A16} & TODO & -\\
+\hline
+\hyperref[sec:org81a44de]{S17} Flying Definition & \hyperref[sec:org27f0697]{A17} & TODO & -\\
+\hline
+\hyperref[sec:org12c7919]{S18} Flying Piece Ability & \hyperref[sec:orgec6af41]{A18} & TODO & -\\
+\hline
+\hyperref[sec:org0f7ec34]{S19} End Game: Loss & \hyperref[sec:org2c6ba02]{A19} & TODO & -\\
+\hline
+\hyperref[sec:org2bef84f]{S20} End Game: Win & \hyperref[sec:orgc567726]{A20} & TODO & -\\
+\hline
+\hyperref[sec:org1c023db]{S21} End Game: Tie & \hyperref[sec:orgbc3d38a]{A21} & TODO & -\\
+\hline
+\hyperref[sec:org449cd2e]{S22} Reset Board & \hyperref[sec:orgb5a825d]{A22} & TODO & -\\
+\hline
+\hyperref[sec:orga6843e1]{S23} Start New Game & \hyperref[sec:org71191d3]{A23} & TODO & -\\
+\end{tabular}
+\end{center}
+
+\subsection{Criterion 1}
+\label{sec:org9e22520}
+\begin{center}
+\begin{tabular}{|c|p{12.0cm}|}
+ACID & Description\\
+\hline
+1.0 & Given a User\ldots{}\\
+\hline
+1.1 & When the board appears, it will render the default layout for Nine Men's Morris\\
+ & \\
+1.2 & When the User does not visit our site (IP), the board will not appear.\\
+\end{tabular}
+\end{center}
+
+\subsection{Criterion 2}
+\label{sec:orgac4415a}
+\begin{center}
+\begin{tabular}{|c|p{12.0cm}|}
+ACID & Description\\
+\hline
+2.0 & Given a User\ldots{}\\
+\hline
+2.1 & When the board is rendered, it will include a coordinate system along the axis.\\
+ & \\
+2.2 & When the board is not rendered, there will be no coordinate system.\\
+\end{tabular}
+\end{center}
+
+\subsection{Criterion 3}
+\label{sec:org737989f}
+\begin{center}
+\begin{tabular}{|c|p{12.0cm}|}
+ACID & Description\\
+\hline
+3.0 & Given a user\ldots{}\\
+\hline
+3.1 & When a user chooses one of two colors, then their player pieces will\\
+ & be the chosen color.\\
+ & \\
+3.2 & When a user chooses one of the two colors, and it is already taken,\\
+ & then they will not be the chosen color.\\
+ & \\
+3.3 & When a user does not choose one of the two colors, then they will not\\
+ & be assigned a color.\\
+\end{tabular}
+\end{center}
+
+\subsection{Criterion 4}
+\label{sec:org34fe424}
+\begin{center}
+\begin{tabular}{|c|p{12.0cm}|}
+ACID & Description\\
+\hline
+4.0 & Given a user\ldots{}\\
+\hline
+4.1 & When users chooses one of two players, then the users will be assigned\\
+ & N pieces of their color.\\
+ & \\
+4.2 & When a user does not choose one of the two players, then the user will\\
+ & not be assigned N pieces of their color.\\
+\end{tabular}
+\end{center}
+
+\subsection{Criterion 5}
+\label{sec:org7be564f}
+\begin{center}
+\begin{tabular}{|c|p{12.0cm}|}
+ACID & Description\\
+\hline
+5.0 & Given a User\ldots{}\\
+\hline
+5.1 & When the website is loaded, it will show the game along with a menu buttons.\\
+ & \\
+5.2 & When the website is not loaded, it will not show the game or the game menu system..\\
+\end{tabular}
+\end{center}
+
+\subsection{Criterion 6}
+\label{sec:org003392a}
+\begin{center}
+\begin{tabular}{|c|p{12.0cm}|}
+ACID & Description\\
+\hline
+6.0 & Given a User\ldots{}\\
+\hline
+6.1 & When the menu options are rendered, there is a button that displays start game.\\
+ & \\
+6.2 & When the menu options are not rendered, it will not show a button to start the game.\\
+\end{tabular}
+\end{center}
+
+\subsection{Criterion 7}
+\label{sec:org9b83780}
+\begin{center}
+\begin{tabular}{|c|p{12.0cm}|}
+ACID & Description\\
+\hline
+7.0 & Given a user\ldots{}\\
+\hline
+7.1 & When a user chooses which turn to play, then a user will recieve the\\
+ & corresponding turn.\\
+ & \\
+7.2 & When a user does not choose a turn to play, then a user will not\\
+ & receive the corresponding turn.\\
+\end{tabular}
+\end{center}
+
+\subsection{Criterion 8}
+\label{sec:org1f59693}
+\begin{center}
+\begin{tabular}{|c|p{12.0cm}|}
+ACID & Description\\
+\hline
+8.0 & Given a User\ldots{}\\
+\hline
+8.1 & When it is my turn, I can click on a empty board position.\\
+ & \\
+8.2 & When it is not my turn, I cannot click on an empty board position.\\
+\end{tabular}
+\end{center}
+
+\subsection{Criterion 9}
+\label{sec:org4b5e6f2}
+\begin{center}
+\begin{tabular}{|c|p{12.0cm}|}
+ACID & Description\\
+\hline
+9.0 & Given a User\ldots{}\\
+\hline
+9.1 & When it is my turn, I can place a piece on an empty position I have selected.\\
+ & \\
+9.2 & When it is not my turn, I cannot place a piece on an empty position.\\
+\end{tabular}
+\end{center}
+
+\subsection{Criterion 10}
+\label{sec:org1aa4a4f}
+\begin{center}
+\begin{tabular}{|c|p{12.0cm}|}
+ACID & Description\\
+\hline
+10.0 & Given a user\ldots{}\\
+\hline
+10.1 & When a user moves a piece to an unoccupied position, then the user's\\
+ & piece assumes the new position.\\
+ & \\
+10.2 & When a user moves a piece to an occupied position of their own, then\\
+ & the user's piece is not moved to the new position.\\
+\end{tabular}
+\end{center}
+
+\subsection{Criterion 11}
+\label{sec:orgc9f538a}
+\begin{center}
+\begin{tabular}{|c|p{12.0cm}|}
+ACID & Description\\
+\hline
+11.0 & Given a user\ldots{}\\
+\hline
+11.1 & When a user moves their piece into an enemy position, then the user's\\
+ & move will not qualify.\\
+\end{tabular}
+\end{center}
+
+\subsection{Criterion 12}
+\label{sec:org1f543b8}
+\begin{center}
+\begin{tabular}{|c|p{12.0cm}|}
+ACID & Description\\
+\hline
+12.0 & Given a User\ldots{}\\
+\hline
+12.1 & When I place three pieces adjacent to each other, the game recognizes\\
+ & it as a mill.\\
+ & \\
+12.2 & When I do not place a piece that forms three adjacent occupied\\
+ & positions, it is not recognized as a mill.\\
+\end{tabular}
+\end{center}
+\subsection{Criterion 13}
+\label{sec:org9a1feb3}
+\begin{center}
+\begin{tabular}{|c|p{12.0cm}|}
+ACID & Description\\
+\hline
+13.0 & Given a User\ldots{}\\
+\hline
+13.1 & When it is my turn, and I have a mill formed, then I have the ability\\
+ & to eliminate an opponent's piece.\\
+ & \\
+13.2 & When it is my turn, and I do not have a mill formed, then I do not\\
+ & have the ability to attack.\\
+ & \\
+13.3 & When it is not my turn, and I have a mill formed, then I do not have\\
+ & the ability to attack.\\
+ & \\
+13.4 & When it is not my turn, and I do not have a mill formed, then I do\\
+ & not have the ability to attack.\\
+\end{tabular}
+\end{center}
+\subsection{Criterion 14}
+\label{sec:org78d9dad}
+\begin{center}
+\begin{tabular}{|c|p{12.0cm}|}
+ACID & Description\\
+\hline
+14.0 & Given a User\ldots{}\\
+\hline
+14.1 & When it is my turn, and I have a mill formed, then the pieces in my\\
+ & mill are defended from elimination.\\
+ & \\
+14.2 & When it is my turn, and I do not have a mill formed, then my pieces\\
+ & are not defended from elimination.\\
+ & \\
+14.3 & When it is not my turn, and I have a mill formed, then the pieces\\
+ & in my mill are defended from elimination.\\
+ & \\
+14.4 & When it is not my turn, and I do not have a mill formed, then my pieces\\
+ & are not defended from elimination.\\
+\end{tabular}
+\end{center}
+\subsection{Criterion 15}
+\label{sec:org3951182}
+\begin{center}
+\begin{tabular}{|c|p{12.0cm}|}
+ACID & Description\\
+\hline
+15.0 & Given a User\ldots{}\\
+\hline
+15.1 & When a user selects a piece in a mill to move to an open position, then\\
+ & the piece will be moved to that new position outside of the mill\\
+ & \\
+15.2 & When a user selects a piece in a mill to move to an invalid position,\\
+ & then the piece will not be moved.\\
+ & \\
+\end{tabular}
+\end{center}
+
+\subsection{Criterion 16}
+\label{sec:org5410e8c}
+\begin{center}
+\begin{tabular}{|c|p{12.0cm}|}
+ACID & Description\\
+\hline
+16.0 & Given a User\ldots{}\\
+\hline
+16.1 & When a user removes opponent pieces from the board, then the opponent's\\
+ & piece will no longer appear on the board.\\
+ & \\
+16.2 & When a user removes their own piece from the board, then the piece will\\
+ & not be removed from the board.\\
+\end{tabular}
+\end{center}
+
+\subsection{Criterion 17}
+\label{sec:org27f0697}
+\begin{center}
+\begin{tabular}{|c|p{12.0cm}|}
+ACID & Description\\
+\hline
+17.0 & Given a User\ldots{}\\
+\hline
+17.1 & When it is my turn, and I only have three pieces, then I gain the\\
+ & ability to "fly" across the board.\\
+ & \\
+17.2 & When it is my turn, and I have more than three pieces, then I do not\\
+ & gain the ability to "fly" across the board.\\
+ & \\
+17.3 & When it is not my turn, and I only have three pieces, then I do not\\
+ & gain the ability to "fly" across the board.\\
+ & \\
+17.4 & When it is not my turn, and I have more than three pieces, then I do\\
+ & not gain the ability to "fly" across the board.\\
+\end{tabular}
+\end{center}
+\subsection{Criterion 18}
+\label{sec:orgec6af41}
+\begin{center}
+\begin{tabular}{|c|p{12.0cm}|}
+ACID & Description\\
+\hline
+18.0 & Given a User\ldots{}\\
+\hline
+18.1 & When it is my turn, and I only have three pieces, then I can "fly"\\
+ & a piece I own to any open position on the board.\\
+ & \\
+18.2 & When it is my turn, and I have more than three pieces, then I can't\\
+ & "fly" a piece I own to any open position.\\
+ & \\
+18.3 & When it is not my turn, and I only have three pieces, then I can't\\
+ & "fly" my piece across the board.\\
+ & \\
+18.4 & When it is not my turn, and I have more than three pieces, then I can't\\
+ & "fly" my piece across the board.\\
+\end{tabular}
+\end{center}
+
+\subsection{Criterion 19}
+\label{sec:org2c6ba02}
+\begin{center}
+\begin{tabular}{|c|p{12.0cm}|}
+ACID & Description\\
+\hline
+19.0 & Given a User\ldots{}\\
+\hline
+19.1 & When I am reduced to less than three pieces, the game must declare me\\
+ & the loser and end the game.\\
+ & \\
+19.2 & When I am not reduced to less than three pieces, then the game does not\\
+ & declare me the loser nor end the game.\\
+\end{tabular}
+\end{center}
+
+\subsection{Criterion 20}
+\label{sec:orgc567726}
+\begin{center}
+\begin{tabular}{|c|p{12.0cm}|}
+ACID & Description\\
+\hline
+20.0 & Given a User\ldots{}\\
+\hline
+20.1 & When I reduce my opponent to less than three pieces, the game must\\
+ & declare me the winner and end the game.\\
+ & \\
+20.2 & When I do not reduced my opponent to less than three pieces, then the\\
+ & game does not declare me the winner nor end the game.\\
+\end{tabular}
+\end{center}
+\subsection{Criterion 21}
+\label{sec:orgbc3d38a}
+\begin{center}
+\begin{tabular}{|c|p{12.0cm}|}
+ACID & Description\\
+\hline
+21.0 & Given a User\ldots{}\\
+\hline
+21.1 & When neither my opponent and I are reduced to less than three pieces\\
+ & and we repeat the same board arrangement more than N times, then the\\
+ & game is declared a "Remi", e.g. a tie, and the game is ended.\\
+ & \\
+21.2 & When neither my opponent and I are reduced to less than three pieces\\
+ & and we do not repeat the same board arrangement more than N times,\\
+ & then the game is not declared "Remi" and is not ended.\\
+\end{tabular}
+\end{center}
+
+\subsection{Criterion 22}
+\label{sec:orgb5a825d}
+\begin{center}
+\begin{tabular}{|c|p{12.0cm}|}
+ACID & Description\\
+\hline
+22.0 & Given a User\ldots{}\\
+\hline
+22.1 & When a user restarts the game, then the board will restart with an\\
+ & empty board.\\
+ & \\
+ & \\
+22.2 & When a user does not restart the game, then the board will retain the\\
+ & current layout it contains.\\
+\end{tabular}
+\end{center}
+
+\subsection{Criterion 23}
+\label{sec:org71191d3}
+\begin{center}
+\begin{tabular}{|c|p{12.0cm}|}
+ACID & Description\\
+\hline
+22.0 & Given a User\ldots{}\\
+\hline
+22.1 & When a user starts a new game, then a user's default configuration will\\
+ & be used when a new game is started.\\
+ & \\
+ & \\
+22.2 & When a user does not start a new game, then the configuration will\\
+ & remain unchanged.\\
+\end{tabular}
+\end{center}
+
+
+
+\section{Code Review}
+\label{sec:orgf1105e1}
+\begin{center}
+\begin{tabular}{|l|c|c|}
+Checklist & Item & Findings\\
+\hline
+Coding Standards &  & \\
+\hline
+ & Naming Conventions & All naming conventions link directly to their use case and structs have compact naming systems relating to their purpose or game identity. This relates heavily to game component system design patter, i.e. ECS\\
+ & Argument ordering & Rust's formal parameter argument ordering is strict, i.e. the order of arguments cannot vary between calls for the same method. For JavaScript equivalent, same restrictions apply due to conversion.\\
+ & Comments & Commenting could be improved by adding clarity in areas that handle pattern matching on handling of board inputs and conversions. No verbose comments and existing comments are well placed.\\
+ & Code Style & Rustc comes with a component called Rustfmt that automatically formats code upon save to keep a consistent style across the codebase inline with Rust code formatting standards. Javascript is compliant with ES6 Lint.\\
+ & Indentation & See above for answer. Both handled by linters provided.\\
+ & \ldots{} & \\
+\hline
+Design Principles &  & \\
+\hline
+ & Abstraction and Interfaces & Due to ECS, each component has high cohesion and loose coupling natively. Each entity as defined in the rust module is single purpose, and is incrementally composed from smaller entities defined for the game. Js mimics this, with abstraction mostly occurring in the module. Browser interactions make for event based components.\\
+ & Proper Encapsulation & JS x Rust interop makes for high modularity within types and their methods. Only that which is necessary to be exposed publicly is exposed as such, and FFI wrappings enforce a minimally exposed API to the server for handling game logic.\\
+ & Command Query Separation Princ. & JS calls to rust module's methods, which in turn have a minimal API exposed through Manager. Manager, in turn, only have mutators or accessors for its private GameState object. These call to GameState itself through basic getters and setters.\\
+ & Design by Contract & The strict typing over the possible game states representable allow for exhaustive matching over the game variants. The JS poll's input objects are strict to their parameters passed to Rust.\\
+ & - If so, reasonable pre/post conds? & Yes. The typing models the domain space so we can keep track of pre/post conditions at an abstract level.\\
+ & Open Closed Princ. & JS can directly inherit class models from Rust, extending their functionality while not disturbing native code and implementation logic. This allows for modification of input logic while the game logic remains consistent and unaffected by irrelevant mutation.\\
+ & Single Responsibility Princ. & Due to our usage of the ECS design model/pattern, our classes, structure, and types, both in JS and Rust, are highly cohesive yet maintain individual responsibility for their logic.\\
+\hline
+Code Smells &  & \\
+\hline
+ & Magic Numbers & None.\\
+ & Unnecessary Globals/Class vars & None.\\
+ & Duplicate Code & Due to the nature of entity component systems (ECS), which our program uses as a design pattern for the game, there are no instance of duplication, only interactions with types.\\
+ & Long Methods & None.\\
+ & Long parameter list & None, due to ECS.\\
+ & Over-complex expression & None.\\
+ & Unnecessary Branching & None, where branching occurs through match statements, it is exhaustive of the game state without being enumerable.\\
+ & Bad method/variable naming & None, see Coding Standards: Naming Conventions.\\
+ & Similar methods in other classes & None, due to ECS.\\
+ & \ldots{} & \\
+\hline
+\end{tabular}
+\end{center}
+
+
+
+\begin{center}
+\begin{tabular}{lllll}
+Bugs & Status & buggy code snippet & bug summary & bug logic\\
+\hline
+\#1 & Fixed & \texttt{calcPlayer(1)} & The board text displays the player who last played as the current player. & Is nullified by the piecesLeft decrement that precedes it, resulting in referring to the previous colour as the new colour.\\
+\#2 & Fixed & \texttt{pub fn poll} & Manager's hidden gamestate moves instead of copy/clone when using basic accessors. & Ownership defined for accessors in GameState resulted in unnecessary moves of Manager's hidden Gamestate\\
+ &  &  &  & \\
+\hline
+\end{tabular}
+\end{center}
+
+\section{Implementation Tasks}
+\label{sec:orge845e64}
+This section summarizes the details of implementation tasks for the project. You will find in each
+subsection a table similar to those found in \hyperref[sec:orge86b24b]{\(\S{2}\)} and \hyperref[sec:org238b313]{\(\S{3}\)}.
+
+\subsection{Summary of Production Code}
+\label{sec:orgcd92ddc}
+
+\begin{center}
+\begin{tabular}{|p{4.5cm}|c|p{3.5cm}|p{4.5cm}|c|}
+ &  & Class & \\
+SID \& Name & ACID & Name(s) & Status\\
+\hline
+2 User Input and Selection & 2.1, 2.1 & \hyperref[sec:orga83b779]{Window, Board} & Done\\
+\end{tabular}
+\end{center}
+
+\subsubsection{Class \texttt{Window}, \texttt{Board}}
+\label{sec:orga83b779}
+\begin{center}
+\begin{tabular}{|l|l|}
+Method & Notes\\
+\hline
+1. \texttt{eventPress} & These functions relate to a pseudo-epic, and thus the testing will be\\
+2. \texttt{at} & generic.\\
+ & \\
+\end{tabular}
+\end{center}
+
+\subsection{Automated Test Code}
+\label{sec:orgee29bcc}
+
+There were no automated tests for this sprint.
+
+\begin{center}
+\begin{tabular}{|l|l|p{2.5cm}|p{2.5cm}|p{2.5cm}|l|l|}
+ &  & Class & Method &  &  & \\
+SID \& Name & ACID & Name(s) & Name(s) & Description & Status & Developer\\
+\hline
+ &  &  &  &  &  & \\
+\end{tabular}
+\end{center}
+\subsection{Manual Test Code}
+\label{sec:org5f0a434}
+\begin{center}
+\begin{tabular}{|p{4.5cm}|c|c|c|p{3.0cm}|}
+ &  &  &  & \\
+SID \& Name & ACID & MTID & Status & Developer(s)\\
+\hline
+\hyperref[sec:orge86b24b]{S2} User Input and Selection & \hyperref[sec:orgac4415a]{A2.1} & \hyperref[sec:org490bed5]{M1} & DONE & Samuel, Michael\\
+\hyperref[sec:orge86b24b]{S2} User Input and Selection & \hyperref[sec:orgac4415a]{A2.2} & \hyperref[sec:orgec7d8aa]{M2} & DONE & Samuel, Michael\\
+\hyperref[sec:org012f380]{S5} Piece Placement & \hyperref[sec:org7be564f]{A5.1.1} & \hyperref[sec:orgca0e501]{M3} & DONE & Samuel, Michael\\
+\hyperref[sec:org012f380]{S5} Piece Placement & \hyperref[sec:org7be564f]{A5.1.2} & \hyperref[sec:org798be91]{M4} & DONE & Samuel, Michael\\
+\hyperref[sec:org012f380]{S5} Piece Placement & \hyperref[sec:org7be564f]{A5.2.1} & \hyperref[sec:orga04fc4f]{M5} & DONE & Samuel, Michael\\
+\hyperref[sec:org012f380]{S5} Piece Placement & \hyperref[sec:org7be564f]{A5.2.2} & \hyperref[sec:org27ba38f]{M6} & DONE & Samuel, Michael\\
+\end{tabular}
+\end{center}
+\subsubsection{Manual Test 1}
+\label{sec:org490bed5}
+\begin{center}
+\begin{tabular}{|p{6.0cm}|p{4.0cm}|p{3.0cm}|}
+Test Input & Test Oracle & Notes\\
+\hline
+document & function onclick() & Checks if element clickable.\\
+.getElementById("A1") &  & \\
+.onclick &  & \\
+\end{tabular}
+\end{center}
+
+\subsubsection{Manual Test 2}
+\label{sec:orgec7d8aa}
+\begin{center}
+\begin{tabular}{|p{6.0cm}|p{4.0cm}|p{3.0cm}|}
+Test Input & Test Oracle & Notes\\
+\hline
+document & "undefined" & Checks if element clickable.\\
+.getElementById("container") &  & \\
+.onclick &  & \\
+\end{tabular}
+\end{center}
+
+\subsubsection{Manual Test 3}
+\label{sec:orgca0e501}
+\begin{center}
+\begin{tabular}{|p{4.0cm}|p{6.0cm}|p{3.0cm}|}
+Test Input & Test Oracle & Notes\\
+\hline
+"A1" & elem.style.backgroundColor & This is a GUI test.\\
+ & !== undefined & \\
+ &  & GUI will show piece placed in bottom\\
+ &  & left corner.\\
+\end{tabular}
+\end{center}
+
+\subsubsection{Manual Test 4}
+\label{sec:org798be91}
+\begin{center}
+\begin{tabular}{|p{2.0cm}|p{8.0cm}|p{3.0cm}|}
+Test Input & Test Oracle & Notes\\
+\hline
+"A1", "A1" & "elem.style.backgroundColor \texttt{=} previousColor" & This is a GUI test.\\
+ &  & \\
+ &  & GUI will show piece placed in bottom\\
+ &  & left corner.\\
+\end{tabular}
+\end{center}
+\subsubsection{Manual Test 5}
+\label{sec:orga04fc4f}
+\begin{center}
+\begin{tabular}{|p{4.0cm}|p{6.0cm}|p{3.0cm}|}
+Test Input & Test Oracle & Notes\\
+\hline
+"D6" & "board \texttt{=} previousBoard" & This is a GUI test.\\
+ &  & \\
+ &  & GUI will show piece placed in bottom\\
+ &  & left corner.\\
+\end{tabular}
+\end{center}
+\subsubsection{Manual Test 6}
+\label{sec:org27ba38f}
+\begin{center}
+\begin{tabular}{|p{4.0cm}|p{6.0cm}|p{3.0cm}|}
+Test Input & Test Oracle & Notes\\
+\hline
+"A1" & "board \texttt{=} previousBoard" & This is a GUI test.\\
+ &  & \\
+ &  & GUI will show piece placed in bottom\\
+ &  & left corner.\\
+\end{tabular}
+\end{center}
+\subsection{Other Manual Test Code}
+\label{sec:org7111e04}
+
+There were no other manual tests for this sprint.
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|}
+ &  &  &  &  &  & \\
+ &  & Expected & Class & Method Name &  & \\
+ID & Test Input & Result & Name & of Test & Status & Developer\\
+\hline
+ &  &  &  &  &  & \\
+\end{tabular}
+\end{center}
+
+\section{Meeting Minutes}
+\label{sec:org5985622}
+\subsection{Meeting 2019.09.04}
+\label{sec:org7d3741c}
+\begin{itemize}
+\item Duration: 1 Hour
+\item Location: Miller Nichols Library
+\end{itemize}
+\subsubsection*{Agenda}
+\label{sec:orgc5be3a1}
+\begin{itemize}
+\item going over project pdf as group
+\begin{itemize}
+\item discussing tech stack
+\item going over sprint assignments
+\item going over normal assignments
+\end{itemize}
+\item discussing the actual structure of sprint 1
+\begin{itemize}
+\item requirements
+\item user stories
+\item what submission might look like
+\item discussion of who gets to do what
+\item discussion of when to meet, general availability
+\begin{itemize}
+\item Sam will be gone from 9th through 19th
+\item Elias will be gone through the 12th - 14th
+\end{itemize}
+\end{itemize}
+\end{itemize}
+\subsubsection*{project 1 report}
+\label{sec:orgdb08956}
+\begin{itemize}
+\item want to get scrum documentation done
+\item get general idea down by end of this friday (2019.09.06)
+\begin{itemize}
+\item structure of the project
+\item how to use the frameworks/libraries involved (personal research/reading
+per individual)
+\begin{itemize}
+\item Neon for rust
+\item node.js
+\item potentially express.js
+\end{itemize}
+\end{itemize}
+\item generating cards, user stories
+\end{itemize}
+\subsection{Meeting 2019.09.06}
+\label{sec:org6782534}
+\begin{itemize}
+\item Duration: 1 Hour
+\item Location: Miller Nichols Library
+\end{itemize}
+\subsubsection*{Agenda}
+\label{sec:org6eb72d3}
+\begin{itemize}
+\item discussing game rules
+\item discussing/writing user stories
+\item discussing tooling
+\item discussing design
+\end{itemize}
+\subsubsection*{Game Rules}
+\label{sec:orgf277e9f}
+\begin{itemize}
+\item watched a video demo'ing the game
+\item discussed/clarify mechanics
+\begin{itemize}
+\item whether or not to include coin flip
+\item terms of loss
+\item flying mechanic
+\end{itemize}
+\end{itemize}
+\subsubsection*{User stories}
+\label{sec:org33ed41b}
+\begin{itemize}
+\item elias wrote user stories in a new org mode file called kanban.org on the
+repository
+\item discussed problem of documentation given requirements from the pdf for
+sprint 1
+\item discussed alternative means of documenting, carrying out execution of our
+cards for the project
+\end{itemize}
+\subsubsection*{Tooling \& Design}
+\label{sec:orgc782aa7}
+\begin{itemize}
+\item did not achieve agenda, did not get to these topics because of the time
+it took to discuss our epics/user stories.
+\end{itemize}
+\subsubsection*{{\bfseries\sffamily TODO} }
+\label{sec:org57bda95}
+\begin{itemize}
+\item[{$\square$}] discuss tooling
+\begin{itemize}
+\item need to finalize what our stack will look like and frameworks to be
+used.
+\item elias has experimented with Neon and reports that it works well, seems
+viable for the product.
+\end{itemize}
+\item[{$\square$}] discuss design
+\begin{itemize}
+\item need to discuss how the actual product will be packaged and its
+architecture.
+\end{itemize}
+\end{itemize}
+\subsection{Meeting 2019.09.27}
+\label{sec:orgf0db3ac}
+\begin{itemize}
+\item Duration: 1 Hour, 30 minutes
+\item Location: Miller Nichols Library
+\end{itemize}
+\subsubsection*{Agenda}
+\label{sec:orgc6a4ccc}
+\begin{itemize}
+\item discuss project structure
+\item acceptance criteria
+\item work assignment
+\item remaining TODOs
+\end{itemize}
+\subsubsection*{Project Structure}
+\label{sec:orga6db67f}
+\begin{itemize}
+\item express.js has a lot of dependencies, only really need connect.js
+\begin{itemize}
+\item might try just using connect.js, which would be a lot simpler
+\item will continue with using Neon
+\end{itemize}
+\item board
+\begin{itemize}
+\item gui
+\begin{itemize}
+\item js renders the fontend
+\item logic/data is all handled on back
+\end{itemize}
+\item data structure/representation
+\begin{itemize}
+\item two choices:
+\begin{enumerate}
+\item one big board object that includes methods for both resolving where players are \textbf{and}
+where things like mills are
+\item two object entities, one is purely for the GUI (tracking positions on the board), the
+other would be some kind of graph structure that allows position nodes to check peers
+for occupation and whether it is the same or opposing players
+\end{enumerate}
+\end{itemize}
+\item movement and move validity
+\begin{itemize}
+\item need to track flying
+\begin{itemize}
+\item proposition: flying is a universal property, merely constrained until player count is
+reduced.
+\begin{itemize}
+\item need some kind of getter/setter between board and entity management system
+\end{itemize}
+\item mill detection
+\begin{itemize}
+\item if going with entity system, would merely be a graph traversal from any given node
+\item another idea: create a mill entity system that tracks active mills and checks each
+mill upon each turn(?) and modifies or destroys the mill as necessary.
+\begin{itemize}
+\item could save a lot of checking
+\item as for organization/logical membership, would keep such a mill entity system
+independent of other objects in the system for simplicity, at least for now.
+\end{itemize}
+\end{itemize}
+\item Checking for attack
+\begin{itemize}
+\item if a mill entity system is used, we natively have a means to detect valid attacks. so
+long as the node is not in one of the mills, do not attack \textbf{unless} all available
+nodes are in mills.
+\end{itemize}
+\end{itemize}
+\end{itemize}
+\item game driver
+\begin{itemize}
+\item Will have some kind of Game entity/manager object that drives the game event loop.
+\begin{itemize}
+\item will take inputs from players, run them as game moves
+\begin{itemize}
+\item however, internal logic to the entity management system is what will ultimately validate moves
+\item game manager will have no logic for why this happens, only passes back and for game
+inputs and the results of moves.
+\end{itemize}
+\item consequentially, need to codify where and how game validation logic happens
+\end{itemize}
+\end{itemize}
+\item validation logic
+\begin{itemize}
+\item as of now, think it will be handled by the main entity management system
+\item will have a set of logic checking methods defined over the system that verify whether a
+given move is allowed
+\end{itemize}
+\end{itemize}
+\end{itemize}
+\subsubsection*{Acceptance Criteria}
+\label{sec:org7bcf74e}
+\begin{itemize}
+\item realized we need to add numbering to the board GUI (a-g, 1-7)
+\item (deferred, Sam will begin working on before next meeting)
+\end{itemize}
+\subsubsection*{Work Assignment}
+\label{sec:org7e76bf8}
+\begin{itemize}
+\item elias will begin on exploratory work for the backend (board, entity management, etc)
+\item sam, michael will begin exploratory work for the frontend (GUI, communicating with backend)
+\end{itemize}
+\subsubsection*{{\bfseries\sffamily TODO} }
+\label{sec:org2cc264b}
+\begin{itemize}
+\item[{$\square$}] kanban board setup, finalization of workflow for documentation
+\begin{itemize}
+\item can probably just use github for real time management, but keep organizational and notes in
+\texttt{kanban.org} file on the repo.
+\end{itemize}
+\item[{$\square$}] defining test cases for stories and acceptance criteria
+\item[{$\square$}] refining stories
+\begin{itemize}
+\item same case applies with above: refine stories, and put them on github's project management
+board accordingly; actual refinement can be delegated to within \texttt{kanban.org} file.
+\end{itemize}
+\end{itemize}
+\subsection{Meeting 2019.10.02}
+\label{sec:org933c987}
+\begin{itemize}
+\item Duration: 1 Hour, 40 Minutes
+\item Location: Miller Nichols Library
+\end{itemize}
+\subsubsection*{Agenda}
+\label{sec:orgabb031c}
+\begin{itemize}
+\item addressing tagged issues generated on GitHub
+\item settling on how front-end talks to back-end
+\item documentation/design stuff
+\end{itemize}
+\subsubsection*{Issues on GitHub}
+\label{sec:org4ebdbf2}
+\begin{itemize}
+\item issue \#3: determine communication channel between js and rust
+\label{sec:org5d2cb91}
+\begin{itemize}
+\item event polling seems overkill for what we need
+\item even handler on front-end which speaks to an entity ManagerGlue, which will be the JS that
+talks to rust backend
+\begin{itemize}
+\item There will be a manager in the back-end, which will generate game state, and return that to
+the front-end
+\item back-end will also have triggers (flags? Enums?) which signal to front-end when certain
+actions are no longer needed or valid, i.e. button inputs or game state continuation
+\end{itemize}
+\item JSON seems like a good enough medium for message passing between front and back components
+\end{itemize}
+\begin{itemize}
+\item issue \#4 is largely tagged to \#3, so this resolves that
+\label{sec:org66a7ee1}
+\begin{itemize}
+\item \texttt{State}: Input Handle + BoardStruct + Trigger)
+\item \texttt{BoardState}
+\begin{itemize}
+\item this is what gets sent back to the JS
+\item 1D array of the \texttt{State} struct
+\begin{itemize}
+\item this array will be handed off as a NeonJS object, whatever it's called in neon
+\item 
+\end{itemize}
+\end{itemize}
+\end{itemize}
+\end{itemize}
+\item issue \#6: Front-end/GUI Skeleton, Basic Design
+\label{sec:orgedf16d2}
+\begin{enumerate}
+\item Neon builds a node module
+\item This is sent to express.js
+\begin{itemize}
+\item accepts it as a bunch of js functions
+\end{itemize}
+\item Express takes this, as a bunch of objects, and then saves as strings to JS files, in turn
+statically served to end user (i.e. browser)
+\begin{itemize}
+\item express.js interaction is a one-off affair
+\end{itemize}
+\item Stretch goal: being able to set different themes on the front-end
+\end{enumerate}
+\item issue \#8: CI/CD
+\label{sec:org238dfc5}
+\begin{itemize}
+\item GitHub has native CI/CD now via it's Action's service.
+\item can impl for both Rust and Node.js
+\end{itemize}
+\end{itemize}
+\subsubsection*{{\bfseries\sffamily TODO} }
+\label{sec:org15d0483}
+\begin{itemize}
+\item[{$\square$}] Design docs(?)
+\begin{itemize}
+\item at least 3 needed:
+\begin{enumerate}
+\item event diagram
+\item general UML diagram for total project
+\item class hierarchy/component diagram
+\end{enumerate}
+\end{itemize}
+\end{itemize}
+\subsection{Meeting 2019.10.03}
+\label{sec:org50f5ad5}
+\begin{itemize}
+\item Discord: 1 Hour, 53 Minutes
+\item Location: Video Call
+\end{itemize}
+\subsubsection*{Agenda}
+\label{sec:org11961e5}
+\begin{itemize}
+\item how to branch
+\item branching basic\(_{\text{gui}}\)
+\item GitHub PR format
+\item styling format
+\end{itemize}
+\subsubsection*{GitHub PR format}
+\label{sec:org5a5d7ad}
+\begin{itemize}
+\item Show Michael how to create a branch
+\item name the branch and pull from remote
+\item push the branch from local
+\item sync branches
+\item checkout a branch
+\end{itemize}
+\subsubsection*{Branching \texttt{basic\_gui}}
+\label{sec:org96a9029}
+\begin{itemize}
+\item created a branch \texttt{basic\_gui}
+\item set up an issue with the branch for PR
+\item push a commit from local to remote branch
+\end{itemize}
+\subsubsection*{GitHub PR format}
+\label{sec:org1571ec8}
+\begin{itemize}
+\item went through how to form a PR from different branches
+\item how to further commit to the compare branch
+\end{itemize}
+\subsubsection*{Styling Format}
+\label{sec:org6ad8cd0}
+\begin{itemize}
+\item no bootstrap, no jquery
+\item setup proper layouts for the GUI
+\item discussed how we want to handle events onclick
+\end{itemize}
+\subsubsection*{{\bfseries\sffamily TODO} }
+\label{sec:orgd16a7d9}
+\begin{itemize}
+\item push scaffolds for the website GUI
+\item handle basic logic for pushing items to back-end storage
+\item create mock of Rust functionality in TypeScript for further discussion
+\end{itemize}
+\subsection{Meeting 2019.10.05}
+\label{sec:org0e540f4}
+\begin{itemize}
+\item Duration: 1 Hour, 16 Minutes
+\item Location: Video Call
+\end{itemize}
+\subsubsection*{Agenda}
+\label{sec:org1a71e81}
+\begin{itemize}
+\item CSS Grid
+\item SASS
+\item TypeScript
+\item build script compilation and runtime
+\item proper layout for GUI
+\end{itemize}
+\subsubsection*{CSS Grid}
+\label{sec:org9cdeb83}
+\begin{itemize}
+\item teach Michael about CSS Grid
+\item pure CSS, not bootstrap (Elias)
+\item use columns properly
+\item no need for floats / flexbox
+\end{itemize}
+\subsubsection*{SASS}
+\label{sec:orgd7c6311}
+\begin{itemize}
+\item transpiler for CSS
+\item allows nested functionality
+\item separate compiled/uncompiled folders
+\item use \texttt{watch} script to sync changes
+\end{itemize}
+\subsubsection*{TypeScript}
+\label{sec:org6a5ab70}
+\begin{itemize}
+\item better able to handle equivalence mocking to Rust
+\item easy to push onto browser
+\item separate folders (see above)
+\item push to public folder for site access
+\end{itemize}
+\subsubsection*{Build Script Compilation and Runtime}
+\label{sec:orgf40072c}
+\begin{itemize}
+\item use watch and start scripts to build site
+\item separate scripts will be run for Rust beforehand
+\item build scripts allow for synced changes between folders (see above)
+\end{itemize}
+\subsubsection*{Proper Layout for GUI}
+\label{sec:orgbfb371f}
+\begin{itemize}
+\item use column areas in CSS Grid
+\item main column for game
+\item nested grid for board layout (tentative)
+\item proportion text for board side-by-side
+\end{itemize}
+\subsubsection*{{\bfseries\sffamily TODO} }
+\label{sec:org7793b33}
+\begin{itemize}
+\item design docs
+\item microcharter
+\item mocking TS => Rust
+\item event keys on front-end (browser)
+\end{itemize}
+\subsection{Meeting 2019.10.06}
+\label{sec:org5f72ba5}
+\begin{itemize}
+\item Duration: 7 hours
+\item Location: Video Call
+\end{itemize}
+\subsubsection*{Agenda}
+\label{sec:org43a9dbf}
+\begin{itemize}
+\item Tying up loose ends with respect to documentation and write up
+\item Tying up loose ends with respect to UI/JS end of the application
+\item Discussing what is left to do with the project
+\end{itemize}
+\subsubsection*{Documentation and Write-up}
+\label{sec:orge75a547}
+\begin{itemize}
+\item Figured out how to format the tables given that many of the ones provided do not play well
+with latex/org-mode markdown
+\item Similarly, decided on how to interconnect documentation components between sections
+\item Discussed the remaining things left undocumented, particularly pair ratings.
+\end{itemize}
+\subsubsection*{UI/JS Loose Ends}
+\label{sec:orga5dcc2b}
+\begin{itemize}
+\item Complete manual testing of interacting elements
+\item Finalize positions of clickable elements on the board grid.
+\item Alternating player logic for placement of pieces.
+\item Limiting piece placement to nine.
+\end{itemize}
+\subsubsection*{Discussing Future Sprint/Direction of Project}
+\label{sec:orgf23e050}
+\begin{itemize}
+\item Current User Stories are pseudo-Epics and need to be refined into better User stories aside
+from \hyperref[sec:org185d3d8]{S1}. As they stand, discussing the current user stories makes for overly generic/abstract
+discussion and doesn't meaningfully translate into logic/behavior to implement and actual
+engineering tasks.
+\item Currently, the front end mocks all of the behavior/functionality that would otherwise be
+provided by the backend. In sprint 2, this is where the real meat of programming will come in
+as we learn to make the back-end and front-end interface, particularly with translating data
+types across the FFI boundary through Neon.
+\item We need to improve the current state documentation massively.
+\begin{itemize}
+\item Design diagrams.
+\item Docstrings across software code base.
+\item Event diagrams.
+\end{itemize}
+\item Translate the above issues into their proper documentation for the master documentation and
+write-up file
+\item How to test more of the functionality given that a major component of this application is
+running directly on the browser.
+\end{itemize}
+\section{Team Ratings}
+\label{sec:orga31f17a}
+
+Submission document does not specify scale, so it is assumed out of 5 with 1 being "Worst" and 5
+being "Excellent".
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+ & Elias Julian Marko Garcia & Michael Sy Cu & Samuel Chia Ern Lim\\
+\hline
+Elias Julian Marko Garcia & - & 5 & 5\\
+\hline
+Michael Sy Cu & 5 & - & 5\\
+\hline
+Samuel Chia Ern & 5 & 5 & -\\
+\hline
+Average & 5 & 5 & 5\\
+\hline
+\end{tabular}
+\end{center}
+\end{document}
