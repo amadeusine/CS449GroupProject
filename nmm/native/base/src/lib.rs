@@ -54,10 +54,10 @@ struct Mill {
     Pieces: (Position, Position, Position),
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub struct PositionStatus(bool, Option<Player>);
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Board(HashMap<Coord, PositionStatus>);
 
 #[derive(Debug, Clone, Copy, PartialOrd, PartialEq, Display)]
@@ -84,7 +84,7 @@ pub enum Action {
 }
 
 // TODO: Make top level GameResult type that wraps GameState and custom GameErr types?
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct GameState {
     handle: Handle,
     trigger: Trigger,
@@ -92,13 +92,13 @@ pub struct GameState {
     mills: Vec<Mill>,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 enum Agent {
     Human,
     Auto,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct GameOpts {
     user: Option<Player>,
     opponent: Option<Player>,
@@ -107,7 +107,7 @@ pub struct GameOpts {
     Position: Option<Coord>,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Manager {
     state: GameState,
 }
@@ -417,5 +417,29 @@ mod base_tests {
             Coord::new(XCoord::G, YCoord::Seven).as_string(),
             String::from("G7")
         );
+    }
+
+    #[test]
+    fn test_board_len() {
+        use super::Board;
+
+        assert_eq!(Board::new().len(), 24u32);
+    }
+
+    #[test]
+    fn test_manager_new_poll() {
+        use super::{Board, Handle, Manager, Trigger};
+
+        assert_eq!(
+            Manager::new().poll(),
+            (Handle::Ok, Trigger::None, Board::new())
+        );
+    }
+
+    #[test]
+    fn test_manager_new_get_board() {
+        use super::{Board, Manager};
+
+        assert_eq!(Manager::new().get_board(), Board::new());
     }
 }
