@@ -73,34 +73,57 @@
   respective story, which also helps with navigating this section.
   
    #+ATTR_LaTeX: :align |c|m{3.5cm}|c|c|c|c|m{2.0cm}|
-   |     |                           |          | Time Est. | Actual |        |                     |
-   | SID | Story Name                | Priority |      (hr) | (hr)   | Status | Developer(s)        |
-   |-----+---------------------------+----------+-----------+--------+--------+---------------------|
-   | [[#SID1][S1]]  | Mills Board               | high     |        10 | 4      | DONE   | Sam, Michael, Elias |
-   |-----+---------------------------+----------+-----------+--------+--------+---------------------|
-   | [[#SID2][S2]]  | User Input and            | high     |        10 | 4      | DONE   | Sam                 |
-   |     | Selection                 |          |           |        |        |                     |
-   |-----+---------------------------+----------+-----------+--------+--------+---------------------|
-   | [[#SID3][S3]]  | Starting a Game           | medium   |        10 | -      | TODO   | -                   |
-   |-----+---------------------------+----------+-----------+--------+--------+---------------------|
-   | [[#SID4][S4]]  | Assigning Players         | medium   |        10 | -      | TODO   | -                   |
-   |-----+---------------------------+----------+-----------+--------+--------+---------------------|
-   | [[#SID5][S5]]  | Piece Placement           | high     |        10 | 2      | TODO   | Sam, Michael        |
-   |-----+---------------------------+----------+-----------+--------+--------+---------------------|
-   | [[#SID6][S6]]  | Piece Movement            | medium   |        10 | -      | TODO   | -                   |
-   |-----+---------------------------+----------+-----------+--------+--------+---------------------|
-   | [[#SID7][S7]]  | Mill Formation            | medium   |        10 | -      | TODO   | -                   |
-   |-----+---------------------------+----------+-----------+--------+--------+---------------------|
-   | [[#SID8][S8]]  | Piece Elimination         | medium   |        10 | -      | TODO   | -                   |
-   |-----+---------------------------+----------+-----------+--------+--------+---------------------|
-   | [[#SID9][S9]]  | Flying Pieces             | medium   |        10 | -      | TODO   | -                   |
-   |-----+---------------------------+----------+-----------+--------+--------+---------------------|
-   | [[#SID10][S10]] | Defining End Game         | medium   |        10 | -      | TODO   | -                   |
-   |-----+---------------------------+----------+-----------+--------+--------+---------------------|
-   | [[#SID11][S11]] | Restarting/Replaying Game | medium   |        10 | -      | TODO   | -                   |
-
-
-** Mills Board
+   |     |                        |          | Time Est. | Actual |        |                     |
+   | SID | Story Name             | Priority |      (hr) | (hr)   | Status | Developer(s)        |
+   |-----+------------------------+----------+-----------+--------+--------+---------------------|
+   | [[#SID1][S1]]  | Default Board Layout   | high     |        10 | 4      | DONE   | Sam, Michael, Elias |
+   |-----+------------------------+----------+-----------+--------+--------+---------------------|
+   | [[#SID2][S2]]  | Mills Board            | high     |        10 | 4      | DONE   | Sam                 |
+   |     | Coordinate System      |          |           |        |        |                     |
+   |-----+------------------------+----------+-----------+--------+--------+---------------------|
+   | [[#SID3][S3]]  | Player Selection       | medium   |        10 | -      | TODO   | -                   |
+   |-----+------------------------+----------+-----------+--------+--------+---------------------|
+   | [[#SID4][S4]]  | Piece Assignment       | medium   |        10 | -      | TODO   | -                   |
+   |-----+------------------------+----------+-----------+--------+--------+---------------------|
+   | [[#SID5][S5]]  | Game Menu Prompt       | high     |        10 | 2      | TODO   | Sam, Michael        |
+   |-----+------------------------+----------+-----------+--------+--------+---------------------|
+   | [[#SID6][S6]]  | Start Game Prompt      | medium   |        10 | -      | TODO   | -                   |
+   |-----+------------------------+----------+-----------+--------+--------+---------------------|
+   | [[#SID7][S7]]  | Player Turn Assignment | medium   |        10 | -      | TODO   | -                   |
+   |-----+------------------------+----------+-----------+--------+--------+---------------------|
+   | [[#SID8][S8]]  | Position Selection     | medium   |        10 | -      | TODO   | -                   |
+   |-----+------------------------+----------+-----------+--------+--------+---------------------|
+   | [[#SID9][S9]]  | Position Placement     | medium   |        10 | -      | TODO   | -                   |
+   |-----+------------------------+----------+-----------+--------+--------+---------------------|
+   | [[#SID10][S10]] | Position Movement      | medium   |        10 | -      | TODO   | -                   |
+   |-----+------------------------+----------+-----------+--------+--------+---------------------|
+   | [[#SID11][S11]] | Elimination Movement   | medium   |        10 | -      | TODO   | -                   |
+   |-----+------------------------+----------+-----------+--------+--------+---------------------|
+   | [[#SID12][S12]] | Mill Definition        | medium   |        10 | -      | TODO   | -                   |
+   |-----+------------------------+----------+-----------+--------+--------+---------------------|
+   | [[#SID13][S13]] | Mill Attack Attribute  | medium   |        10 | -      | TODO   | -                   |
+   |-----+------------------------+----------+-----------+--------+--------+---------------------|
+   | [[#SID14][S14]] | Mill Defense Attribute | medium   |        10 | -      | TODO   | -                   |
+   |-----+------------------------+----------+-----------+--------+--------+---------------------|
+   | [[#SID15][S15]] | Mill Piece Movement    | medium   |        10 | -      | TODO   | -                   |
+   |-----+------------------------+----------+-----------+--------+--------+---------------------|
+   | [[#SID16][S16]] | Elimination with Mills | medium   |        10 | -      | TODO   | -                   |
+   |-----+------------------------+----------+-----------+--------+--------+---------------------|
+   | [[#SID17][S17]] | Flying Definition      | medium   |        10 | -      | TODO   | -                   |
+   |-----+------------------------+----------+-----------+--------+--------+---------------------|
+   | [[#SID18][S18]] | Flying Piece Ability   | medium   |        10 | -      | TODO   | -                   |
+   |-----+------------------------+----------+-----------+--------+--------+---------------------|
+   | [[#SID19][S19]] | End Game: Loss         | medium   |        10 | -      | TODO   | -                   |
+   |-----+------------------------+----------+-----------+--------+--------+---------------------|
+   | [[#SID20][S20]] | End Game: Win          | medium   |        10 | -      | TODO   | -                   |
+   |-----+------------------------+----------+-----------+--------+--------+---------------------|
+   | [[#SID21][S21]] | End Game: Tie          | medium   |        10 | -      | TODO   | -                   |
+   |-----+------------------------+----------+-----------+--------+--------+---------------------|
+   | [[#SID22][S22]] | Reset Board            | medium   |        10 | -      | TODO   | -                   |
+   |-----+------------------------+----------+-----------+--------+--------+---------------------|
+   | [[#SID23][S23]] | Start New Game         | medium   |        10 | -      | TODO   | -                   |
+   
+** Default Board Layout
    :PROPERTIES:
    :CUSTOM_ID: SID1
    :END:
@@ -108,9 +131,9 @@
     :PROPERTIES:
     :UNNUMBERED: t
     :END:
-    As a user, I need an empty board consisting of 4 expanded squares with 8 equidistant positions
-    each to play a game of Nine Men's Morris.
-** User Input and Selection
+    As a user, I need a game board with 4 expanded squares, each with 8 equidistant positions, to
+    play a game of Nine Men's Morris.
+** Mills Board Coordinate System
    :PROPERTIES:
    :CUSTOM_ID: SID2
    :END:
@@ -118,9 +141,8 @@
     :PROPERTIES:
     :UNNUMBERED: t
     :END:
-    As a user, I need to be able to select and choose input from the web GUI of the application to
-    be able to play and take turns at Nine Men's Morris.
-** Starting a Game
+    As a user, I need a way to navigate and read the board to play a game of Nine Men's Morris.
+** Player Selection
    :PROPERTIES:
    :CUSTOM_ID: SID3
    :END:
@@ -128,9 +150,10 @@
     :PROPERTIES:
     :UNNUMBERED: t
     :END:
-    As a user, I need a GUI to prompt me with the options to start a game with either another human
-    or against the computer for Nine Men's Morris in order to play the game.
-** Assigning Players
+
+    As a user, I want to choose a distinct color for my player.
+
+** Piece Assignment
    :PROPERTIES:
    :CUSTOM_ID: SID4
    :END:
@@ -138,10 +161,8 @@
     :PROPERTIES:
     :UNNUMBERED: t
     :END:
-    As a user, I need to be assigned the role as either the first or second player, whether against
-    another human or the computer, in order to know my player turn (either first or second) in the
-    game.
-** Piece Placement
+    As a user, I want to receive 9 distinct pieces to place on the board.
+** Game Menu Prompt
    :PROPERTIES:
    :CUSTOM_ID: SID5
    :END:
@@ -149,9 +170,9 @@
     :PROPERTIES:
     :UNNUMBERED: t
     :END:
-    As a user, I need to place nine pieces on unoccupied positions in turn with another player to
-    start off a game of Nine Men's Morris.
-** Piece Movement
+    As a user, I am prompted with a GUI that shows the game board along with menu items.
+
+** Start Game Prompt
    :PROPERTIES:
    :CUSTOM_ID: SID6
    :END:
@@ -159,9 +180,9 @@
     :PROPERTIES:
     :UNNUMBERED: t
     :END:
-    As a user, I need to be able to move my pieces into adjacent positions that are not occupied by
-    the other player or adjacent to their mill in order to take a turn.
-** Mill Formation
+    As a user, I need a GUI to prompt me with the options to start a game with either another human
+    or against the computer.
+** Player Turn Assignment
    :PROPERTIES:
    :CUSTOM_ID: SID7
    :END:
@@ -169,10 +190,8 @@
     :PROPERTIES:
     :UNNUMBERED: t
     :END:
-    As a user, I need the game to recognize that I have formed a mill upon moving three of my own
-    pieces into adjacent positions so that I may gain the future ability to attack and defend my
-    mill pieces from being eliminated.
-** Piece Elimination
+    As a user, I want to receive either the first or second player's move at the beginning of the game.
+** Position Selection
    :PROPERTIES:
    :CUSTOM_ID: SID8
    :END:
@@ -180,10 +199,9 @@
     :PROPERTIES:
     :UNNUMBERED: t
     :END:
-    As a user, after forming a mill, I need the ability to remove an opponent's piece of my choosing
-    so long as either it is not in a mill or any piece given all available pieces are in a mill, so
-    that I may appropriately attack my opponent.
-** Flying Pieces
+    As a user, I need to be able to select an empty position to choose it for piece placement.
+
+** Position Placement
    :PROPERTIES:
    :CUSTOM_ID: SID9
    :END:
@@ -191,10 +209,9 @@
     :PROPERTIES:
     :UNNUMBERED: t
     :END:
-    As a user, upon reaching three remaining pieces, I need the ability to fly (jump) my pieces
-    across the board to any un-occupied point in order to play Nine Men's Morris according to the
-    rules. Whether the position is guarded is a variant of the game, implementation decision TBD.
-** Defining End Game
+    As a user, I need to be able to place a piece on an empty position to finish my turn.
+
+** Position Movement
    :PROPERTIES:
    :CUSTOM_ID: SID10
    :END:
@@ -202,10 +219,9 @@
     :PROPERTIES:
     :UNNUMBERED: t
     :END:
-    As a user, when either myself or the opponent reaches less than three pieces, i.e. two pieces, I
-    need the game and to declare the respective winner in order to successfully finish a game of
-    Nine Men's Morris.
-** Restarting and Replaying a Game
+    As a user, I want to be able to move my pieces to unoccupied positions.
+
+** Elimination Movement
    :PROPERTIES:
    :CUSTOM_ID: SID11
    :END:
@@ -213,9 +229,136 @@
     :PROPERTIES:
     :UNNUMBERED: t
     :END:
-    As a user, after having completed a game of Nine Men's Morris, I need the GUI to prompt me to
-    either play again or to end the game software so that I can accordingly choose whether to keep
-    playing or to end my game session.
+    
+    As a user, I want to be able to move my pieces into enemy positions should I qualify.
+
+** Mill Definition
+   :PROPERTIES:
+   :CUSTOM_ID: SID12
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, I need the game to recognize when three of my pieces are placed in adjacent positions in order to form a mill.
+
+** Mill Attack Attribute
+   :PROPERTIES:
+   :CUSTOM_ID: SID13
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+
+    As a user, I need the ability to eliminate an enemy piece to attack as a player.
+
+** Mill Defense Attribute
+   :PROPERTIES:
+   :CUSTOM_ID: SID14
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, I need pieces within a recognized mill to be immune from elimination to defend as a
+    player.
+
+** Mill Piece Movement
+   :PROPERTIES:
+   :CUSTOM_ID: SID15
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, I want to move pieces that make up mills into any position not occupied by one of my
+    other pieces.
+
+** Elimination With Mills
+   :PROPERTIES:
+   :CUSTOM_ID: SID16
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, I want my pieces to remove opponent pieces from the board individually.
+
+** Flying Definition
+   :PROPERTIES:
+   :CUSTOM_ID: SID17
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, I need the game to recognize when I have less than 4 pieces to gain the ability to
+    "fly" my pieces.
+
+** Flying Piece Ability
+   :PROPERTIES:
+   :CUSTOM_ID: SID18
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, I need the ability to move a piece to any empty position on the map when I only have
+    3 pieces to fly.
+    
+** End Game: Loss
+   :PROPERTIES:
+   :CUSTOM_ID: SID19
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, the game must recognize when I reach less than 3 pieces to declare me a loser.
+    
+** End Game: Win
+   :PROPERTIES:
+   :CUSTOM_ID: SID20
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, the game must recognize when my opponent reaches less than 3 pieces to declare me the
+    winner.
+
+** End Game: Tie
+   :PROPERTIES:
+   :CUSTOM_ID: SID21
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, the game must recognize when the board state has repeated the same layout N times
+    after a player has reached less than 4 players in order to declare the game a tie ("Remis").
+
+** Reset Board
+   :PROPERTIES:
+   :CUSTOM_ID: SID22
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, I want to be able to restart a game with a new, empty board.
+    
+** Start New Game
+   :PROPERTIES:
+   :CUSTOM_ID: SID23
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, I want to be able to start a new game with the default configuration as before I started the game.
+    
 * Acceptance Criteria
   :PROPERTIES:
   :CUSTOM_ID: S3
