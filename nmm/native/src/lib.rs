@@ -2,12 +2,23 @@ use base::{Action, Agent, Coord, GameOpts, GameState, Manager};
 use neon::prelude::*;
 use neon::{class_definition, declare_types, impl_managed, register_module};
 
-fn conv_js_gameopts_to_rust(
-    mut ctx: FunctionContext,
-    action: JsString,
-    opts: JsObject,
+fn conv_js_opts(
+    ctx: &mut MethodContext<JsManager>,
+    action: Action,
+    opts: &mut JsObject,
 ) -> GameOpts {
-    unimplemented!()
+    match action {
+        Action::Piece => GameOpts::new_piece_opt(
+            conv_player_option(ctx, opts, "sender"),
+            conv_position_option(ctx, opts),
+        ),
+        Action::Menu => GameOpts::new_menu_opt(
+            conv_player_option(ctx, opts, "user"),
+            conv_player_option(ctx, opts, "opponent"),
+            conv_agent_option(ctx, opts),
+        ),
+        _ => unreachable!(),
+    }
 }
 
 fn conv_from_menu(mut cx: FunctionContext, options: JsObject) -> GameOpts {
@@ -27,11 +38,6 @@ declare_types! {
             let mut board = {
                 let guard = ctx.lock();
                 let mngr = this.borrow(&guard);
-                // TODO: more efficient moving of Manager value
-                // have to clone manager because it can't derive clone
-                // due to hashmap. I don't know how to move around this
-                // immediately without just wrapping it in an Rc so the clone
-                // is at least cheaper to perform.
                 mngr.get_board()
             };
 
@@ -125,15 +131,19 @@ declare_types! {
     }
 }
 
-pub fn conv_position_option(ctx: &mut MethodContext<JsManager>, opts: &mut JsObject) -> Coord {
+fn conv_position_option(ctx: &mut MethodContext<JsManager>, opts: &mut JsObject) -> Coord {
     match opts.get(ctx, "position") {
         Ok(js_handle) if js_handle.is_a::<JsArray>() => match js_handle.downcast::<JsArray>() {
             Ok(arr) => {
-                let _arr = arr.to_vec(ctx).unwrap();
+                let _arr = arr
+                    .to_vec(ctx)
+                    .expect("Failed to convert 'position' array to Rust vector");
                 let uuuuh: Vec<String> = _arr
                     .iter()
                     .map(|c| {
-                        let res = c.downcast::<JsString>().unwrap();
+                        let res = c
+                            .downcast::<JsString>()
+                            .expect("Failed to downcast internal element of position array");
                         res.value()
                     })
                     .collect();
@@ -141,14 +151,14 @@ pub fn conv_position_option(ctx: &mut MethodContext<JsManager>, opts: &mut JsObj
                 s.push_str(&uuuuh[1]);
                 Coord::from_str(&s)
             }
-            _ => panic!("y u no cast 2 array"),
+            _ => panic!("Failed to downcast 'position' property to JsArray"),
         },
         Ok(_) => panic!("Property 'position' does not contain a JsArray"),
         Err(_) => panic!("Could not get 'position' property from optoins object"),
     }
 }
 
-pub fn conv_player_option(
+fn conv_player_option(
     ctx: &mut MethodContext<JsManager>,
     opts: &mut JsObject,
     player: &str,
@@ -172,7 +182,7 @@ pub fn conv_player_option(
     }
 }
 
-pub fn conv_agent_option(ctx: &mut MethodContext<JsManager>, opts: &mut JsObject) -> Agent {
+fn conv_agent_option(ctx: &mut MethodContext<JsManager>, opts: &mut JsObject) -> Agent {
     match opts.get(ctx, "agent") {
         Ok(js_handle) if js_handle.is_a::<JsString>() => match js_handle.downcast::<JsString>() {
             Ok(s) if s.value() == String::from("auto") => Agent::Auto,
@@ -185,7 +195,7 @@ pub fn conv_agent_option(ctx: &mut MethodContext<JsManager>, opts: &mut JsObject
     }
 }
 
-pub fn conv_type(ctx: &mut MethodContext<JsManager>, _type: &mut JsString) -> Action {
+fn conv_type(ctx: &mut MethodContext<JsManager>, _type: &mut JsString) -> Action {
     if _type.value() == "Menu" {
         return Action::Menu;
     } else if _type.value() == "Piece" {
@@ -194,13 +204,6 @@ pub fn conv_type(ctx: &mut MethodContext<JsManager>, _type: &mut JsString) -> Ac
         panic!("Invalid value for ElementType: {:#?}", _type.value())
     }
 }
-
-// pub fn conv_coord_option(
-//     ctx: &mut MethodContext<JsManager>,
-//     opts: &mut JsObject
-// ) -> Coord {
-//     match opts.get(ctx, "")
-// }
 
 register_module!(mut cx, { cx.export_class::<JsManager>("Manager") });
 

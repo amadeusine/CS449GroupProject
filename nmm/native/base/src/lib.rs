@@ -105,7 +105,7 @@ pub struct GameOpts {
     opponent: Option<Player>,
     agent: Option<Agent>,
     sender: Option<Player>,
-    Position: Option<Coord>,
+    position: Option<Coord>,
 }
 
 #[derive(Debug, Clone, PartialEq)]
@@ -353,8 +353,40 @@ impl GameState {
 }
 
 impl GameOpts {
-    fn new() -> Self {
-        unimplemented!()
+    pub fn new_menu_opt(user: u32, opp: u32, agent: Agent) -> Self {
+        let user = match user {
+            1 => Some(Player::PlayerOne),
+            2 => Some(Player::PlayerTwo),
+            _ => unreachable!(),
+        };
+        let opp = match opp {
+            1 => Some(Player::PlayerOne),
+            2 => Some(Player::PlayerTwo),
+            _ => unreachable!(),
+        };
+        GameOpts {
+            user: user,
+            opponent: opp,
+            agent: Some(agent),
+            sender: None,
+            position: None,
+        }
+    }
+
+    pub fn new_piece_opt(sender: u32, position: Coord) -> Self {
+        let sender = match sender {
+            1 => Some(Player::PlayerOne),
+            2 => Some(Player::PlayerTwo),
+            _ => unreachable!(),
+        };
+
+        GameOpts {
+            user: None,
+            opponent: None,
+            agent: None,
+            sender: sender,
+            position: Some(position),
+        }
     }
 }
 
