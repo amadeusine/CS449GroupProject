@@ -114,6 +114,37 @@ declare_types! {
             Ok(_type.upcast())
 
         }
+
+        method get_position(mut ctx) {
+            let mut this = ctx.this();
+            let mut opts = ctx.argument::<JsObject>(0)?;
+            let coord = conv_position_option(&mut ctx, &mut opts);
+            let coord = ctx.string(coord.as_string());
+            Ok(coord.upcast())
+        }
+    }
+}
+
+pub fn conv_position_option(ctx: &mut MethodContext<JsManager>, opts: &mut JsObject) -> Coord {
+    match opts.get(ctx, "position") {
+        Ok(js_handle) if js_handle.is_a::<JsArray>() => match js_handle.downcast::<JsArray>() {
+            Ok(arr) => {
+                let _arr = arr.to_vec(ctx).unwrap();
+                let uuuuh: Vec<String> = _arr
+                    .iter()
+                    .map(|c| {
+                        let res = c.downcast::<JsString>().unwrap();
+                        res.value()
+                    })
+                    .collect();
+                let mut s: String = String::from(&uuuuh[0]);
+                s.push_str(&uuuuh[1]);
+                Coord::from_str(&s)
+            }
+            _ => panic!("y u no cast 2 array"),
+        },
+        Ok(_) => panic!("Property 'position' does not contain a JsArray"),
+        Err(_) => panic!("Could not get 'position' property from optoins object"),
     }
 }
 

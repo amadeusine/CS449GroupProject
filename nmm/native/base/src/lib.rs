@@ -170,7 +170,7 @@ impl Coord {
     fn new(x: XCoord, y: YCoord) -> Self {
         Coord(x, y)
     }
-    fn from_str(s: &str) -> Coord {
+    pub fn from_str(s: &str) -> Coord {
         let mut chars = s.chars();
         if let Some(x) = chars.next() {
             if let Some(y) = chars.next() {
