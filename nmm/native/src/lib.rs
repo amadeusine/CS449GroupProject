@@ -21,10 +21,6 @@ fn conv_js_opts(
     }
 }
 
-fn conv_from_menu(mut cx: FunctionContext, options: JsObject) -> GameOpts {
-    unimplemented!()
-}
-
 declare_types! {
     pub class JsManager for Manager {
         init(mut ctx) {
@@ -43,7 +39,6 @@ declare_types! {
 
             let js_board_arr = JsArray::new(&mut ctx, board.len());
 
-
             for (k, v) in board {
 
                 let str_k = ctx.string(k.as_string());
@@ -54,12 +49,12 @@ declare_types! {
             Ok(js_board_arr.as_value(&mut ctx))
         }
 
-        method poll(mut ctx) {
+        method get_curr_state(mut ctx) {
             let this = ctx.this();
             let (res_handle, res_trigger, res_board) = {
                 let guard = ctx.lock();
                 let mngr = this.borrow(&guard);
-                mngr.poll()
+                mngr.get_curr_state()
             };
             let result_obj = JsObject::new(&mut ctx);
             let str_handle = ctx.string(res_handle.to_string());
@@ -85,6 +80,17 @@ declare_types! {
 
             Ok(result_obj.as_value(&mut ctx))
 
+        }
+
+        method poll(mut ctx) {
+            let mut this = ctx.this();
+            let mut _type = ctx.argument::<JsString>(0)?;
+            let act = conv_type(&mut ctx, &mut _type);
+            let mut opts = ctx.argument::<JsObject>(1)?;
+
+            let game_opts = conv_js_opts(&mut ctx, act, &mut opts);
+
+            unimplemented!()
         }
 
         method get_user(mut ctx) {

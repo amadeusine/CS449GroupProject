@@ -412,6 +412,14 @@ impl Manager {
         )
     }
 
+    pub fn get_curr_state(&self) -> (Handle, Trigger, Board) {
+        (
+            self.state.get_handle(),
+            self.state.get_trigger(),
+            self.state.get_board(),
+        )
+    }
+
     pub fn conv_elem_type_to_action(action: JsString) -> Action {
         match action.value().as_ref() {
             "Menu" => Action::Menu,
