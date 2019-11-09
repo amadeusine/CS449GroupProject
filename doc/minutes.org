@@ -504,3 +504,71 @@
         * restart
 *** TODO
     - refinement (grooming) of US, AC, and tasks.
+** meeting 2019.11.02 (11th) (2hr)
+   - Duration: 2 hour
+   - Location: Voice Chat
+*** agenda
+ - refactor server templating
+ - add endpoints
+ - revise UI
+*** refactor server templating
+     - board grid elements can be iterated
+     - colors can be templated
+     - tests can be separated
+     - scripts can be separated
+*** add endpoints
+     - see last meeting (endpoint list)
+     - logic receives payload, returns native response
+     - BoardReceptor now implied, soon to be implemented (sprint #3)
+     - error component templates on bad payload
+*** revise UI
+     - Figma for design mockups
+     - Get menu bar up and running (Michael)
+     - Reconfigure game site layout
+     - information page?
+*** TODO
+     - add final endpoints for talkback
+     - browser's `Window`/`Board` needs HTTP adhesion to server
+     - design reconfiguration
+** Meeting 2019.11.03 (12th)
+   - Duration: 7 hour
+   - Location: Voice Chat
+*** agenda
+    - Blitzing remaining issues
+    - Blitzing documentation
+*** Remaining Issues
+    - Mocking final game logic with typescript
+    - Adding tests
+    - Definition of Done: Hit all story points that have been listed thus far.
+*** Blitzing Documentation
+    - Updating all tables
+    - Fixing formatting on code review tables
+    - Adding new meeting minutes
+** meeting 2019.11.08 (13th)
+   - Duration: 1 hour
+   - Location: Miller Nichols Library
+*** agenda
+    - stubs
+    - fix sprint 2 report
+    - integration js x rust
+*** stubs
+    - (Sam): JS Integration Stubs will be written, PR
+    - (Sam): Game logic compatibility between mock and rust, PR
+      + checks logic between what is being tested out of rust and what is being mocked
+      + See rust unit test code
+    - Tests between client-server interaction
+*** fix sprint 2 report
+    - updated us/ac table statuses
+    - added us stories for AI feature
+*** integration
+    - makefile/development script for building neon module then running server against it
+    - semaphore CI for repo is up
+    - adjust js functions to reflect naming scheme in exported module
+    - integration (poll/get_curr_state functions) on event loop
+*** TODO
+    - add AC for AI
+    - add descriptions for AI US
+    - add impl tasks stubs to reflect stubs in stub section
+    - (all things missed in sprint 2 docs)
+    - diagram event loop
+
