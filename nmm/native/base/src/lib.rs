@@ -157,6 +157,9 @@ impl PositionStatus {
             return format!("None");
         }
     }
+    fn occupied(&self) -> bool {
+        self.0
+    }
 }
 
 impl Default for PositionStatus {
@@ -200,13 +203,22 @@ impl Board {
     }
 }
 
-impl IntoIterator for Board {
-    // on god, i think the trait impl requires the assoc type Item but Hashmap literlaly doesn't
-    // use it because it's a tuple type lol
-    type Item = (Coord, PositionStatus);
-    type IntoIter = ::std::collections::hash_map::IntoIter<Coord, PositionStatus>;
+// impl IntoIterator for Board {
+//     // on god, i think the trait impl requires the assoc type Item but Hashmap literlaly doesn't
+//     // use it because it's a tuple type lol
+//     type Item = (Coord, PositionStatus);
+//     type IntoIter = ::std::collections::hash_map::IntoIter<Coord, PositionStatus>;
+//     fn into_iter(self) -> Self::IntoIter {
+//         self.0.into_iter()
+//     }
+// }
+
+impl<'a> IntoIterator for &'a Board {
+    type Item = (&'a Coord, &'a PositionStatus);
+    type IntoIter = ::std::collections::hash_map::Iter<'a, Coord, PositionStatus>;
+
     fn into_iter(self) -> Self::IntoIter {
-        self.0.into_iter()
+        self.0.iter()
     }
 }
 
@@ -349,6 +361,22 @@ impl GameState {
     fn get_board(&self) -> Board {
         self.board.clone()
     }
+
+    fn get_player_pieces(&self) -> ((Player, u32), (Player, u32)) {
+        let mut p1 = 0;
+        let mut p2 = 0;
+        for (_, pos) in self.get_board().into_iter() {
+            if pos.occupied() {
+                match pos.1.as_ref() {
+                    Some(Player::PlayerOne) => p1 += 1,
+                    Some(Player::PlayerTwo) => p2 += 1,
+                    None => continue,
+                }
+            }
+        }
+
+        ((Player::PlayerOne, p1), (Player::PlayerTwo, p2))
+    }
 }
 
 impl GameOpts {
@@ -411,6 +439,26 @@ impl Manager {
         )
     }
 
+    fn move_valid(&self) -> bool {
+        unimplemented!()
+    }
+
+    fn is_attack(&self) -> bool {
+        unimplemented!()
+    }
+
+    fn is_move(&self) -> bool {
+        unimplemented!()
+    }
+
+    fn find_mills(&mut self) {
+        unimplemented!()
+    }
+
+    fn update_board(&mut self) {
+        unimplemented!()
+    }
+
     pub fn get_curr_state(&self) -> (Handle, Trigger, Board) {
         (
             self.state.get_handle(),
@@ -424,12 +472,11 @@ impl Manager {
     }
 
     pub fn get_action(act: &str) -> Action {
-        match act {
+        return match act {
             "Menu" => Action::Menu,
             "Piece" => Action::Piece,
             other => panic!("Invalid type passed as ElementType: {:#?}", other),
         };
-        unimplemented!()
     }
 }
 
@@ -496,5 +543,15 @@ mod base_tests {
         use super::{Board, Manager};
 
         assert_eq!(Manager::new().get_board(), Board::new());
+    }
+
+    #[test]
+    fn test_get_player_pieces() {
+        use super::{Board, GameState};
+        let gs = GameState::new();
+
+        let ((p1, p1_pieces), (p2, p2_pieces)) = gs.get_player_pieces();
+        assert_eq!(p1_pieces, 0);
+        assert_eq!(p2_pieces, 0);
     }
 }
