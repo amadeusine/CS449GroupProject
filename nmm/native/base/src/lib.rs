@@ -2,7 +2,6 @@
 #![allow(dead_code)]
 
 // ToString Needs to be in scope, do not believe the linter's lies.
-use neon::prelude::*;
 use std::string::ToString;
 use std::{cell::RefCell, collections::HashMap, rc::Rc};
 use strum_macros::Display;
@@ -420,42 +419,6 @@ impl Manager {
         )
     }
 
-    pub fn conv_elem_type_to_action(action: JsString) -> Action {
-        match action.value().as_ref() {
-            "Menu" => Action::Menu,
-            "Piece" => Action::Piece,
-            e => panic!("Invalid value for ElementType: {:#?}", e),
-        }
-    }
-
-    pub fn conv_menu_options(ctx: &mut FunctionContext, opts: &mut JsObject) -> (u32, u32) {
-        let user = Manager::conv_player_option(ctx, opts, "user");
-        let opponent = Manager::conv_player_option(ctx, opts, "opponent");
-        (user, opponent)
-        // unreachable!()
-    }
-
-    pub fn conv_player_option(ctx: &mut FunctionContext, opts: &mut JsObject, player: &str) -> u32 {
-        match opts.get(ctx, player) {
-            Ok(js_handle) if js_handle.is_a::<JsNumber>() => match js_handle.downcast::<JsNumber>()
-            {
-                Ok(num) => num.value() as u32,
-                Err(e) => panic!("Failed to convert JsNumber: {:#?}", e),
-            },
-            Ok(_) => {
-                // let js_handle = js_handle.upcast();
-                panic!(
-                    "Property \"{}\" did not contain a JsNumber",
-                    String::from(player)
-                )
-            }
-            Err(_) => panic!(
-                "Could not get \"{}\" property from options object.",
-                String::from(player)
-            ),
-        }
-    }
-
     pub fn get_board(&self) -> Board {
         self.state.get_board()
     }
@@ -519,7 +482,7 @@ mod base_tests {
     }
 
     #[test]
-    fn test_manager_new_poll() {
+    fn test_manager_new_get_curr_state() {
         use super::{Board, Handle, Manager, Trigger};
 
         assert_eq!(
