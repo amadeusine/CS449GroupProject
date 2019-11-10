@@ -90,7 +90,7 @@ declare_types! {
 
             let game_opts = conv_js_opts(&mut ctx, act, &mut opts);
 
-            unimplemented!()
+            Ok(ctx.string("Ya did it!").upcast())
         }
 
         method get_user(mut ctx) {
