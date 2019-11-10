@@ -13,12 +13,19 @@ describe('Neon Exported Objects', function () {
         assert(mngr instanceof Manager);
     });
 
-    it('can call the poll method defined on Manager in Rust', function() {
+    it('can call get_curr_state method defined on Manager in Rust', function() {
         var mngr = new Manager();
-        var result = mngr.poll();
+        var result = mngr.get_curr_state();
         assert.equal(result.handle, 'Ok');
         assert.equal(result.trigger, 'None');
         assert.equal(result.board.length, 24);
+    });
+    it('can call NAIVE poll() method defined on Manager in Rust', function() {
+        var mngr = new Manager();
+        var options = {"user": 1, "opponent": 2, "agent": "human", "position": ["A", "1"]};
+        var type = "Menu";
+        var result = mngr.poll(type, options);
+        assert.equal(result, 'Ya did it!');
     });
     it('can call the get_board method defined on Manager in Rust', function() {
         var mngr = new Manager();

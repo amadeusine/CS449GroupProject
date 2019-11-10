@@ -92,8 +92,8 @@ pub struct GameState {
     mills: Vec<Mill>,
 }
 
-#[derive(Debug, Clone, PartialEq)]
-enum Agent {
+#[derive(Debug, Clone, PartialEq, Display)]
+pub enum Agent {
     Human,
     Auto,
 }
@@ -104,7 +104,7 @@ pub struct GameOpts {
     opponent: Option<Player>,
     agent: Option<Agent>,
     sender: Option<Player>,
-    Position: Option<Coord>,
+    position: Option<Coord>,
 }
 
 #[derive(Debug, Clone, PartialEq)]
@@ -169,7 +169,7 @@ impl Coord {
     fn new(x: XCoord, y: YCoord) -> Self {
         Coord(x, y)
     }
-    fn from_str(s: &str) -> Coord {
+    pub fn from_str(s: &str) -> Coord {
         let mut chars = s.chars();
         if let Some(x) = chars.next() {
             if let Some(y) = chars.next() {
@@ -351,6 +351,44 @@ impl GameState {
     }
 }
 
+impl GameOpts {
+    pub fn new_menu_opt(user: u32, opp: u32, agent: Agent) -> Self {
+        let user = match user {
+            1 => Some(Player::PlayerOne),
+            2 => Some(Player::PlayerTwo),
+            _ => unreachable!(),
+        };
+        let opp = match opp {
+            1 => Some(Player::PlayerOne),
+            2 => Some(Player::PlayerTwo),
+            _ => unreachable!(),
+        };
+        GameOpts {
+            user: user,
+            opponent: opp,
+            agent: Some(agent),
+            sender: None,
+            position: None,
+        }
+    }
+
+    pub fn new_piece_opt(sender: u32, position: Coord) -> Self {
+        let sender = match sender {
+            1 => Some(Player::PlayerOne),
+            2 => Some(Player::PlayerTwo),
+            _ => unreachable!(),
+        };
+
+        GameOpts {
+            user: None,
+            opponent: None,
+            agent: None,
+            sender: sender,
+            position: Some(position),
+        }
+    }
+}
+
 impl Manager {
     pub fn new() -> Self {
         Manager {
@@ -373,8 +411,25 @@ impl Manager {
         )
     }
 
+    pub fn get_curr_state(&self) -> (Handle, Trigger, Board) {
+        (
+            self.state.get_handle(),
+            self.state.get_trigger(),
+            self.state.get_board(),
+        )
+    }
+
     pub fn get_board(&self) -> Board {
         self.state.get_board()
+    }
+
+    pub fn get_action(act: &str) -> Action {
+        match act {
+            "Menu" => Action::Menu,
+            "Piece" => Action::Piece,
+            other => panic!("Invalid type passed as ElementType: {:#?}", other),
+        };
+        unimplemented!()
     }
 }
 
@@ -427,7 +482,7 @@ mod base_tests {
     }
 
     #[test]
-    fn test_manager_new_poll() {
+    fn test_manager_new_get_curr_state() {
         use super::{Board, Handle, Manager, Trigger};
 
         assert_eq!(
