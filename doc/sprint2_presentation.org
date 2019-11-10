@@ -1,0 +1,141 @@
+#+STARTUP: BEAMER
+# fira font needs xelatex for ligs, tells org to use xelatex
+#+LATEX_COMPILER: xelatex
+#+LATEX_CLASS: beamer
+#+LaTeX_CLASS_options: [allowframebreaks]
+#+LATEX_HEADER: \usepackage{fontspec}
+#+LATEX_HEADER: \setmonofont{Fira Code}[
+#+LATEX_HEADER:   Contextuals={Alternate}
+#+LATEX_HEADER: ]
+#+LATEX_HEADER: \usepackage{lstfiracode}
+#+LATEX_HEADER: \usepackage{listings}
+#+LATEX_HEADER: \usepackage{hyperref}
+#+LATEX_HEADER: \usepackage{listings-rust}
+# enable use of bibtex refs
+# NOTE, must also tell org to use bibtex during export
+#+LATEX_HEADER: \usepackage[backend=bibtex, style=numeric, autocite=superscript]{biblatex}
+#+LATEX_HEADER: \bibliographystyle{acm}
+# file to check for
+#+LATEX_HEADER: \bibliography{parsers.bib}
+# enable rust language syntax highlighting + adding fira font ligs
+#+LATEX_HEADER: \lstset{language=Rust,style=colouredRust, style=FiraCodeStyle,basicstyle=\ttfamily}
+#+BEAMER_THEME: metropolis [progressbar=head]
+#+BEAMER_HEADER:\setmainfont{Fira Code}
+# Top level = Sections, second level headings = individual slides in a section (w/o counting list overlays)
+#+BEAMER_FRAME_LEVEL: 2
+#+TITLE: Sprint #2 Presentation
+#+SUBTITLE: CS449 
+#+AUTHOR: Samuel Lim, Michael Cu, Elias Garcia
+# enable toc to show numberings over sections.
+#+BEAMER_HEADER: \setbeamertemplate{section in toc}[sections numbered]
+#+DATE: 2019.11.07
+# enable the toc and tell it to look two headings deep
+#+OPTIONS: H:2 toc:t
+* Sprint 2 Goals
+** Finish Front =<->= Back Communication
+   - Sprint 1 left us with Rust defined types and a mocked front-end for rendering
+   - JS had no means of communicating to back-end, same goes for back-end to front-end.
+   - Neon library allows Rust to compile into actual node module that can be used by JS
+** Back-end Driven Logic
+   - Need front-end to take user input and back-end to compute all game logic, including:
+     + Checking piece movement
+     + Tracking mill formations and destructions
+     + Attack validation
+** Polish Off Front-end
+   - Improving player piece coloring and position selection/movement
+   - Menu functionality
+   - Preparing for themes
+** Get ready for Web Sockets
+   - Separate web-server from game logic itself
+   - Drive game logic based on requests/responses over API endpoints
+** MVP product
+   - Be able to actually play Nine Men's Morris!
+* Sprint 2 Results
+** Issues resolved
+   :PROPERTIES:
+   :BEAMER_opt: allowframebreaks, label=
+   :END:
+*** The finally issues were finished:
+    - [[https://github.com/amadeusine/CS449GroupProject/issues/20][#20 Cargo Workspaces]]
+    - [[https://github.com/amadeusine/CS449GroupProject/issues/23][#23 align current rust module types with new requirements]]
+    - [[https://github.com/amadeusine/CS449GroupProject/issues/24][#24 exporting game types from rust to JS]]
+    - [[https://github.com/amadeusine/CS449GroupProject/issues/28][#23 Board Generation Utility]]
+*** Relevant PR's:
+    - [[https://github.com/amadeusine/CS449GroupProject/pull/21][#21 Workspaces]]
+    - [[https://github.com/amadeusine/CS449GroupProject/pull/29][#29 aligning types]]
+    - [[https://github.com/amadeusine/CS449GroupProject/pull/30][#30 enabling board generation]]
+    - [[https://github.com/amadeusine/CS449GroupProject/pull/32][#32 exporting rust types]]
+    - [[https://github.com/amadeusine/CS449GroupProject/pull/33][#33 exporting rust types (part 2)]]
+    - [[https://github.com/amadeusine/CS449GroupProject/pull/36][#36 back-end tests and documentation]]
+    - [[https://github.com/amadeusine/CS449GroupProject/pull/37][#37 sprint 2 write up deliverable]]
+    - [[https://github.com/amadeusine/CS449GroupProject/pull/38][#38 express js refactorings]]
+*** A lot of code was written!
+
+    #+ATTR_LATEX: :width 8cm
+    [[file:~/Pictures/screenshots/Screenshot_20191107_134354.png]]
+    #+BEAMER: \framebreak
+
+    #+ATTR_LATEX: :width 8cm
+    [[file:~/Pictures/screenshots/Screenshot_20191107_134329.png]]
+
+** Front =<->= Back Mostly Done
+   :PROPERTIES:
+   :BEAMER_opt: allowframebreaks, label=
+   :END:
+*** API finalized
+    - =Manager= type makes the API over FFI
+      + =poll= the back-end with the =options= and =type= of the move being made
+      + checks whether is correct, or not, and returns result
+    - Internally, =Manager= engages with =GameState= and =GameOpt=, which are the major *internal* API
+      interfaces of the back-end.
+      + Only these entities have direct access to things like =Board=, =Coord=, =PositionStatus=, and
+        other primitive types.
+*** Types cross FFI
+    - Successfully convert from Rust =->= JS and JS =->= Rust
+      + neon provides a =define_types!= macro that provides convenient syntactic sugar for defining
+        what gets publicly exposed to Node.
+      + *everything else defined stays private to node!*
+*** Integration Tests
+    - Use Mocha and Chai within Node to pull in and check the exports and logic provided by the
+      compiled Rust crate.
+      + Construct mock values, pass to generated rust code, and check functionality.
+    - *Isolates the testing logic* between what the front-end needs to worry about vs what the
+      back-end need to worry about.
+      + Runs separate from the unit tests internal to rust module!
+      + Truly separated concerns and modulation of program logic.
+** Front-end finished
+   - Add endpoints on `dev-express-js` to specialise client-server communication
+   - Browser has board receptors that work both on Web Socket and direct server messages
+   - Separating concerns between client and server, where we can now style and switch out game logic
+     accordingly
+   - Integration testing from above (Mocha/Chai) is now being extended to serving logic
+** Ready for Web Sockets
+   - WS (game server established) -> Node (web server dispatcher)
+   - we can extend the game to online multiplayer
+   - Browser/server supports this, clients can play against one another
+   - Where the three-tier separation scales
+     + Faster computation on native module can push directly to WS
+     + Clients can interact with each other's GUI without nasty artifacting from server-server talkback
+* Sprint 2 Lessons
+** Planning time better
+   - Kind of a toss up because of other commitments and classes
+** Stub code is useful
+   - knowing ahead of time how the different components of our project were going to interact
+   - would solve developer paralysis from not knowing /what/ to expect
+** Documenting Changes
+   - Didn't write sprint 2 writeup artifact as development occurred, rushed all at the end.
+   - Would be a lot smarter next time to writeup as we develop.
+     + stops confusing cross checking between our development board, implemented tasks, tests, etc.
+* Sprint 3 Goals
+** Finish Front =<->= Back
+   - All the infrastructure is here now, just need to connect.
+   - Back-end also needs to finalize game logic checking.
+** Game AI
+   - Generate back-end logic for a somewhat intelligent game opponent.
+   - Decide on what this model looks like and how computed.
+** Final UI tweaks
+   - Fully implement themes
+   - Finish off menu/options system
+** Implement Web Sockets
+   - Major stretch goal: play across browsers.
+   - Need to figure out server hosting and communication between possibly multi-threaded processes
