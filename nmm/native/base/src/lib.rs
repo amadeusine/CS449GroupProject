@@ -107,9 +107,26 @@ pub struct GameOpts {
     position: Option<Coord>,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq)]
+struct ActionResult {
+    sender: Player,
+    position: Coord,
+    trigger: Trigger,
+    handle: Handle,
+}
+
+#[derive(Debug, Clone, Copy)]
+struct Game {
+    user: Player,
+    opponent: Player,
+    last_turn: Player,
+    turns: u32,
+}
+
 #[derive(Debug, Clone, PartialEq)]
 pub struct Manager {
     state: GameState,
+    history: Vec<ActionResult>,
 }
 
 impl XCoord {
@@ -203,15 +220,15 @@ impl Board {
     }
 }
 
-// impl IntoIterator for Board {
-//     // on god, i think the trait impl requires the assoc type Item but Hashmap literlaly doesn't
-//     // use it because it's a tuple type lol
-//     type Item = (Coord, PositionStatus);
-//     type IntoIter = ::std::collections::hash_map::IntoIter<Coord, PositionStatus>;
-//     fn into_iter(self) -> Self::IntoIter {
-//         self.0.into_iter()
-//     }
-// }
+impl IntoIterator for Board {
+    // on god, i think the trait impl requires the assoc type Item but Hashmap literlaly doesn't
+    // use it because it's a tuple type lol
+    type Item = (Coord, PositionStatus);
+    type IntoIter = ::std::collections::hash_map::IntoIter<Coord, PositionStatus>;
+    fn into_iter(self) -> Self::IntoIter {
+        self.0.into_iter()
+    }
+}
 
 impl<'a> IntoIterator for &'a Board {
     type Item = (&'a Coord, &'a PositionStatus);
@@ -365,7 +382,10 @@ impl GameState {
     fn get_player_pieces(&self) -> ((Player, u32), (Player, u32)) {
         let mut p1 = 0;
         let mut p2 = 0;
-        for (_, pos) in self.get_board().into_iter() {
+        // I don't know why this works but
+        // for (_, pos) in &self.board.into_iter() doesn't. Should ask someone abou this.
+        let board = &self.board;
+        for (_, pos) in board.into_iter() {
             if pos.occupied() {
                 match pos.1.as_ref() {
                     Some(Player::PlayerOne) => p1 += 1,
@@ -421,6 +441,7 @@ impl Manager {
     pub fn new() -> Self {
         Manager {
             state: GameState::new(),
+            history: vec![],
         }
     }
 
@@ -431,12 +452,22 @@ impl Manager {
     // has a limited set of methods that will compute the necessary logic on the game state hidden
     // within the exported rust module.
     // pub fn poll(&mut self, act: Action, opts: GameOpts) -> (Handle, Trigger, Board) {
-    pub fn poll(&self) -> (Handle, Trigger, Board) {
-        (
-            self.state.get_handle(),
-            self.state.get_trigger(),
-            self.state.get_board(),
-        )
+    pub fn poll(&mut self, act: Action, opts: &mut GameOpts) -> (Handle, Trigger, Board) {
+        match act {
+            Action::Menu => self.setup(),
+            Action::Piece => self.validate(),
+        }
+
+        // Appease the type checker for now.
+        (Handle::Err, Trigger::None, Board::default())
+    }
+
+    fn setup(&mut self) {
+        unimplemented!()
+    }
+
+    fn validate(&self) {
+        unimplemented!()
     }
 
     fn move_valid(&self) -> bool {

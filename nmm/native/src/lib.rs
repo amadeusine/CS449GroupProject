@@ -83,12 +83,19 @@ declare_types! {
         }
 
         method poll(mut ctx) {
-            let mut this = ctx.this();
             let mut _type = ctx.argument::<JsString>(0)?;
             let act = conv_type(&mut ctx, &mut _type);
             let mut opts = ctx.argument::<JsObject>(1)?;
+            let mut game_opts = conv_js_opts(&mut ctx, act, &mut opts);
 
-            let game_opts = conv_js_opts(&mut ctx, act, &mut opts);
+            let mut this = ctx.this();
+            let (res_handle, res_trigger, res_board) = {
+                let guard = ctx.lock();
+                let mut mngr = this.borrow_mut(&guard);
+                mngr.poll(act, &mut game_opts)
+            };
+
+
 
             Ok(ctx.string("Ya did it!").upcast())
         }
