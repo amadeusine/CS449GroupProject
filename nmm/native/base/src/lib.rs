@@ -77,12 +77,6 @@ pub enum Trigger {
     Lose,
 }
 
-#[derive(Debug, Clone, Copy, PartialOrd, PartialEq, Display)]
-pub enum Action {
-    Menu,
-    Piece,
-}
-
 // TODO: Make top level GameResult type that wraps GameState and custom GameErr types?
 #[derive(Debug, Clone, PartialEq)]
 pub struct GameState {
@@ -421,15 +415,6 @@ impl Manager {
 
     pub fn get_board(&self) -> Board {
         self.state.get_board()
-    }
-
-    pub fn get_action(act: &str) -> Action {
-        match act {
-            "Menu" => Action::Menu,
-            "Piece" => Action::Piece,
-            other => panic!("Invalid type passed as ElementType: {:#?}", other),
-        };
-        unimplemented!()
     }
 }
 

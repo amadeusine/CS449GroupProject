@@ -1,24 +1,13 @@
-use base::{Action, Agent, Coord, GameOpts, GameState, Manager};
+use base::{Agent, Coord, GameOpts, GameState, Manager};
 use neon::prelude::*;
 use neon::{class_definition, declare_types, impl_managed, register_module};
 
-fn conv_js_opts(
-    ctx: &mut MethodContext<JsManager>,
-    action: Action,
-    opts: &mut JsObject,
-) -> GameOpts {
-    match action {
-        Action::Piece => GameOpts::new_piece_opt(
-            conv_player_option(ctx, opts, "sender"),
-            conv_position_option(ctx, opts),
-        ),
-        Action::Menu => GameOpts::new_menu_opt(
-            conv_player_option(ctx, opts, "user"),
-            conv_player_option(ctx, opts, "opponent"),
-            conv_agent_option(ctx, opts),
-        ),
-        _ => unreachable!(),
-    }
+fn conv_poll_opts(ctx: &mut MethodContext<JsManager>, opts: &mut JsObject) -> GameOpts {
+    GameOpts::new_piece_opt(
+        conv_player_option(ctx, opts, "sender"),
+        conv_position_option(ctx, opts),
+    )
+}
 }
 
 declare_types! {
@@ -84,11 +73,8 @@ declare_types! {
 
         method poll(mut ctx) {
             let mut this = ctx.this();
-            let mut _type = ctx.argument::<JsString>(0)?;
-            let act = conv_type(&mut ctx, &mut _type);
-            let mut opts = ctx.argument::<JsObject>(1)?;
-
-            let game_opts = conv_js_opts(&mut ctx, act, &mut opts);
+            let mut opts = ctx.argument::<JsObject>(0)?;
+            let game_opts = conv_poll_opts(&mut ctx, &mut opts);
 
             Ok(ctx.string("Ya did it!").upcast())
         }
@@ -116,15 +102,6 @@ declare_types! {
             let agent = conv_agent_option(&mut ctx, &mut opts);
             let opponent = ctx.string(agent.to_string());
             Ok(opponent.upcast())
-        }
-
-        method get_req_type(mut ctx) {
-            let mut this = ctx.this();
-            let mut _type = ctx.argument::<JsString>(0)?;
-            let _type = conv_type(&mut ctx, &mut _type);
-            let _type = ctx.string(_type.to_string());
-            Ok(_type.upcast())
-
         }
 
         method get_position(mut ctx) {
@@ -198,16 +175,6 @@ fn conv_agent_option(ctx: &mut MethodContext<JsManager>, opts: &mut JsObject) ->
         },
         Ok(_) => panic!("Property 'agent' did not contain a valid agent value."),
         Err(_) => panic!("Could not get 'agent' property from options object"),
-    }
-}
-
-fn conv_type(ctx: &mut MethodContext<JsManager>, _type: &mut JsString) -> Action {
-    if _type.value() == "Menu" {
-        return Action::Menu;
-    } else if _type.value() == "Piece" {
-        return Action::Piece;
-    } else {
-        panic!("Invalid value for ElementType: {:#?}", _type.value())
     }
 }
 

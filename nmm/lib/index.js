@@ -17,13 +17,11 @@ console.log(gameState.trigger);
 console.log("\ngameState.board:\n");
 console.log(gameState.board);
 
-var options = {"user": 1, "opponent": 2, "agent": "human", "position": ["A", "1"]};
-var type = "Piece";
+var options = {"user": 1, "opponent": 2, "agent": "human","position": ["A", "1"], "sender": 1};
 // console.log(man.get_user(options));
 console.log(Manager.prototype);
 console.log(man.get_user(options));
 console.log(man.get_opponent(options));
 console.log(man.get_agent(options));
-console.log(man.get_req_type(type));
 console.log(man.get_position(options));
 // console.log(man.get_opponent(options));
