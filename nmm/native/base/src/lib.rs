@@ -347,6 +347,15 @@ impl GameState {
 }
 
 impl GameOpts {
+    pub fn new() -> Self {
+        GameOpts {
+            user: None,
+            opponent: None,
+            agent: None,
+            sender: None,
+            position: None,
+        }
+    }
     pub fn new_game_opt(user: u32, opp: u32, agent: Agent) -> Self {
         let user = match user {
             1 => Some(Player::PlayerOne),
@@ -385,12 +394,15 @@ impl GameOpts {
 }
 
 impl Manager {
-    pub fn new(user: u32, opponent: u32, agent: Agent) -> Self {
-        let opts = GameOpts::new_game_opt(user, opponent, agent);
+    pub fn new() -> Self {
         Manager {
             state: GameState::new(),
-            settings: opts,
+            settings: GameOpts::new(),
         }
+    }
+
+    pub fn new_opts(&mut self, game_opts: GameOpts) {
+        self.settings = game_opts;
     }
 
     // poll() will eventually use Action and Opts together to figure out what game logic to compute
@@ -474,7 +486,7 @@ mod base_tests {
         use super::{Agent, Board, Handle, Manager, Trigger};
 
         assert_eq!(
-            Manager::new(1, 2, Agent::Human).poll(),
+            Manager::new().poll(),
             (Handle::Ok, Trigger::None, Board::new())
         );
     }
@@ -482,7 +494,6 @@ mod base_tests {
     #[test]
     fn test_manager_new_get_board() {
         use super::{Agent, Board, Manager};
-
-        assert_eq!(Manager::new(1, 2, Agent::Human).get_board(), Board::new());
+        assert_eq!(Manager::new().get_board(), Board::new());
     }
 }

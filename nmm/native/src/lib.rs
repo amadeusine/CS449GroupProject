@@ -19,9 +19,21 @@ fn conv_new_game_opts(ctx: &mut MethodContext<JsManager>, opts: &mut JsObject) -
 declare_types! {
     pub class JsManager for Manager {
         init(mut ctx) {
-            Ok(
-                Manager::new()
-            )
+            Ok(Manager::new())
+        }
+
+        method new(mut ctx) {
+            let mut opts = ctx.argument::<JsObject>(0)?;
+            let game_opts = conv_new_game_opts(&mut ctx, &mut opts);
+            let mut this = ctx.this();
+            let _ = {
+                let guard = ctx.lock();
+                let mut mngr = this.borrow_mut(&guard);
+                mngr.new_opts(game_opts)
+            };
+
+            Ok(ctx.string("undefined").upcast())
+
         }
 
         method get_board(mut ctx) {
