@@ -64,6 +64,7 @@
         adjacents[lhs].push(rhs);
         adjacents[rhs].push(lhs);
       }
+      console.log(adjacents);
 
       const mills = [];
       for (const [alpha, num] of Object.keys(adjacents)) {
@@ -74,6 +75,7 @@
       mills.push(['D5', 'D6', 'D7']);
       mills.push(['A4', 'B4', 'C4']);
       mills.push(['E4', 'F4', 'G4']);
+      console.log(mills);
 
       class Window {
         constructor() {
@@ -107,6 +109,7 @@
             '<%=color[0]%>': 9,
             '<%=color[1]%>': 9,
           };
+          this.isEliminating = false;
         }
 
         triggerFlying() {
@@ -145,50 +148,71 @@
             else return this.checkFlying(pieceElement);
           }
         }
+
+        getNextColor() {
+          const currentColor = this.getCurrentColor();
+          const nextColor = this.playerColors[(this.playerColors.indexOf(currentColor) + 1) % 2];
+          return nextColor;
+        }
         
         advancePlayer() {
           const currentPlayer = this.getCurrentPlayer();
-          let currentColor = this.getCurrentColor();
-          const nextColor = this.playerColors[(this.playerColors.indexOf(currentColor) + 1) % 2];
+          const nextColor = this.getNextColor();
           currentPlayer.style.color = nextColor;
           currentPlayer.innerText = nextColor;
         }
 
         checkSetup(pieceElement) {
           const pieceStyle = pieceElement.style;
-          if (pieceStyle.backgroundColor || !this.piecesLeft) {
+          if (!this.isEliminating && (pieceStyle.backgroundColor || !this.piecesLeft)) {
+            console.log('E');
             return new Error(`Position ${pieceElement.id} is occupied.`);
           }
+          if (this.isEliminating && pieceStyle.backgroundColor !== this.getNextColor()) {
+            console.log('Press F');
+            return new Error(`Position ${pieceElement.id} is not open to elimination.`);
+          }
           const i = this.calcPlayer();
+          if (this.isEliminating) {
+            pieceStyle.backgroundColor = '';
+            this.isEliminating = false;
+          } else {
+            pieceStyle.backgroundColor = this.playerColors[i];
+            this.isEliminating = this.inValidMill(pieceElement.id);
+          }
 
-          this.advancePlayer();
+          if (!this.isEliminating) {
+              this.advancePlayer();
+              this.piecesLeft--;
+          }
 
-          this.piecesLeft--;
-          return pieceStyle.backgroundColor = this.playerColors[i];
+          return pieceStyle.backgroundColor;
         }
 
         inValidMill(position) {
-          const relevantMills = Array.from(new Set(mills.filter(m => m.includes(position))));
-          console.log(`Relevant: ${relevantMills}`);
-          console.log(relevantMills
-                  .filter(mill => mill.filter(position =>
-                                                  document.getElementById(position).style.backgroundColor
+          const relevantMills = mills.filter(m => m.includes(position));
+          console.log(`${relevantMills[0]} == ${relevantMills[1]} is ${relevantMills[0] == relevantMills[1]}`);
+          for (let i of relevantMills) {
+            console.log(i);
+          }
+          console.log('Hmm...', relevantMills
+                  .filter(mill => mill.every(pos =>
+                                                  document.getElementById(pos).style.backgroundColor
                                                   === this.getCurrentColor()
                                                   ||
-                                                  (document.getElementById(position).style.backgroundColor
+                                                  (document.getElementById(pos).style.backgroundColor
                                                     === ""
                                                     &&
-                                                    position === this.eliminationContext.from)).length === 3));
+                                                    pos === this.eliminationContext.from))).length !== 0);
           return relevantMills
-                  .filter(mill => mill.filter(position =>
-                                                  document.getElementById(position).style.backgroundColor
+                  .filter(mill => mill.every(pos =>
+                                                  document.getElementById(pos).style.backgroundColor
                                                   === this.getCurrentColor()
                                                   ||
-                                                  (document.getElementById(position).style.backgroundColor
+                                                  (document.getElementById(pos).style.backgroundColor
                                                     === ""
                                                     &&
-                                                    position === this.eliminationContext.from))
-                                    .length === 3);
+                                                    pos === this.eliminationContext.from))).length !== 0;
         }
 
         checkElimination(pieceElement) {
