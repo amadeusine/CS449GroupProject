@@ -22,9 +22,8 @@ describe('Neon Exported Objects', function () {
     });
     it('can call NAIVE poll() method defined on Manager in Rust', function() {
         var mngr = new Manager();
-        var options = {"user": 1, "opponent": 2, "agent": "human", "position": ["A", "1"]};
-        var type = "Menu";
-        var result = mngr.poll(type, options);
+        var options = {"position": ["A", "1"], "sender": 1};
+        var result = mngr.poll(options);
         assert.equal(result, 'Ya did it!');
     });
     it('can call the get_board method defined on Manager in Rust', function() {

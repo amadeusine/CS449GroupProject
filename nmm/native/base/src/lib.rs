@@ -77,12 +77,6 @@ pub enum Trigger {
     Lose,
 }
 
-#[derive(Debug, Clone, Copy, PartialOrd, PartialEq, Display)]
-pub enum Action {
-    Menu,
-    Piece,
-}
-
 // TODO: Make top level GameResult type that wraps GameState and custom GameErr types?
 #[derive(Debug, Clone, PartialEq)]
 pub struct GameState {
@@ -110,6 +104,7 @@ pub struct GameOpts {
 #[derive(Debug, Clone, PartialEq)]
 pub struct Manager {
     state: GameState,
+    settings: GameOpts,
 }
 
 impl XCoord {
@@ -352,7 +347,16 @@ impl GameState {
 }
 
 impl GameOpts {
-    pub fn new_menu_opt(user: u32, opp: u32, agent: Agent) -> Self {
+    pub fn new() -> Self {
+        GameOpts {
+            user: None,
+            opponent: None,
+            agent: None,
+            sender: None,
+            position: None,
+        }
+    }
+    pub fn new_game_opt(user: u32, opp: u32, agent: Agent) -> Self {
         let user = match user {
             1 => Some(Player::PlayerOne),
             2 => Some(Player::PlayerTwo),
@@ -393,7 +397,12 @@ impl Manager {
     pub fn new() -> Self {
         Manager {
             state: GameState::new(),
+            settings: GameOpts::new(),
         }
+    }
+
+    pub fn new_opts(&mut self, game_opts: GameOpts) {
+        self.settings = game_opts;
     }
 
     // poll() will eventually use Action and Opts together to figure out what game logic to compute
@@ -421,15 +430,6 @@ impl Manager {
 
     pub fn get_board(&self) -> Board {
         self.state.get_board()
-    }
-
-    pub fn get_action(act: &str) -> Action {
-        match act {
-            "Menu" => Action::Menu,
-            "Piece" => Action::Piece,
-            other => panic!("Invalid type passed as ElementType: {:#?}", other),
-        };
-        unimplemented!()
     }
 }
 
@@ -483,7 +483,7 @@ mod base_tests {
 
     #[test]
     fn test_manager_new_get_curr_state() {
-        use super::{Board, Handle, Manager, Trigger};
+        use super::{Agent, Board, Handle, Manager, Trigger};
 
         assert_eq!(
             Manager::new().poll(),
@@ -493,8 +493,7 @@ mod base_tests {
 
     #[test]
     fn test_manager_new_get_board() {
-        use super::{Board, Manager};
-
+        use super::{Agent, Board, Manager};
         assert_eq!(Manager::new().get_board(), Board::new());
     }
 }
