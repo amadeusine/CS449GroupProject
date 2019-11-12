@@ -104,6 +104,7 @@ pub struct GameOpts {
 #[derive(Debug, Clone, PartialEq)]
 pub struct Manager {
     state: GameState,
+    settings: GameOpts,
 }
 
 impl XCoord {
@@ -346,7 +347,7 @@ impl GameState {
 }
 
 impl GameOpts {
-    pub fn new_menu_opt(user: u32, opp: u32, agent: Agent) -> Self {
+    pub fn new_game_opt(user: u32, opp: u32, agent: Agent) -> Self {
         let user = match user {
             1 => Some(Player::PlayerOne),
             2 => Some(Player::PlayerTwo),
@@ -384,9 +385,11 @@ impl GameOpts {
 }
 
 impl Manager {
-    pub fn new() -> Self {
+    pub fn new(user: u32, opponent: u32, agent: Agent) -> Self {
+        let opts = GameOpts::new_game_opt(user, opponent, agent);
         Manager {
             state: GameState::new(),
+            settings: opts,
         }
     }
 
@@ -468,18 +471,18 @@ mod base_tests {
 
     #[test]
     fn test_manager_new_get_curr_state() {
-        use super::{Board, Handle, Manager, Trigger};
+        use super::{Agent, Board, Handle, Manager, Trigger};
 
         assert_eq!(
-            Manager::new().poll(),
+            Manager::new(1, 2, Agent::Human).poll(),
             (Handle::Ok, Trigger::None, Board::new())
         );
     }
 
     #[test]
     fn test_manager_new_get_board() {
-        use super::{Board, Manager};
+        use super::{Agent, Board, Manager};
 
-        assert_eq!(Manager::new().get_board(), Board::new());
+        assert_eq!(Manager::new(1, 2, Agent::Human).get_board(), Board::new());
     }
 }

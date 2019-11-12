@@ -8,6 +8,12 @@ fn conv_poll_opts(ctx: &mut MethodContext<JsManager>, opts: &mut JsObject) -> Ga
         conv_position_option(ctx, opts),
     )
 }
+fn conv_new_game_opts(ctx: &mut MethodContext<JsManager>, opts: &mut JsObject) -> GameOpts {
+    GameOpts::new_game_opt(
+        conv_player_option(ctx, opts, "user"),
+        conv_player_option(ctx, opts, "opponent"),
+        conv_agent_option(ctx, opts),
+    )
 }
 
 declare_types! {
