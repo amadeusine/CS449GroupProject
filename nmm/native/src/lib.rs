@@ -1,4 +1,4 @@
-use base::{Agent, Coord, GameOpts, GameState, Manager};
+use base::{Agent, Board, Coord, GameOpts, GameState, Handle, Manager, Trigger};
 use neon::prelude::*;
 use neon::{class_definition, declare_types, impl_managed, register_module};
 
@@ -91,9 +91,15 @@ declare_types! {
 
         method poll(mut ctx) {
 
-            let mut this = ctx.this();
             let mut opts = ctx.argument::<JsObject>(0)?;
             let game_opts = conv_poll_opts(&mut ctx, &mut opts);
+
+            let mut this = ctx.this();
+            let (handle, trig, board) = {
+                let guard = ctx.lock();
+                let mut mngr = this.borrow_mut(&guard);
+                mngr.poll(game_opts)
+            };
 
             Ok(ctx.string("Ya did it!").upcast())
         }
@@ -195,6 +201,39 @@ fn conv_agent_option(ctx: &mut MethodContext<JsManager>, opts: &mut JsObject) ->
         Ok(_) => panic!("Property 'agent' did not contain a valid agent value."),
         Err(_) => panic!("Could not get 'agent' property from options object"),
     }
+}
+
+fn poll_to_JsObj<'a>(
+    ctx: &mut MethodContext<'a, JsManager>,
+    handle: Handle,
+    trig: Trigger,
+    board: Board,
+) -> JsResult<'a, JsObject> {
+    let result_obj = JsObject::new(ctx);
+    let str_handle = ctx.string(handle.to_string());
+    let str_trigger = ctx.string(trig.to_string());
+    let arr_board = board_to_JsArray(ctx, board);
+    result_obj.set(ctx, "handle", str_handle);
+    result_obj.set(ctx, "trigger", str_trigger);
+    // TODO: Do not unwrap this.
+    result_obj.set(ctx, "board", arr_board.unwrap());
+
+    Ok(result_obj)
+}
+
+fn board_to_JsArray<'a>(
+    ctx: &mut MethodContext<'a, JsManager>,
+    board: Board,
+) -> JsResult<'a, JsArray> {
+    let js_board_arr = JsArray::new(ctx, board.len());
+
+    for (k, v) in board {
+        let str_k = ctx.string(k.as_string());
+        let str_v = ctx.string(v.as_string());
+
+        let _ = js_board_arr.set(ctx, str_k, str_v);
+    }
+    Ok(js_board_arr)
 }
 
 register_module!(mut cx, { cx.export_class::<JsManager>("Manager") });

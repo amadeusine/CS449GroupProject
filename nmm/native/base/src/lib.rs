@@ -461,12 +461,7 @@ impl Manager {
     // has a limited set of methods that will compute the necessary logic on the game state hidden
     // within the exported rust module.
     // pub fn poll(&mut self, act: Action, opts: GameOpts) -> (Handle, Trigger, Board) {
-    pub fn poll(&mut self, act: Action, opts: &mut GameOpts) -> (Handle, Trigger, Board) {
-        match act {
-            Action::Menu => self.setup(),
-            Action::Piece => self.validate(),
-        }
-
+    pub fn poll(&mut self, opts: GameOpts) -> (Handle, Trigger, Board) {
         // Appease the type checker for now.
         (Handle::Err, Trigger::None, Board::default())
     }
