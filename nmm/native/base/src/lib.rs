@@ -463,7 +463,7 @@ impl Manager {
     // pub fn poll(&mut self, act: Action, opts: GameOpts) -> (Handle, Trigger, Board) {
     pub fn poll(&mut self, opts: GameOpts) -> (Handle, Trigger, Board) {
         // Appease the type checker for now.
-        (Handle::Err, Trigger::None, Board::default())
+        (Handle::Ok, Trigger::None, Board::default())
     }
 
     fn setup(&mut self) {

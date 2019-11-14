@@ -63,34 +63,17 @@ declare_types! {
                 let mngr = this.borrow(&guard);
                 mngr.get_curr_state()
             };
-            let result_obj = JsObject::new(&mut ctx);
-            let str_handle = ctx.string(res_handle.to_string());
-            let str_trigger = ctx.string(res_trigger.to_string());
 
-            let js_board_arr = JsArray::new(&mut ctx, res_board.len());
+            let curr_state_res = match poll_to_JsObj(&mut ctx, res_handle, res_trigger, res_board) {
+                Ok(c) => c,
+                _ => panic!("Failed to convert poll results to JsObject")
+            };
 
-            for (k, v) in res_board {
-
-                let str_k = ctx.string(k.as_string());
-                let str_v = ctx.string(v.as_string());
-
-                let _ = js_board_arr.set(&mut ctx, str_k, str_v);
-            }
-
-            // TODO: Handle error cases here, because result of .set() is technicall a NeonResult type.
-            // Really, nothing should go wrong here, but I could at least generically return a
-            // JsObject with Handle to err and everything else None to signal failure.
-            // NeonResult is just a bool value, so could simply check on returned result as well.
-            result_obj.set(&mut ctx, "handle", str_handle);
-            result_obj.set(&mut ctx, "trigger", str_trigger);
-            result_obj.set(&mut ctx, "board", js_board_arr);
-
-            Ok(result_obj.as_value(&mut ctx))
+            Ok(curr_state_res.as_value(&mut ctx))
 
         }
 
         method poll(mut ctx) {
-
             let mut opts = ctx.argument::<JsObject>(0)?;
             let game_opts = conv_poll_opts(&mut ctx, &mut opts);
 
@@ -101,7 +84,12 @@ declare_types! {
                 mngr.poll(game_opts)
             };
 
-            Ok(ctx.string("Ya did it!").upcast())
+            let poll_res = match poll_to_JsObj(&mut ctx, handle, trig, board) {
+                Ok(p) => p,
+                _ => panic!("Failed to convert poll results to JsObject")
+            };
+
+            Ok(poll_res.as_value(&mut ctx))
         }
 
         method get_user(mut ctx) {
@@ -216,7 +204,11 @@ fn poll_to_JsObj<'a>(
     result_obj.set(ctx, "handle", str_handle);
     result_obj.set(ctx, "trigger", str_trigger);
     // TODO: Do not unwrap this.
-    result_obj.set(ctx, "board", arr_board.unwrap());
+    let board = match arr_board {
+        Ok(b) => b,
+        _ => panic!("Could not match on `arr_board` value in poll_to_JsObj"),
+    };
+    result_obj.set(ctx, "board", board);
 
     Ok(result_obj)
 }
