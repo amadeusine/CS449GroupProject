@@ -9,7 +9,7 @@ use strum_macros::Display;
 mod util;
 
 #[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Display)]
-enum Player {
+pub enum Player {
     PlayerOne,
     PlayerTwo,
 }
@@ -86,13 +86,13 @@ pub struct GameState {
     mills: Vec<Mill>,
 }
 
-#[derive(Debug, Clone, PartialEq, Display)]
+#[derive(Debug, Clone, PartialEq, Display, Copy)]
 pub enum Agent {
     Human,
     Auto,
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Copy)]
 pub struct GameOpts {
     user: Option<Player>,
     opponent: Option<Player>,
@@ -105,6 +105,7 @@ pub struct GameOpts {
 struct ActionResult {
     sender: Player,
     position: Coord,
+    // Just want to get this going, will impl later.
     trigger: Trigger,
     handle: Handle,
 }
@@ -158,6 +159,10 @@ impl PositionStatus {
     pub fn new() -> Self {
         PositionStatus::default()
     }
+
+    pub fn from(player: Player) -> Self {
+        PositionStatus(true, Some(player))
+    }
     pub fn as_string(self) -> String {
         if self.0 {
             if let Some(p) = self.1 {
@@ -206,12 +211,16 @@ impl Board {
         Board::default()
     }
 
-    fn add(&mut self, k: Coord, v: PositionStatus) {
+    fn update(&mut self, k: Coord, v: PositionStatus) {
         self.0.insert(k, v);
     }
 
     pub fn len(&self) -> u32 {
         self.0.len() as u32
+    }
+
+    pub fn get(&self, xy: &Coord) -> Option<&PositionStatus> {
+        self.0.get(xy)
     }
 }
 
@@ -352,6 +361,17 @@ impl Default for Board {
     }
 }
 
+impl ActionResult {
+    fn new(sender: Player, position: Coord, handle: Handle, trigger: Trigger) -> Self {
+        ActionResult {
+            sender: sender,
+            position: position,
+            handle: handle,
+            trigger: trigger,
+        }
+    }
+}
+
 impl GameState {
     pub fn new() -> Self {
         GameState {
@@ -462,9 +482,21 @@ impl Manager {
     // within the exported rust module.
     // pub fn poll(&mut self, act: Action, opts: GameOpts) -> (Handle, Trigger, Board) {
     pub fn poll(&mut self, opts: GameOpts) -> (Handle, Trigger, Board) {
-        // Appease the type checker for now.
+        let curr_player = match opts.sender {
+            Some(Player::PlayerOne) => Player::PlayerOne,
+            Some(Player::PlayerTwo) => Player::PlayerTwo,
+            None => panic!("Poll called without a `sender` value in GameOpts struct"),
+        };
+        let move_coord = match opts.position {
+            Some(c) => c,
+            None => panic!("Poll called without a `position` value in GameOpts struct"),
+        };
+
+        self.update_board(&curr_player, &move_coord);
         (Handle::Ok, Trigger::None, Board::default())
     }
+
+    fn status(&self) {}
 
     fn setup(&mut self) {
         unimplemented!()
@@ -490,8 +522,8 @@ impl Manager {
         unimplemented!()
     }
 
-    fn update_board(&mut self) {
-        unimplemented!()
+    fn update_board(&mut self, player: &Player, pos: &Coord) {
+        self.state.board.update(*pos, PositionStatus::from(*player))
     }
 
     pub fn get_curr_state(&self) -> (Handle, Trigger, Board) {
@@ -504,6 +536,10 @@ impl Manager {
 
     pub fn get_board(&self) -> Board {
         self.state.get_board()
+    }
+
+    fn get_settings(&self) -> GameOpts {
+        self.settings
     }
 }
 
@@ -557,12 +593,22 @@ mod base_tests {
 
     #[test]
     fn test_manager_new_get_curr_state() {
-        use super::{Agent, Board, Handle, Manager, Trigger};
+        use super::{Agent, Board, GameOpts, Handle, Manager, Trigger};
 
         assert_eq!(
-            Manager::new().poll(),
+            Manager::new().get_curr_state(),
             (Handle::Ok, Trigger::None, Board::new())
         );
+    }
+
+    #[test]
+    fn test_manager_new_opts() {
+        use super::{Agent, Board, GameOpts, Handle, Manager, Trigger};
+
+        let opts = GameOpts::new_game_opt(1, 2, Agent::Human);
+        let mut mngr = Manager::new();
+        mngr.new_opts(opts.clone());
+        assert_eq!(mngr.get_settings(), opts)
     }
 
     #[test]
@@ -579,5 +625,19 @@ mod base_tests {
         let ((p1, p1_pieces), (p2, p2_pieces)) = gs.get_player_pieces();
         assert_eq!(p1_pieces, 0);
         assert_eq!(p2_pieces, 0);
+    }
+
+    #[test]
+    fn test_update_board() {
+        use super::{Board, Coord, GameOpts, Manager, Player, PositionStatus};
+
+        let gs = GameOpts::new_piece_opt(1, Coord::from_str("A1"));
+        let mut mngr = Manager::new();
+        mngr.poll(gs);
+
+        assert_eq!(
+            Some(&PositionStatus(true, Some(Player::PlayerOne))),
+            mngr.get_board().get(&Coord::from_str("A1"))
+        )
     }
 }
