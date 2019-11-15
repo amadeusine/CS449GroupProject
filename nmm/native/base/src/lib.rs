@@ -39,6 +39,8 @@ enum YCoord {
 #[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Hash, Eq)]
 pub struct Coord(XCoord, YCoord);
 
+type AdjacentPosition = Option<Rc<RefCell<PositionNode>>>;
+
 #[derive(Debug, Clone, PartialEq, PartialOrd)]
 struct PositionNode {
     data: Coord,
@@ -51,8 +53,6 @@ struct PositionList {
     tail: AdjacentPosition,
     pub length: u64,
 }
-
-type AdjacentPosition = Option<Rc<RefCell<PositionNode>>>;
 
 #[derive(Debug, Clone, PartialEq, PartialOrd)]
 pub struct Position {
@@ -208,6 +208,7 @@ impl Coord {
     fn new(x: XCoord, y: YCoord) -> Self {
         Coord(x, y)
     }
+
     pub fn from_str(s: &str) -> Coord {
         let mut chars = s.chars();
         if let Some(x) = chars.next() {
@@ -247,8 +248,8 @@ impl PositionList {
         pl.append(head);
 
         // shoutout to rust iters for not blowing up on empty.
-        for c in ls {
-            pl.append(c)
+        for c in &ls[1..] {
+            pl.append(*c)
         }
         pl
     }
@@ -266,6 +267,23 @@ impl PositionList {
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct AdjacentPositionList(HashMap<Coord, PositionList>);
+
+impl Default for AdjacentPositionList {
+    fn default() -> Self {
+        let mut apl: HashMap<Coord, PositionList> = HashMap::new();
+
+        let vec_of_vec_coords = util::get_adjacency_vec("default.txt");
+        for coord_vec in vec_of_vec_coords {
+            let xy = match coord_vec.first() {
+                Some(c) => c,
+                None => panic!("Empty vec in Vec<Vec<Coord>> returned by `get_adjacency_vec`"),
+            };
+
+            apl.insert(*xy, PositionList::new_from_vec(*xy, coord_vec));
+        }
+        AdjacentPositionList(apl)
+    }
+}
 
 impl Board {
     pub fn new() -> Self {
@@ -797,5 +815,24 @@ mod base_tests {
     #[test]
     fn test_incomplete_switch() {
         // TODO test where switch = true but it's a different player than previous turn.
+    }
+
+    #[test]
+    fn test_adjacency_position_list_default() {
+        use super::{AdjacentPosition, AdjacentPositionList, Coord, PositionList, PositionNode};
+        use crate::util::get_adjacency_vec;
+
+        let apl = AdjacentPositionList::default();
+
+        let a1_list = apl.0.get(&Coord::from_str("A1")).unwrap();
+        // let g7_list = apl.0.get(&Coord::from_str("G7")).unwrap();
+        assert_eq!(
+            a1_list.head.as_ref().unwrap().as_ref().borrow().data,
+            Coord::from_str("A1")
+        );
+        // assert_eq!(
+        //     g7_list.head.as_ref().unwrap().as_ref().borrow().data,
+        //     Coord::from_str("G7")
+        // )
     }
 }
