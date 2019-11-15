@@ -263,110 +263,39 @@ impl Default for Board {
         // TODO: maybe move out coordinates/position types into own module and declare a static
         //       vector for each major board variation (3, 6, 9, 12) for sake of keeping both
         //       `new_from_n(n)` and `default()` from having such noisy declarations.
+        #[rustfmt::skip]
         let valid_positions: HashMap<Coord, PositionStatus> = [
             // A => 1, 4, 7
-            (
-                Coord::new(XCoord::A, YCoord::One),
-                PositionStatus::default(),
-            ),
-            (
-                Coord::new(XCoord::A, YCoord::Four),
-                PositionStatus::default(),
-            ),
-            (
-                Coord::new(XCoord::A, YCoord::Seven),
-                PositionStatus::default(),
-            ),
+            (Coord::new(XCoord::A, YCoord::One), PositionStatus::default()),
+            (Coord::new(XCoord::A, YCoord::Four), PositionStatus::default()),
+            (Coord::new(XCoord::A, YCoord::Seven), PositionStatus::default()),
             // B => 2, 4, 6
-            (
-                Coord::new(XCoord::B, YCoord::Two),
-                PositionStatus::default(),
-            ),
-            (
-                Coord::new(XCoord::B, YCoord::Four),
-                PositionStatus::default(),
-            ),
-            (
-                Coord::new(XCoord::B, YCoord::Six),
-                PositionStatus::default(),
-            ),
+            (Coord::new(XCoord::B, YCoord::Two), PositionStatus::default()),
+            (Coord::new(XCoord::B, YCoord::Four), PositionStatus::default()),
+            (Coord::new(XCoord::B, YCoord::Six),PositionStatus::default()),
             // C => 3, 4, 5
-            (
-                Coord::new(XCoord::C, YCoord::Three),
-                PositionStatus::default(),
-            ),
-            (
-                Coord::new(XCoord::C, YCoord::Four),
-                PositionStatus::default(),
-            ),
-            (
-                Coord::new(XCoord::C, YCoord::Five),
-                PositionStatus::default(),
-            ),
+            (Coord::new(XCoord::C, YCoord::Three), PositionStatus::default()),
+            (Coord::new(XCoord::C, YCoord::Four), PositionStatus::default()),
+            (Coord::new(XCoord::C, YCoord::Five), PositionStatus::default()),
             // D => 1, 2, 3, 5, 6, 7
-            (
-                Coord::new(XCoord::D, YCoord::One),
-                PositionStatus::default(),
-            ),
-            (
-                Coord::new(XCoord::D, YCoord::Two),
-                PositionStatus::default(),
-            ),
-            (
-                Coord::new(XCoord::D, YCoord::Three),
-                PositionStatus::default(),
-            ),
-            (
-                Coord::new(XCoord::D, YCoord::Five),
-                PositionStatus::default(),
-            ),
-            (
-                Coord::new(XCoord::D, YCoord::Six),
-                PositionStatus::default(),
-            ),
-            (
-                Coord::new(XCoord::D, YCoord::Seven),
-                PositionStatus::default(),
-            ),
+            (Coord::new(XCoord::D, YCoord::One), PositionStatus::default()),
+            (Coord::new(XCoord::D, YCoord::Two), PositionStatus::default()),
+            (Coord::new(XCoord::D, YCoord::Three), PositionStatus::default()),
+            (Coord::new(XCoord::D, YCoord::Five), PositionStatus::default()),
+            (Coord::new(XCoord::D, YCoord::Six), PositionStatus::default()),
+            (Coord::new(XCoord::D, YCoord::Seven), PositionStatus::default()),
             // E => 3, 4, 5
-            (
-                Coord::new(XCoord::E, YCoord::Three),
-                PositionStatus::default(),
-            ),
-            (
-                Coord::new(XCoord::E, YCoord::Four),
-                PositionStatus::default(),
-            ),
-            (
-                Coord::new(XCoord::E, YCoord::Five),
-                PositionStatus::default(),
-            ),
+            (Coord::new(XCoord::E, YCoord::Three), PositionStatus::default()),
+            (Coord::new(XCoord::E, YCoord::Four), PositionStatus::default()),
+            (Coord::new(XCoord::E, YCoord::Five), PositionStatus::default()),
             // F => 2, 4, 6
-            (
-                Coord::new(XCoord::F, YCoord::Two),
-                PositionStatus::default(),
-            ),
-            (
-                Coord::new(XCoord::F, YCoord::Four),
-                PositionStatus::default(),
-            ),
-            (
-                Coord::new(XCoord::F, YCoord::Six),
-                PositionStatus::default(),
-            ),
+            (Coord::new(XCoord::F, YCoord::Two), PositionStatus::default()),
+            (Coord::new(XCoord::F, YCoord::Four), PositionStatus::default()),
+            (Coord::new(XCoord::F, YCoord::Six), PositionStatus::default()),
             // G => 1, 4, 7
-            (
-                Coord::new(XCoord::G, YCoord::One),
-                PositionStatus::default(),
-            ),
-            (
-                Coord::new(XCoord::G, YCoord::Four),
-                PositionStatus::default(),
-            ),
-            (
-                Coord::new(XCoord::G, YCoord::Seven),
-                PositionStatus::default(),
-            ),
+            (Coord::new(XCoord::G, YCoord::One), PositionStatus::default()),
+            (Coord::new(XCoord::G, YCoord::Four), PositionStatus::default()),
+            (Coord::new(XCoord::G, YCoord::Seven), PositionStatus::default()),
         ]
         .iter()
         .cloned()
@@ -387,6 +316,10 @@ impl ActionResult {
     }
     fn get_trigger(&self) -> Trigger {
         self.trigger
+    }
+
+    fn get_player(&self) -> Player {
+        self.sender
     }
 }
 
@@ -499,15 +432,20 @@ impl Manager {
         self.settings = game_opts;
     }
 
-    // poll() will eventually use Action and Opts together to figure out what game logic to compute
-    // from the attempted move. For now, just trying to figure out what an okay "public" "API" would
-    // look like when this gets exported into the node module. Main idea is that node/js interacts
-    // exclusively through this `Manager` struct, which is getting exported as a Js Class and
-    // has a limited set of methods that will compute the necessary logic on the game state hidden
-    // within the exported rust module.
-    // pub fn poll(&mut self, act: Action, opts: GameOpts) -> (Handle, Trigger, Board) {
     pub fn poll(&mut self, opts: GameOpts) -> (Handle, Trigger, Board) {
+        // Grabbing this in case of failed poll operation to return.
         let prev_board = self.get_board();
+        // Get what we need out of the GameOpts struct.
+        let (move_coord, curr_player) = self.setup(&opts);
+
+        // Actual poll logic starts here.
+        self.validate(&move_coord, &curr_player);
+        // TODO: generate action result, whether in validate, a method called within validate, etc
+        // TODO: Add action result to history after deciding where to generate it
+        (Handle::Ok, Trigger::None, Board::default())
+    }
+
+    fn setup(&mut self, opts: &GameOpts) -> (Coord, Player) {
         let curr_player = match opts.sender {
             Some(Player::PlayerOne) => Player::PlayerOne,
             Some(Player::PlayerTwo) => Player::PlayerTwo,
@@ -517,21 +455,15 @@ impl Manager {
             Some(c) => c,
             None => panic!("Poll called without a `position` value in GameOpts struct"),
         };
-
-        self.validate(&move_coord, &curr_player);
-
-        (Handle::Ok, Trigger::None, Board::default())
-    }
-
-    // fn status(&self) {
-
-    // }
-
-    fn setup(&mut self) {
-        unimplemented!()
+        (move_coord, curr_player)
     }
 
     fn validate(&mut self, move_coord: &Coord, curr_player: &Player) {
+        if self.is_switch() && Some(*curr_player) != self.get_prev_player() {
+            // TODO: Generate unsuccessful poll game results
+            unimplemented!()
+        }
+
         match self.get_position(move_coord) {
             Some(p) => match p.as_tuple() {
                 (true, Some(_p)) if _p == *curr_player => self.move_out(move_coord, curr_player),
@@ -549,9 +481,13 @@ impl Manager {
         self.update_board(&curr_player, &move_coord);
     }
 
+    fn failed_poll(&self) -> (Handle, Trigger, Board) {
+        unimplemented!()
+    }
+
     fn move_out(&mut self, xy: &Coord, curr_player: &Player) {
         self.unset_position(xy);
-        self.state.set_switch(true);
+        self.set_switch(true);
         // TODO: set_actionresult again
     }
 
@@ -564,22 +500,12 @@ impl Manager {
         }
 
         self.set_position(*xy, *curr_player);
-
+        // TODO: Should we check for new mills here?
+        // TODO: New mill => ability to take an attack immediately after, w/o changing turns.
         // TODO: set_actionresult
     }
 
-    fn move_valid(&self) -> bool {
-        unimplemented!()
-    }
-
     fn move_attack(&mut self, xy: &Coord, curr_player: &Player) {
-        unimplemented!()
-    }
-    fn is_attack(&self) -> bool {
-        unimplemented!()
-    }
-
-    fn is_move(&self) -> bool {
         unimplemented!()
     }
 
@@ -587,7 +513,14 @@ impl Manager {
         unimplemented!()
     }
 
+    fn has_mill(&mut self) -> bool {
+        unimplemented!()
+    }
+
     fn update_board(&mut self, player: &Player, pos: &Coord) {
+        // TODO: Should I move the setter one level up into state instead of reaching all the
+        // way into Board? I hate OOP! This shouldn't be a thing I need to even consider! Why
+        // bundle all this state needlessly! Whatever! Figure out what is less horrificaly ugly!
         self.state.board.update(*pos, PositionStatus::from(*player))
     }
 
@@ -626,6 +559,13 @@ impl Manager {
         }
     }
 
+    fn get_prev_player(&self) -> Option<Player> {
+        match self.history.last() {
+            Some(p) => Some(p.get_player()),
+            None => None,
+        }
+    }
+
     fn player_pieces_set(&self, player: &Player) -> u32 {
         let (count, _) = match player {
             &Player::PlayerOne => self.state.p1_count,
@@ -639,6 +579,21 @@ impl Manager {
             &Player::PlayerOne => self.state.p1_count.0 += 1,
             &Player::PlayerTwo => self.state.p2_count.0 += 1,
         };
+    }
+
+    fn dec_player_pieces_set(&mut self, player: &Player) {
+        match player {
+            &Player::PlayerOne => self.state.p1_count.0 -= 1,
+            &Player::PlayerTwo => self.state.p2_count.0 -= 1,
+        };
+    }
+
+    fn set_switch(&mut self, b: bool) {
+        self.state.set_switch(b)
+    }
+
+    fn is_switch(&self) -> bool {
+        self.state.switch_move
     }
 }
 
@@ -782,5 +737,10 @@ mod base_tests {
             mgr.get_position(&Coord::from_str("A1")),
             Some(&PositionStatus::new())
         )
+    }
+
+    #[test]
+    fn test_incomplete_switch() {
+        // TODO test where switch = true but it's a different player than previous turn.
     }
 }
