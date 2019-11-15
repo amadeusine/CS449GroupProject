@@ -84,6 +84,8 @@ pub struct GameState {
     trigger: Trigger,
     board: Board,
     mills: Vec<Mill>,
+    p1_count: (u32, u32),
+    p2_count: (u32, u32),
 }
 
 #[derive(Debug, Clone, PartialEq, Display, Copy)]
@@ -108,6 +110,7 @@ struct ActionResult {
     // Just want to get this going, will impl later.
     trigger: Trigger,
     handle: Handle,
+    switch_move: bool,
 }
 
 #[derive(Debug, Clone, Copy)]
@@ -176,6 +179,9 @@ impl PositionStatus {
     }
     fn occupied(&self) -> bool {
         self.0
+    }
+    fn as_tuple(&self) -> (bool, Option<Player>) {
+        (self.0, self.1)
     }
 }
 
@@ -362,12 +368,19 @@ impl Default for Board {
 }
 
 impl ActionResult {
-    fn new(sender: Player, position: Coord, handle: Handle, trigger: Trigger) -> Self {
+    fn new(
+        sender: Player,
+        position: Coord,
+        handle: Handle,
+        trigger: Trigger,
+        switch: bool,
+    ) -> Self {
         ActionResult {
             sender: sender,
             position: position,
             handle: handle,
             trigger: trigger,
+            switch_move: switch,
         }
     }
 }
@@ -379,6 +392,8 @@ impl GameState {
             trigger: Trigger::None,
             board: Board::default(),
             mills: vec![],
+            p1_count: (0, 9),
+            p2_count: (0, 9),
         }
     }
 
@@ -482,6 +497,7 @@ impl Manager {
     // within the exported rust module.
     // pub fn poll(&mut self, act: Action, opts: GameOpts) -> (Handle, Trigger, Board) {
     pub fn poll(&mut self, opts: GameOpts) -> (Handle, Trigger, Board) {
+        let prev_board = self.get_board();
         let curr_player = match opts.sender {
             Some(Player::PlayerOne) => Player::PlayerOne,
             Some(Player::PlayerTwo) => Player::PlayerTwo,
@@ -492,24 +508,49 @@ impl Manager {
             None => panic!("Poll called without a `position` value in GameOpts struct"),
         };
 
-        self.update_board(&curr_player, &move_coord);
         (Handle::Ok, Trigger::None, Board::default())
     }
 
-    fn status(&self) {}
+    // fn status(&self) {
+
+    // }
 
     fn setup(&mut self) {
         unimplemented!()
     }
 
-    fn validate(&self) {
+    fn validate(&mut self, move_coord: &Coord, curr_player: &Player) {
+        match self.get_position(move_coord) {
+            Some(p) => match p.as_tuple() {
+                (true, Some(_p)) if _p == *curr_player => self.move_out(move_coord, curr_player),
+                (true, Some(_p)) => self.move_attack(move_coord, curr_player),
+                (true, _) => panic!(
+                    "Invalid game state: PositionStatus of (true, None) matched in fn validate"
+                ),
+                (false, None) => self.move_into(move_coord, curr_player),
+                (false, _) => panic!(
+                    "Invalid game state: PositionStatus of (false, Some(_)) matched in fn `validate`"
+                ),
+            },
+            None => panic!("Invalid game state: `position` value that does not exist matched in fn `validate`")
+        };
+        self.update_board(&curr_player, &move_coord);
+    }
+
+    fn move_out(&mut self, xy: &Coord, curr_player: &Player) {
         unimplemented!()
     }
 
+    fn move_into(&mut self, xy: &Coord, curr_player: &Player) {
+        unimplemented!()
+    }
     fn move_valid(&self) -> bool {
         unimplemented!()
     }
 
+    fn move_attack(&mut self, xy: &Coord, curr_player: &Player) {
+        unimplemented!()
+    }
     fn is_attack(&self) -> bool {
         unimplemented!()
     }
@@ -536,6 +577,10 @@ impl Manager {
 
     pub fn get_board(&self) -> Board {
         self.state.get_board()
+    }
+
+    fn get_position(&self, xy: &Coord) -> Option<&PositionStatus> {
+        self.state.board.get(xy)
     }
 
     fn get_settings(&self) -> GameOpts {
