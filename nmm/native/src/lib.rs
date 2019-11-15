@@ -1,4 +1,4 @@
-use base::{Agent, Coord, GameOpts, GameState, Manager};
+use base::{Agent, Board, Coord, GameOpts, GameState, Handle, Manager, Trigger};
 use neon::prelude::*;
 use neon::{class_definition, declare_types, impl_managed, register_module};
 
@@ -63,38 +63,33 @@ declare_types! {
                 let mngr = this.borrow(&guard);
                 mngr.get_curr_state()
             };
-            let result_obj = JsObject::new(&mut ctx);
-            let str_handle = ctx.string(res_handle.to_string());
-            let str_trigger = ctx.string(res_trigger.to_string());
 
-            let js_board_arr = JsArray::new(&mut ctx, res_board.len());
+            let curr_state_res = match poll_to_JsObj(&mut ctx, res_handle, res_trigger, res_board) {
+                Ok(c) => c,
+                _ => panic!("Failed to convert poll results to JsObject")
+            };
 
-            for (k, v) in res_board {
-
-                let str_k = ctx.string(k.as_string());
-                let str_v = ctx.string(v.as_string());
-
-                let _ = js_board_arr.set(&mut ctx, str_k, str_v);
-            }
-
-            // TODO: Handle error cases here, because result of .set() is technicall a NeonResult type.
-            // Really, nothing should go wrong here, but I could at least generically return a
-            // JsObject with Handle to err and everything else None to signal failure.
-            // NeonResult is just a bool value, so could simply check on returned result as well.
-            result_obj.set(&mut ctx, "handle", str_handle);
-            result_obj.set(&mut ctx, "trigger", str_trigger);
-            result_obj.set(&mut ctx, "board", js_board_arr);
-
-            Ok(result_obj.as_value(&mut ctx))
+            Ok(curr_state_res.as_value(&mut ctx))
 
         }
 
         method poll(mut ctx) {
-            let mut this = ctx.this();
             let mut opts = ctx.argument::<JsObject>(0)?;
             let game_opts = conv_poll_opts(&mut ctx, &mut opts);
 
-            Ok(ctx.string("Ya did it!").upcast())
+            let mut this = ctx.this();
+            let (handle, trig, board) = {
+                let guard = ctx.lock();
+                let mut mngr = this.borrow_mut(&guard);
+                mngr.poll(game_opts)
+            };
+
+            let poll_res = match poll_to_JsObj(&mut ctx, handle, trig, board) {
+                Ok(p) => p,
+                _ => panic!("Failed to convert poll results to JsObject")
+            };
+
+            Ok(poll_res.as_value(&mut ctx))
         }
 
         method get_user(mut ctx) {
@@ -194,6 +189,43 @@ fn conv_agent_option(ctx: &mut MethodContext<JsManager>, opts: &mut JsObject) ->
         Ok(_) => panic!("Property 'agent' did not contain a valid agent value."),
         Err(_) => panic!("Could not get 'agent' property from options object"),
     }
+}
+
+fn poll_to_JsObj<'a>(
+    ctx: &mut MethodContext<'a, JsManager>,
+    handle: Handle,
+    trig: Trigger,
+    board: Board,
+) -> JsResult<'a, JsObject> {
+    let result_obj = JsObject::new(ctx);
+    let str_handle = ctx.string(handle.to_string());
+    let str_trigger = ctx.string(trig.to_string());
+    let arr_board = board_to_JsArray(ctx, board);
+    result_obj.set(ctx, "handle", str_handle);
+    result_obj.set(ctx, "trigger", str_trigger);
+    // TODO: Do not unwrap this.
+    let board = match arr_board {
+        Ok(b) => b,
+        _ => panic!("Could not match on `arr_board` value in poll_to_JsObj"),
+    };
+    result_obj.set(ctx, "board", board);
+
+    Ok(result_obj)
+}
+
+fn board_to_JsArray<'a>(
+    ctx: &mut MethodContext<'a, JsManager>,
+    board: Board,
+) -> JsResult<'a, JsArray> {
+    let js_board_arr = JsArray::new(ctx, board.len());
+
+    for (k, v) in board {
+        let str_k = ctx.string(k.as_string());
+        let str_v = ctx.string(v.as_string());
+
+        let _ = js_board_arr.set(ctx, str_k, str_v);
+    }
+    Ok(js_board_arr)
 }
 
 register_module!(mut cx, { cx.export_class::<JsManager>("Manager") });
