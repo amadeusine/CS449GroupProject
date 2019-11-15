@@ -86,6 +86,7 @@ pub struct GameState {
     mills: Vec<Mill>,
     p1_count: (u32, u32),
     p2_count: (u32, u32),
+    switch_move: bool,
 }
 
 #[derive(Debug, Clone, PartialEq, Display, Copy)]
@@ -110,7 +111,6 @@ struct ActionResult {
     // Just want to get this going, will impl later.
     trigger: Trigger,
     handle: Handle,
-    switch_move: bool,
 }
 
 #[derive(Debug, Clone, Copy)]
@@ -227,6 +227,15 @@ impl Board {
 
     pub fn get(&self, xy: &Coord) -> Option<&PositionStatus> {
         self.0.get(xy)
+    }
+    pub fn set(&mut self, xy: Coord, player: Player) -> Option<PositionStatus> {
+        self.0.insert(xy, PositionStatus::from(player))
+    }
+
+    fn unset(&mut self, xy: &Coord) {
+        // TODO: Technically returns an Option of the old value. Do I care to handle it? I don't
+        // think so.
+        self.0.insert(*xy, PositionStatus::new());
     }
 }
 
@@ -368,20 +377,16 @@ impl Default for Board {
 }
 
 impl ActionResult {
-    fn new(
-        sender: Player,
-        position: Coord,
-        handle: Handle,
-        trigger: Trigger,
-        switch: bool,
-    ) -> Self {
+    fn new(sender: Player, position: Coord, handle: Handle, trigger: Trigger) -> Self {
         ActionResult {
             sender: sender,
             position: position,
             handle: handle,
             trigger: trigger,
-            switch_move: switch,
         }
+    }
+    fn get_trigger(&self) -> Trigger {
+        self.trigger
     }
 }
 
@@ -394,6 +399,7 @@ impl GameState {
             mills: vec![],
             p1_count: (0, 9),
             p2_count: (0, 9),
+            switch_move: false,
         }
     }
 
@@ -426,6 +432,10 @@ impl GameState {
         }
 
         ((Player::PlayerOne, p1), (Player::PlayerTwo, p2))
+    }
+
+    fn set_switch(&mut self, b: bool) {
+        self.switch_move = b;
     }
 }
 
@@ -508,6 +518,8 @@ impl Manager {
             None => panic!("Poll called without a `position` value in GameOpts struct"),
         };
 
+        self.validate(&move_coord, &curr_player);
+
         (Handle::Ok, Trigger::None, Board::default())
     }
 
@@ -538,12 +550,24 @@ impl Manager {
     }
 
     fn move_out(&mut self, xy: &Coord, curr_player: &Player) {
-        unimplemented!()
+        self.unset_position(xy);
+        self.state.set_switch(true);
+        // TODO: set_actionresult again
     }
 
     fn move_into(&mut self, xy: &Coord, curr_player: &Player) {
-        unimplemented!()
+        let prev_trig = self.get_prev_trigger();
+        if (prev_trig == Trigger::None || prev_trig == Trigger::Placement)
+            && self.player_pieces_set(curr_player) < 9
+        {
+            self.inc_player_pieces_set(curr_player);
+        }
+
+        self.set_position(*xy, *curr_player);
+
+        // TODO: set_actionresult
     }
+
     fn move_valid(&self) -> bool {
         unimplemented!()
     }
@@ -583,8 +607,38 @@ impl Manager {
         self.state.board.get(xy)
     }
 
+    fn set_position(&mut self, xy: Coord, player: Player) -> Option<PositionStatus> {
+        self.state.board.set(xy, player)
+    }
+
+    fn unset_position(&mut self, xy: &Coord) {
+        self.state.board.unset(xy)
+    }
+
     fn get_settings(&self) -> GameOpts {
         self.settings
+    }
+
+    fn get_prev_trigger(&self) -> Trigger {
+        match self.history.last() {
+            Some(t) => t.get_trigger(),
+            None => Trigger::None,
+        }
+    }
+
+    fn player_pieces_set(&self, player: &Player) -> u32 {
+        let (count, _) = match player {
+            &Player::PlayerOne => self.state.p1_count,
+            &Player::PlayerTwo => self.state.p2_count,
+        };
+        count
+    }
+
+    fn inc_player_pieces_set(&mut self, player: &Player) {
+        match player {
+            &Player::PlayerOne => self.state.p1_count.0 += 1,
+            &Player::PlayerTwo => self.state.p2_count.0 += 1,
+        };
     }
 }
 
@@ -676,13 +730,57 @@ mod base_tests {
     fn test_update_board() {
         use super::{Board, Coord, GameOpts, Manager, Player, PositionStatus};
 
-        let gs = GameOpts::new_piece_opt(1, Coord::from_str("A1"));
         let mut mngr = Manager::new();
-        mngr.poll(gs);
-
+        mngr.set_position(Coord::from_str("A1"), Player::PlayerOne);
         assert_eq!(
             Some(&PositionStatus(true, Some(Player::PlayerOne))),
-            mngr.get_board().get(&Coord::from_str("A1"))
+            mngr.get_position(&Coord::from_str("A1"))
+        )
+    }
+
+    #[test]
+    fn test_basic_validate() {
+        use super::{Coord, GameOpts, GameState, Manager, Player, PositionStatus};
+
+        let gs = GameOpts::new_piece_opt(1, Coord::from_str("A1"));
+        let mut mngr = Manager::new();
+        mngr.validate(
+            gs.position.as_ref().expect("A1"),
+            gs.sender.as_ref().expect("Player1"),
+        );
+        // TODO: Actual assertion
+        assert_eq!(
+            mngr.get_position(&Coord::from_str("A1")),
+            Some(&PositionStatus::from(Player::PlayerOne))
+        )
+    }
+
+    #[test]
+    fn test_inc_player_piece() {
+        use super::{GameState, Manager, Player};
+        let mut mngr = Manager::new();
+        mngr.inc_player_pieces_set(&Player::PlayerOne);
+        mngr.inc_player_pieces_set(&Player::PlayerTwo);
+        mngr.inc_player_pieces_set(&Player::PlayerTwo);
+
+        assert_eq!(mngr.player_pieces_set(&Player::PlayerOne), 1);
+        assert_eq!(mngr.player_pieces_set(&Player::PlayerTwo), 2)
+    }
+
+    #[test]
+    fn test_unset_position() {
+        use super::{Coord, GameState, Manager, Player, PositionStatus};
+
+        let mut mgr = Manager::new();
+        mgr.set_position(Coord::from_str("A1"), Player::PlayerOne);
+        assert_eq!(
+            mgr.get_position(&Coord::from_str("A1")),
+            Some(&PositionStatus::from(Player::PlayerOne))
+        );
+        mgr.unset_position(&Coord::from_str("A1"));
+        assert_eq!(
+            mgr.get_position(&Coord::from_str("A1")),
+            Some(&PositionStatus::new())
         )
     }
 }
