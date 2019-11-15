@@ -39,12 +39,25 @@ enum YCoord {
 #[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Hash, Eq)]
 pub struct Coord(XCoord, YCoord);
 
-type Adjacents = Option<Rc<RefCell<Position>>>;
+#[derive(Debug, Clone, PartialEq, PartialOrd)]
+struct PositionNode {
+    data: Coord,
+    next: AdjacentPosition,
+}
 
 #[derive(Debug, Clone, PartialEq, PartialOrd)]
-struct Position {
+struct PositionList {
+    head: AdjacentPosition,
+    tail: AdjacentPosition,
+    pub length: u64,
+}
+
+type AdjacentPosition = Option<Rc<RefCell<PositionNode>>>;
+
+#[derive(Debug, Clone, PartialEq, PartialOrd)]
+pub struct Position {
     position: Coord,
-    peers: Vec<Adjacents>,
+    peers: Vec<AdjacentPosition>,
     occupied: Option<Player>,
 }
 
@@ -211,6 +224,48 @@ impl Coord {
         format!("{}{}", self.0, self.1 as u32)
     }
 }
+
+impl PositionNode {
+    fn new(xy: Coord, next: AdjacentPosition) -> Rc<RefCell<PositionNode>> {
+        Rc::new(RefCell::new(PositionNode {
+            data: xy,
+            next: next,
+        }))
+    }
+}
+
+impl PositionList {
+    fn new_empty() -> Self {
+        PositionList {
+            head: None,
+            tail: None,
+            length: 0,
+        }
+    }
+    fn new_from_vec(head: Coord, ls: Vec<Coord>) -> Self {
+        let mut pl = PositionList::new_empty();
+        pl.append(head);
+
+        // shoutout to rust iters for not blowing up on empty.
+        for c in ls {
+            pl.append(c)
+        }
+        pl
+    }
+
+    fn append(&mut self, pos: Coord) {
+        let new_pos = PositionNode::new(pos, None);
+        match self.tail.take() {
+            Some(p) => p.borrow_mut().next = Some(new_pos.clone()),
+            _ => self.head = Some(new_pos.clone()),
+        };
+        self.length += 1;
+        self.tail = Some(new_pos);
+    }
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct AdjacentPositionList(HashMap<Coord, PositionList>);
 
 impl Board {
     pub fn new() -> Self {
