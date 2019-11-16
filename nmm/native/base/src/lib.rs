@@ -41,6 +41,9 @@ pub struct Coord(XCoord, YCoord);
 
 type AdjacentPosition = Option<Rc<RefCell<PositionNode>>>;
 
+#[derive(Debug, Clone, PartialEq)]
+pub struct AdjacentPositionList(HashMap<Coord, PositionList>);
+
 #[derive(Debug, Clone, PartialEq, PartialOrd)]
 struct PositionNode {
     data: Coord,
@@ -263,10 +266,48 @@ impl PositionList {
         self.length += 1;
         self.tail = Some(new_pos);
     }
+
+    // get_head(&self) -> & {
+    //     unimplemented!()
+    // }
 }
 
-#[derive(Debug, Clone, PartialEq)]
-pub struct AdjacentPositionList(HashMap<Coord, PositionList>);
+pub struct AdjacencyIterator {
+    current: AdjacentPosition,
+}
+impl AdjacencyIterator {
+    fn new(start: AdjacentPosition) -> AdjacencyIterator {
+        AdjacencyIterator { current: start }
+    }
+}
+
+impl Iterator for AdjacencyIterator {
+    type Item = Coord;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        let curr = &self.current;
+        let mut result = None;
+        self.current = match curr {
+            Some(ref curr) => {
+                let curr = curr.borrow();
+                result = Some(curr.data.clone());
+
+                curr.next.clone()
+            }
+            _ => None,
+        };
+        result
+    }
+}
+
+impl AdjacentPositionList {
+    fn get(&self, xy: &Coord) -> Option<&PositionList> {
+        match self.0.get(xy) {
+            Some(pl) => Some(pl),
+            None => None,
+        }
+    }
+}
 
 impl Default for AdjacentPositionList {
     fn default() -> Self {
@@ -824,8 +865,11 @@ mod base_tests {
 
         let apl = AdjacentPositionList::default();
 
-        let a1_list = apl.0.get(&Coord::from_str("A1")).unwrap();
-        // let g7_list = apl.0.get(&Coord::from_str("G7")).unwrap();
+        // let a1_list = apl.0.get(&Coord::from_str("A1")).unwrap();
+        let a1_list = apl.get(&Coord::from_str("A1")).unwrap();
+
+        // let g7_list = apl.get(&Coord::from_str("G7")).unwrap();
+
         assert_eq!(
             a1_list.head.as_ref().unwrap().as_ref().borrow().data,
             Coord::from_str("A1")
