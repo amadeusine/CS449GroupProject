@@ -39,7 +39,7 @@ enum YCoord {
 #[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Hash, Eq)]
 pub struct Coord(XCoord, YCoord);
 
-type AdjacentPosition = Option<Rc<RefCell<PositionNode>>>;
+type Position = Option<Rc<RefCell<PositionNode>>>;
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct AdjacentPositionList(HashMap<Coord, PositionList>);
@@ -47,22 +47,22 @@ pub struct AdjacentPositionList(HashMap<Coord, PositionList>);
 #[derive(Debug, Clone, PartialEq, PartialOrd)]
 struct PositionNode {
     data: Coord,
-    next: AdjacentPosition,
+    next: Position,
 }
 
 #[derive(Debug, Clone, PartialEq, PartialOrd)]
 struct PositionList {
-    head: AdjacentPosition,
-    tail: AdjacentPosition,
+    head: Position,
+    tail: Position,
     pub length: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
-pub struct Position {
-    position: Coord,
-    peers: Vec<AdjacentPosition>,
-    occupied: Option<Player>,
-}
+// #[derive(Debug, Clone, PartialEq, PartialOrd)]
+// pub struct Position {
+//     position: Coord,
+//     peers: Vec<AdjacentPosition>,
+//     occupied: Option<Player>,
+// }
 
 #[derive(Debug, Clone, PartialEq, PartialOrd)]
 struct Mill {
@@ -230,7 +230,7 @@ impl Coord {
 }
 
 impl PositionNode {
-    fn new(xy: Coord, next: AdjacentPosition) -> Rc<RefCell<PositionNode>> {
+    fn new(xy: Coord, next: Position) -> Rc<RefCell<PositionNode>> {
         Rc::new(RefCell::new(PositionNode {
             data: xy,
             next: next,
@@ -273,10 +273,10 @@ impl PositionList {
 }
 
 pub struct AdjacencyIterator {
-    current: AdjacentPosition,
+    current: Position,
 }
 impl AdjacencyIterator {
-    fn new(start: AdjacentPosition) -> AdjacencyIterator {
+    fn new(start: Position) -> AdjacencyIterator {
         AdjacencyIterator { current: start }
     }
 }
@@ -860,7 +860,7 @@ mod base_tests {
 
     #[test]
     fn test_adjacency_position_list_default() {
-        use super::{AdjacentPosition, AdjacentPositionList, Coord, PositionList, PositionNode};
+        use super::{AdjacentPositionList, Coord, Position, PositionList, PositionNode};
         use crate::util::get_adjacency_vec;
 
         let apl = AdjacentPositionList::default();
