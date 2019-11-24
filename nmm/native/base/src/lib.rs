@@ -300,13 +300,48 @@ impl Iterator for AdjacencyIterator {
     }
 }
 
+struct AdjIter<'a> {
+    iter: ::std::option::Iter<'a, Position>,
+}
+
+// impl<'a> IntoIterator for &'a AdjacencyIterator {
+//     type Item = &'a Coord;
+//     type IntoIter = AdjIter<'a>;
+
+//     fn into_iter(self) -> Self::IntoIter {
+//         AdjIter {
+//             iter: self.current.iter(),
+//         }
+//     }
+// }
+
+// impl<'a> Iterator for AdjIter<'a> {
+//     type Item = &'a Coord;
+//     fn next(&mut self) -> Option<Self::Item> {
+//         self.iter.next()
+//     }
+// }
+
+// impl<'a> IntoIterator for &'a PositionList {
+//     type Item = Coord;
+//     type IntoIter = &'a AdjacencyIterator;
+
+//     fn into_iter(self) -> Self::IntoIter {
+//         AdjacencyIterator { current: self.head }
+//     }
+// }
+
 impl AdjacentPositionList {
     fn get(&self, xy: &Coord) -> Option<&PositionList> {
-        match self.0.get(xy) {
+        match &self.0.get(xy) {
             Some(pl) => Some(pl),
             None => None,
         }
     }
+
+    // fn find_adjacents(&self, xy: &Coord) -> Vec<Coord> {
+
+    // }
 }
 
 impl Default for AdjacentPositionList {
@@ -868,15 +903,16 @@ mod base_tests {
         // let a1_list = apl.0.get(&Coord::from_str("A1")).unwrap();
         let a1_list = apl.get(&Coord::from_str("A1")).unwrap();
 
-        // let g7_list = apl.get(&Coord::from_str("G7")).unwrap();
+        let g7_list = apl.get(&Coord::from_str("G7")).unwrap();
 
         assert_eq!(
             a1_list.head.as_ref().unwrap().as_ref().borrow().data,
             Coord::from_str("A1")
         );
-        // assert_eq!(
-        //     g7_list.head.as_ref().unwrap().as_ref().borrow().data,
-        //     Coord::from_str("G7")
-        // )
+        assert_eq!(
+            g7_list.head.as_ref().unwrap().as_ref().borrow().data,
+            Coord::from_str("G7")
+        );
+    }
     }
 }
