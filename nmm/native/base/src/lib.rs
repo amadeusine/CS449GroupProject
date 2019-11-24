@@ -519,6 +519,20 @@ impl GameState {
     fn set_switch(&mut self, b: bool) {
         self.switch_move = b;
     }
+    fn find_mills(&mut self) {
+        let mut p1_positions: Vec<Coord> = vec![];
+        let mut p2_positions: Vec<Coord> = vec![];
+        let board = &self.board;
+        for (xy, pos) in board.into_iter() {
+            if pos.occupied() {
+                match pos.player() {
+                    Some(p) if p == Player::PlayerOne => p1_positions.push(*xy),
+                    Some(_) => p2_positions.push(*xy),
+                    _ => panic!("matched PositionStatus true with None in find_mills"),
+                }
+            }
+        }
+    }
 }
 
 impl GameOpts {
