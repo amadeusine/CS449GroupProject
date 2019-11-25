@@ -279,14 +279,10 @@ impl PositionList {
 
 pub struct AdjacencyIterator {
     current: Position,
-    index: usize,
 }
 impl AdjacencyIterator {
     fn new(start: Position) -> AdjacencyIterator {
-        AdjacencyIterator {
-            current: start,
-            index: 0,
-        }
+        AdjacencyIterator { current: start }
     }
 }
 
@@ -309,48 +305,14 @@ impl Iterator for AdjacencyIterator {
     }
 }
 
-// impl<'a> IntoIterator for &'a PositionList {
-//     type Item = &'a Position;
-//     type IntoIter = AdjacencyIterator;
+impl IntoIterator for PositionList {
+    type Item = PositionNode;
+    type IntoIter = AdjacencyIterator;
 
-//     fn into_iter(self) -> Self::IntoIter {
-//         AdjacencyIterator {
-//             current: self.head,
-//             index: 0,
-//         }
-//     }
-// }
-
-struct AdjIter<'a> {
-    iter: ::std::option::Iter<'a, Position>,
+    fn into_iter(self) -> Self::IntoIter {
+        AdjacencyIterator { current: self.head }
+    }
 }
-
-// impl<'a> IntoIterator for &'a AdjacencyIterator {
-//     type Item = &'a Coord;
-//     type IntoIter = AdjIter<'a>;
-
-//     fn into_iter(self) -> Self::IntoIter {
-//         AdjIter {
-//             iter: self.current.iter(),
-//         }
-//     }
-// }
-
-// impl<'a> Iterator for AdjIter<'a> {
-//     type Item = &'a Coord;
-//     fn next(&mut self) -> Option<Self::Item> {
-//         self.iter.next()
-//     }
-// }
-
-// impl<'a> IntoIterator for &'a PositionList {
-//     type Item = Coord;
-//     type IntoIter = &'a AdjacencyIterator;
-
-//     fn into_iter(self) -> Self::IntoIter {
-//         AdjacencyIterator { current: self.head }
-//     }
-// }
 
 impl AdjacentPositionList {
     fn get(&self, xy: &Coord) -> Option<&PositionList> {
