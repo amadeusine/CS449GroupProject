@@ -45,7 +45,7 @@ type Position = Option<Rc<RefCell<PositionNode>>>;
 pub struct AdjacentPositionList(HashMap<Coord, PositionList>);
 
 #[derive(Debug, Clone, PartialEq, PartialOrd)]
-struct PositionNode {
+pub struct PositionNode {
     data: Coord,
     next: Position,
 }
@@ -196,6 +196,11 @@ impl PositionStatus {
     fn occupied(&self) -> bool {
         self.0
     }
+
+    fn player(&self) -> Option<Player> {
+        self.1
+    }
+
     fn as_tuple(&self) -> (bool, Option<Player>) {
         (self.0, self.1)
     }
@@ -274,15 +279,19 @@ impl PositionList {
 
 pub struct AdjacencyIterator {
     current: Position,
+    index: usize,
 }
 impl AdjacencyIterator {
     fn new(start: Position) -> AdjacencyIterator {
-        AdjacencyIterator { current: start }
+        AdjacencyIterator {
+            current: start,
+            index: 0,
+        }
     }
 }
 
 impl Iterator for AdjacencyIterator {
-    type Item = Coord;
+    type Item = PositionNode;
 
     fn next(&mut self) -> Option<Self::Item> {
         let curr = &self.current;
@@ -290,15 +299,27 @@ impl Iterator for AdjacencyIterator {
         self.current = match curr {
             Some(ref curr) => {
                 let curr = curr.borrow();
-                result = Some(curr.data.clone());
-
+                result = Some(curr.clone());
                 curr.next.clone()
             }
             _ => None,
         };
+
         result
     }
 }
+
+// impl<'a> IntoIterator for &'a PositionList {
+//     type Item = &'a Position;
+//     type IntoIter = AdjacencyIterator;
+
+//     fn into_iter(self) -> Self::IntoIter {
+//         AdjacencyIterator {
+//             current: self.head,
+//             index: 0,
+//         }
+//     }
+// }
 
 struct AdjIter<'a> {
     iter: ::std::option::Iter<'a, Position>,
@@ -519,6 +540,7 @@ impl GameState {
     fn set_switch(&mut self, b: bool) {
         self.switch_move = b;
     }
+
     fn find_mills(&mut self) {
         let mut p1_positions: Vec<Coord> = vec![];
         let mut p2_positions: Vec<Coord> = vec![];
@@ -532,6 +554,10 @@ impl GameState {
                 }
             }
         }
+    }
+
+    fn get_mills(&self) -> Vec<&Mill> {
+        unimplemented!()
     }
 }
 
@@ -662,9 +688,14 @@ impl Manager {
             self.inc_player_pieces_set(curr_player);
         }
 
+        // TODO: New mill => ability to take an attack immediately after, w/o changing turns.
+        if self.is_switch() {
+            // && does not have a new mill ^^^ (??)
+            self.set_switch(false);
+        }
+
         self.set_position(*xy, *curr_player);
         // TODO: Should we check for new mills here?
-        // TODO: New mill => ability to take an attack immediately after, w/o changing turns.
         // TODO: set_actionresult
     }
 
@@ -676,7 +707,7 @@ impl Manager {
         unimplemented!()
     }
 
-    fn has_mill(&mut self) -> bool {
+    fn has_mill(&self, attacker: &Player) -> bool {
         unimplemented!()
     }
 
@@ -928,5 +959,34 @@ mod base_tests {
             Coord::from_str("G7")
         );
     }
+
+    #[test]
+    fn test_adjacency_intoiter() {
+        use super::{
+            AdjacencyIterator, AdjacentPositionList, Coord, Position, PositionList, PositionNode,
+        };
+
+        let apl = AdjacentPositionList::default();
+
+        let a1_ls = apl.get(&Coord::from_str("A1")).unwrap();
+
+        println!("a1_ls: {:#?}", a1_ls);
+        let itr = a1_ls.head.iter();
+
+        println!("itr: {:#?}", itr);
+        for i in itr {
+            println!("i in itr: {:#?}", i)
+        }
+
+        let a1_ls = apl.get(&Coord::from_str("A1")).unwrap();
+        let itr = AdjacencyIterator::new(a1_ls.head.clone());
+
+        for i in itr {
+            println!("AdjacencyIterator i: {:#?}", i);
+        }
+
+        // let x = a1_ls;
+
+        // let a1_ls = apl.get(&Coord::from_str("A1")).unwrap();
     }
 }
