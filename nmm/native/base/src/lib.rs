@@ -51,7 +51,7 @@ pub struct PositionNode {
 }
 
 #[derive(Debug, Clone, PartialEq, PartialOrd)]
-struct PositionList {
+pub struct PositionList {
     head: Position,
     tail: Position,
     pub length: u64,
@@ -99,6 +99,7 @@ pub struct GameState {
     handle: Handle,
     trigger: Trigger,
     board: Board,
+    adj_positions: AdjacentPositionList,
     mills: Vec<Mill>,
     p1_count: (u32, u32),
     p2_count: (u32, u32),
@@ -314,6 +315,15 @@ impl IntoIterator for PositionList {
     }
 }
 
+impl<'a> IntoIterator for &'a AdjacentPositionList {
+    type Item = (&'a Coord, &'a PositionList);
+    type IntoIter = ::std::collections::hash_map::Iter<'a, Coord, PositionList>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.0.iter()
+    }
+}
+
 impl AdjacentPositionList {
     fn get(&self, xy: &Coord) -> Option<&PositionList> {
         match &self.0.get(xy) {
@@ -321,10 +331,6 @@ impl AdjacentPositionList {
             None => None,
         }
     }
-
-    // fn find_adjacents(&self, xy: &Coord) -> Vec<Coord> {
-
-    // }
 }
 
 impl Default for AdjacentPositionList {
@@ -461,6 +467,7 @@ impl GameState {
             handle: Handle::Ok,
             trigger: Trigger::None,
             board: Board::default(),
+            adj_positions: AdjacentPositionList::default(),
             mills: vec![],
             p1_count: (0, 9),
             p2_count: (0, 9),
@@ -518,8 +525,23 @@ impl GameState {
         }
     }
 
-    fn get_mills(&self) -> Vec<&Mill> {
-        unimplemented!()
+    fn update_mills(&self, p1: Vec<Coord>, p2: Vec<Coord>) {
+        let mut p1_mill_candidates: Vec<Coord> = vec![];
+        let mut p2_mill_candidates: Vec<Coord> = vec![];
+        let mut mill_idx = 0;
+
+        for p1_xy in &p1 {
+            for (adj_xy, ls) in &self.adj_positions {
+                if *p1_xy == *adj_xy {
+                    for adjacent in ls.clone() {
+                        if p1.contains(&adjacent.data) && adjacent.data != *p1_xy {
+                            mill_idx += 1;
+                            p1_mill_candidates.push(adjacent.data.clone());
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -907,7 +929,6 @@ mod base_tests {
 
         let apl = AdjacentPositionList::default();
 
-        // let a1_list = apl.0.get(&Coord::from_str("A1")).unwrap();
         let a1_list = apl.get(&Coord::from_str("A1")).unwrap();
 
         let g7_list = apl.get(&Coord::from_str("G7")).unwrap();
@@ -923,32 +944,21 @@ mod base_tests {
     }
 
     #[test]
-    fn test_adjacency_intoiter() {
+    fn test_AdjPosList_PosList_iterators() {
         use super::{
             AdjacencyIterator, AdjacentPositionList, Coord, Position, PositionList, PositionNode,
         };
 
         let apl = AdjacentPositionList::default();
 
-        let a1_ls = apl.get(&Coord::from_str("A1")).unwrap();
-
-        println!("a1_ls: {:#?}", a1_ls);
-        let itr = a1_ls.head.iter();
-
-        println!("itr: {:#?}", itr);
-        for i in itr {
-            println!("i in itr: {:#?}", i)
+        let a1 = Coord::from_str("A1");
+        for (xy, pos) in &apl {
+            if *xy == a1 {
+                assert_eq!(
+                    pos.clone().into_iter().next().unwrap().data,
+                    Coord::from_str("A1")
+                )
+            }
         }
-
-        let a1_ls = apl.get(&Coord::from_str("A1")).unwrap();
-        let itr = AdjacencyIterator::new(a1_ls.head.clone());
-
-        for i in itr {
-            println!("AdjacencyIterator i: {:#?}", i);
-        }
-
-        // let x = a1_ls;
-
-        // let a1_ls = apl.get(&Coord::from_str("A1")).unwrap();
     }
 }
