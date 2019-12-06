@@ -99,9 +99,10 @@ pub enum Handle {
 
 #[derive(Debug, Clone, Copy, PartialOrd, PartialEq, Display)]
 pub enum PollError {
-    CantAttack,
+    CantAttackMill,
     InvalidPosition,
     NotPlayersTurn,
+    NoMillForAttack,
     AttackingSelf,
 }
 
@@ -458,13 +459,15 @@ impl MillMap {
     }
 }
 
+impl Mill {
+    fn contains(&self, xy: &Coord) -> bool {
+        self.pieces.contains(xy)
+    }
+}
+
 impl Board {
     pub fn new() -> Self {
         Board::default()
-    }
-
-    fn update(&mut self, k: Coord, v: PositionStatus) {
-        self.0.insert(k, v);
     }
 
     pub fn len(&self) -> u32 {
@@ -474,8 +477,8 @@ impl Board {
     pub fn get(&self, xy: &Coord) -> Option<&PositionStatus> {
         self.0.get(xy)
     }
-    pub fn set(&mut self, xy: Coord, player: Player) -> Option<PositionStatus> {
-        self.0.insert(xy, PositionStatus::from(player))
+    pub fn set(&mut self, xy: Coord, player: Player) {
+        self.0.insert(xy, PositionStatus::from(player));
     }
 
     fn unset(&mut self, xy: &Coord) {
@@ -608,21 +611,6 @@ impl GameState {
         self.board.clone()
     }
 
-    fn get_player_pieces(&self) -> ((Player, u32), (Player, u32)) {
-        let mut p1 = 0;
-        let mut p2 = 0;
-
-        for (_, pos) in (&self.board).into_iter() {
-            if pos.occupied() {
-                match pos.1.as_ref() {
-                    Some(Player::PlayerOne) => p1 += 1,
-                    Some(Player::PlayerTwo) => p2 += 1,
-                    None => continue,
-                }
-            }
-        }
-
-        ((Player::PlayerOne, p1), (Player::PlayerTwo, p2))
     }
 
     fn set_switch(&mut self, b: bool) {
@@ -869,8 +857,8 @@ impl Manager {
         self.state.board.get(xy)
     }
 
-    fn set_position(&mut self, xy: Coord, player: Player) -> Option<PositionStatus> {
-        self.state.board.set(xy, player)
+    fn set_position(&mut self, xy: Coord, player: Player) {
+        self.state.board.set(xy, player);
     }
 
     fn unset_position(&mut self, xy: &Coord) {
@@ -1001,28 +989,6 @@ mod base_tests {
     }
 
     #[test]
-    fn test_get_player_pieces() {
-        use super::{Board, GameState};
-        let gs = GameState::new();
-
-        let ((p1, p1_pieces), (p2, p2_pieces)) = gs.get_player_pieces();
-        assert_eq!(p1_pieces, 0);
-        assert_eq!(p2_pieces, 0);
-    }
-
-    #[test]
-    fn test_update_board() {
-        use super::{Board, Coord, GameOpts, Manager, Player, PositionStatus};
-
-        let mut mngr = Manager::new();
-        mngr.set_position(Coord::from_str("A1"), Player::PlayerOne);
-        assert_eq!(
-            Some(&PositionStatus(true, Some(Player::PlayerOne))),
-            mngr.get_position(&Coord::from_str("A1"))
-        )
-    }
-
-    #[test]
     fn test_basic_validate() {
         use super::{Coord, GameOpts, GameState, Manager, Player, PositionStatus};
 
@@ -1052,8 +1018,8 @@ mod base_tests {
     }
 
     #[test]
-    fn test_unset_position() {
-        use super::{Coord, GameState, Manager, Player, PositionStatus};
+    fn test_set_position() {
+        use super::{Coord, Manager, Player, PositionStatus};
 
         let mut mgr = Manager::new();
         mgr.set_position(Coord::from_str("A1"), Player::PlayerOne);
