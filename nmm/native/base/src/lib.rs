@@ -725,8 +725,6 @@ impl Manager {
     }
 
     pub fn poll(&mut self, opts: GameOpts) -> (Handle, Trigger, Board) {
-        // Grabbing this in case of failed poll operation to return.
-        let prev_board = self.get_board();
         // Get what we need out of the GameOpts struct.
         let (move_coord, curr_player) = self.setup(&opts);
 
@@ -734,6 +732,8 @@ impl Manager {
         self.validate(&move_coord, &curr_player);
         // TODO: generate action result, whether in validate, a method called within validate, etc
         // TODO: Add action result to history after deciding where to generate it
+        self.set_result();
+        self.add_result_to_history(&curr_player, &move_coord);
         self.get_curr_state()
     }
 
@@ -801,10 +801,19 @@ impl Manager {
         }
     }
 
+    fn add_result_to_history(&mut self, player: &Player, coord: &Coord) {
+        self.history.push(ActionResult {
+            sender: *player,
+            board: self.get_board(),
+            position: *coord,
+            trigger: self.state.get_trigger(),
+            handle: self.state.get_handle(),
+        })
+    }
+
     fn move_out(&mut self, xy: &Coord, curr_player: &Player) {
         self.unset_position(xy);
         self.set_switch(true);
-        // TODO: set_actionresult again
     }
 
     fn move_into(&mut self, xy: &Coord, curr_player: &Player) {
