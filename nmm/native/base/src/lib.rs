@@ -378,6 +378,21 @@ impl AdjacentPositionList {
             None => None,
         }
     }
+
+    fn is_adjacent(&self, positions: &Vec<Coord>, player_move: &Coord) -> bool {
+        // please forgive me, i know this is not how one would write this.
+        for (xy, pl) in self.into_iter() {
+            if positions.contains(xy) {
+                // pl.into_iter().any(|node| node.data == *player_move)
+                for node in pl.into_iter() {
+                    if node.data == *player_move {
+                        return true;
+                    }
+                }
+            }
+        }
+        false
+    }
 }
 
 impl Default for AdjacentPositionList {
@@ -619,6 +634,18 @@ impl GameState {
         self.switch_move = b;
     }
 
+    fn get_player_positions(&self, player: &Player) -> Vec<Coord> {
+        let mut positions = vec![];
+        for (xy, pos) in &self.board {
+            match (*pos).as_tuple() {
+                (true, Some(p)) if p == player => positions.push(*xy),
+                (true, _) => panic!("matched PositionStatus true with None in find_mills"),
+                (false, _) => continue,
+            }
+        }
+        positions
+    }
+
     fn update_mills(&mut self) {
         let mut p1_positions: Vec<Coord> = vec![];
         let mut p1_mills = vec![];
@@ -762,7 +789,7 @@ impl Manager {
             Some(p) => match p.as_tuple() {
                 (true, Some(_p)) if _p == *curr_player && self.is_switch()
                     => self.failed_poll(PollError::AttackingSelf),
-                (true, Some(_p)) if _p == *curr_player => self.move_out(move_coord, curr_player),
+                (true, Some(_p)) if _p == *curr_player => self.move_out(move_coord),
                 (true, Some(_p)) => self.move_attack(move_coord, curr_player),
                 (true, _) => panic!(
                     "Invalid game state: PositionStatus of (true, None) matched in fn validate"
@@ -811,13 +838,14 @@ impl Manager {
         })
     }
 
-    fn move_out(&mut self, xy: &Coord, curr_player: &Player) {
+    fn move_out(&mut self, xy: &Coord) {
         self.unset_position(xy);
         self.set_switch(true);
     }
 
     fn move_into(&mut self, xy: &Coord, curr_player: &Player) {
         let prev_trig = self.get_prev_trigger();
+
         if (prev_trig == Trigger::None || prev_trig == Trigger::Placement)
             && self.player_pieces_set(curr_player) < 9
         {
@@ -825,22 +853,22 @@ impl Manager {
         }
 
         let prev_mills = self.get_player_mills(curr_player);
-        self.set_position(*xy, *curr_player);
-        self.update_mills();
-        let updated_mills = self.get_player_mills(curr_player);
 
-        // NOTE: New mill => ability to take an attack immediately after, w/o changing turns.
-        // Current solution: compare previous mills to mills after setting piece.
-        // If not the same AND <= old, then a new mill was not formed if my logic about gameboard
-        // state is right.
-        if self.is_switch()
-            && prev_mills != updated_mills
-            && updated_mills.len() <= prev_mills.len()
+        if self.get_prev_trigger() == Trigger::Flying && self.player_pieces_left(curr_player) < 4
+            || self.can_place_piece(curr_player, xy)
         {
-            // && does not have a new mill ^^^ (??)
-            self.set_switch(false);
+            self.set_position(*xy, *curr_player);
+            self.update_mills();
+            let updated_mills = self.get_player_mills(curr_player);
+            if self.is_switch()
+                && prev_mills != updated_mills
+                && updated_mills.len() <= prev_mills.len()
+            {
+                self.set_switch(false);
+            }
+        } else {
+            self.failed_poll(PollError::InvalidPosition)
         }
-        // TODO: set_actionresult
     }
 
     fn move_attack(&mut self, xy: &Coord, curr_player: &Player) {
@@ -860,6 +888,16 @@ impl Manager {
 
     fn get_player_mills(&self, player: &Player) -> Vec<Mill> {
         self.state.player_mills(player)
+    }
+
+    fn can_place_piece(&mut self, player: &Player, player_move: &Coord) -> bool {
+        self.state
+            .adj_positions
+            .is_adjacent(&self.player_positions(player), player_move)
+    }
+
+    fn player_positions(&self, player: &Player) -> Vec<Coord> {
+        self.player_positions(player)
     }
 
     fn can_attack(&mut self, xy: &Coord, attacker: &Player) -> Option<PollError> {
@@ -938,6 +976,13 @@ impl Manager {
         match player {
             &Player::PlayerOne => self.state.p1_count.0,
             &Player::PlayerTwo => self.state.p2_count.0,
+        }
+    }
+
+    fn player_pieces_left(&self, player: &Player) -> u32 {
+        match player {
+            &Player::PlayerOne => self.state.p1_count.1,
+            &Player::PlayerTwo => self.state.p2_count.1,
         }
     }
 
@@ -1117,7 +1162,7 @@ mod base_tests {
         let mut mgr = Manager::new();
         mgr.move_into(&Coord::from_str("A1"), &Player::PlayerOne);
 
-        mgr.move_out(&Coord::from_str("A1"), &Player::PlayerOne);
+        mgr.move_out(&Coord::from_str("A1"));
         assert_eq!(
             mgr.get_position(&Coord::from_str("A1")),
             Some(&PositionStatus::new())
