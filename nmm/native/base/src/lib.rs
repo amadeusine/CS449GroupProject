@@ -98,6 +98,14 @@ pub enum Handle {
 }
 
 #[derive(Debug, Clone, Copy, PartialOrd, PartialEq, Display)]
+pub enum PollError {
+    CantAttack,
+    InvalidPosition,
+    NotPlayersTurn,
+    AttackingSelf,
+}
+
+#[derive(Debug, Clone, Copy, PartialOrd, PartialEq, Display)]
 pub enum Trigger {
     None,
     Placement,
@@ -137,9 +145,10 @@ pub struct GameOpts {
     position: Option<Coord>,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 struct ActionResult {
     sender: Player,
+    board: Board,
     position: Coord,
     // Just want to get this going, will impl later.
     trigger: Trigger,
@@ -543,9 +552,16 @@ impl Default for Board {
 }
 
 impl ActionResult {
-    fn new(sender: Player, position: Coord, handle: Handle, trigger: Trigger) -> Self {
+    fn new(
+        sender: Player,
+        board: Board,
+        position: Coord,
+        handle: Handle,
+        trigger: Trigger,
+    ) -> Self {
         ActionResult {
             sender: sender,
+            board: board,
             position: position,
             handle: handle,
             trigger: trigger,
@@ -573,6 +589,11 @@ impl GameState {
             p2_count: (0, 9),
             switch_move: false,
         }
+    }
+
+    fn set_state(&mut self, handle: Handle, trigger: Trigger) {
+        self.handle = handle;
+        self.trigger = trigger;
     }
 
     fn get_handle(&self) -> Handle {
@@ -723,7 +744,7 @@ impl Manager {
         self.validate(&move_coord, &curr_player);
         // TODO: generate action result, whether in validate, a method called within validate, etc
         // TODO: Add action result to history after deciding where to generate it
-        (Handle::Ok, Trigger::None, Board::default())
+        self.get_curr_state()
     }
 
     fn setup(&mut self, opts: &GameOpts) -> (Coord, Player) {
@@ -742,7 +763,9 @@ impl Manager {
     fn validate(&mut self, move_coord: &Coord, curr_player: &Player) {
         if self.is_switch() && Some(*curr_player) != self.get_prev_player() {
             // TODO: Generate unsuccessful poll game results
-            unimplemented!()
+            self.failed_poll(PollError::NotPlayersTurn);
+            // Leave
+            return;
         }
 
         match self.get_position(move_coord) {
@@ -759,10 +782,18 @@ impl Manager {
             },
             None => panic!("Invalid game state: `position` value that does not exist matched in fn `validate`")
         };
-        self.update_board(&curr_player, &move_coord);
     }
 
-    fn failed_poll(&self) -> (Handle, Trigger, Board) {
+    fn failed_poll(&mut self, cause: PollError) {
+        match cause {
+            // TODO: Integrate error type into ActionResult/Returned values to exported module?
+            // PollError::AttackingSelf => ,
+            // PollError::CantAttack => ,
+            // PollError::InvalidPosition => ,
+            // PollError::NotPlayersTurn => ,
+            _ => self.state.set_state(Handle::Err, self.get_prev_trigger()),
+        }
+    }
         unimplemented!()
     }
 
