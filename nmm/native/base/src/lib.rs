@@ -76,17 +76,10 @@ pub struct PositionList {
     pub length: u64,
 }
 
-// #[derive(Debug, Clone, PartialEq, PartialOrd)]
-// pub struct Position {
-//     position: Coord,
-//     peers: Vec<AdjacentPosition>,
-//     occupied: Option<Player>,
-// }
-
 #[derive(Debug, Clone, PartialEq, PartialOrd)]
 struct Mill {
-    Owner: Player,
-    Pieces: [Coord; 3],
+    owner: Player,
+    pieces: [Coord; 3],
 }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -597,10 +590,8 @@ impl GameState {
     fn get_player_pieces(&self) -> ((Player, u32), (Player, u32)) {
         let mut p1 = 0;
         let mut p2 = 0;
-        // I don't know why this works but
-        // for (_, pos) in &self.board.into_iter() doesn't. Should ask someone abou this.
-        let board = &self.board;
-        for (_, pos) in board.into_iter() {
+
+        for (_, pos) in (&self.board).into_iter() {
             if pos.occupied() {
                 match pos.1.as_ref() {
                     Some(Player::PlayerOne) => p1 += 1,
@@ -634,16 +625,16 @@ impl GameState {
         if p1_positions.len() > 2 {
             for mill in self.mills.detect_mills(&p1_positions) {
                 p1_mills.push(Mill {
-                    Owner: Player::PlayerOne,
-                    Pieces: mill,
+                    owner: Player::PlayerOne,
+                    pieces: mill,
                 })
             }
         }
         if p2_positions.len() > 2 {
             for mill in self.mills.detect_mills(&p2_positions) {
                 p2_mills.push(Mill {
-                    Owner: Player::PlayerOne,
-                    Pieces: mill,
+                    owner: Player::PlayerOne,
+                    pieces: mill,
                 })
             }
         }
