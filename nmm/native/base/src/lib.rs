@@ -643,6 +643,14 @@ impl GameState {
         self.curr_mills.clear();
         self.curr_mills.append(&mut p1_mills);
     }
+
+    fn player_mills(&self, player: &Player) -> Vec<Mill> {
+        self.curr_mills
+            .clone()
+            .into_iter()
+            .filter(|mill| mill.owner == *player)
+            .collect()
+    }
 }
 
 impl GameOpts {
@@ -772,14 +780,22 @@ impl Manager {
             self.inc_player_pieces_set(curr_player);
         }
 
-        // TODO: New mill => ability to take an attack immediately after, w/o changing turns.
-        if self.is_switch() {
+        let prev_mills = self.get_player_mills(curr_player);
+
+        self.set_position(*xy, *curr_player);
+
+        let updated_mills = self.get_player_mills(curr_player);
+        // NOTE: New mill => ability to take an attack immediately after, w/o changing turns.
+        // Current solution: compare previous mills to mills after setting piece.
+        // If not the same AND <= old, then a new mill was not formed if my logic about gameboard
+        // state is right.
+        if self.is_switch()
+            && prev_mills != updated_mills
+            && updated_mills.len() <= prev_mills.len()
+        {
             // && does not have a new mill ^^^ (??)
             self.set_switch(false);
         }
-
-        self.set_position(*xy, *curr_player);
-        // TODO: Should we check for new mills here?
         // TODO: set_actionresult
     }
 
@@ -787,8 +803,12 @@ impl Manager {
         unimplemented!()
     }
 
-    fn find_mills(&mut self) {
-        unimplemented!()
+    fn update_mills(&mut self) {
+        self.state.update_mills()
+    }
+
+    fn get_player_mills(&self, player: &Player) -> Vec<Mill> {
+        self.state.player_mills(player)
     }
 
     fn has_mill(&self, attacker: &Player) -> bool {
