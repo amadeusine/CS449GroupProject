@@ -4,7 +4,9 @@
 // ToString Needs to be in scope, do not believe the linter's lies.
 use std::string::ToString;
 use std::{cell::RefCell, collections::HashMap, rc::Rc};
-use strum_macros::Display;
+use strum_macros::{AsRefStr, Display};
+
+use enum_map::{enum_map, Enum, EnumMap};
 
 mod util;
 
@@ -14,7 +16,7 @@ pub enum Player {
     PlayerTwo,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Hash, Eq, Display)]
+#[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Hash, Eq, Display, Enum)]
 enum XCoord {
     A,
     B,
@@ -25,7 +27,7 @@ enum XCoord {
     G,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Hash, Eq, Display)]
+#[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Hash, Eq, Display, Enum)]
 enum YCoord {
     One = 1,
     Two = 2,
@@ -34,6 +36,23 @@ enum YCoord {
     Five = 5,
     Six = 6,
     Seven = 7,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Display, Enum, AsRefStr)]
+enum MillXY {
+    A1,
+    A4,
+    A7,
+    B2,
+    B6,
+    C3,
+    C5,
+    D1,
+    D5,
+    E3,
+    E4,
+    F2,
+    G1,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Hash, Eq)]
@@ -67,11 +86,14 @@ pub struct PositionList {
 #[derive(Debug, Clone, PartialEq, PartialOrd)]
 struct Mill {
     Owner: Player,
-    Pieces: (Position, Position, Position),
+    Pieces: [Coord; 3],
 }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct PositionStatus(bool, Option<Player>);
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct MillMap(EnumMap<MillXY, ([Coord; 3], Option<[Coord; 3]>)>);
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Board(HashMap<Coord, PositionStatus>);
@@ -235,6 +257,27 @@ impl Coord {
     }
 }
 
+impl MillXY {
+    fn from_coord(c: Coord) -> MillXY {
+        match c {
+            Coord(XCoord::A, YCoord::One) => MillXY::A1,
+            Coord(XCoord::A, YCoord::Four) => MillXY::A4,
+            Coord(XCoord::A, YCoord::Seven) => MillXY::A7,
+            Coord(XCoord::B, YCoord::Two) => MillXY::B2,
+            Coord(XCoord::B, YCoord::Six) => MillXY::B6,
+            Coord(XCoord::C, YCoord::Three) => MillXY::C3,
+            Coord(XCoord::C, YCoord::Five) => MillXY::C5,
+            Coord(XCoord::D, YCoord::One) => MillXY::D1,
+            Coord(XCoord::D, YCoord::Five) => MillXY::D5,
+            Coord(XCoord::E, YCoord::Three) => MillXY::E3,
+            Coord(XCoord::E, YCoord::Four) => MillXY::E4,
+            Coord(XCoord::F, YCoord::Two) => MillXY::F2,
+            Coord(XCoord::G, YCoord::One) => MillXY::G1,
+            _ => panic!("Invalid Coord passed to MillXY::from_coord()"),
+        }
+    }
+}
+
 impl PositionNode {
     fn new(xy: Coord, next: Position) -> Rc<RefCell<PositionNode>> {
         Rc::new(RefCell::new(PositionNode {
@@ -350,6 +393,11 @@ impl Default for AdjacentPositionList {
     }
 }
 
+impl MillXY {
+    fn as_coord(&self) -> Coord {
+        Coord::from_str(self.as_ref())
+    }
+}
 impl Board {
     pub fn new() -> Self {
         Board::default()
