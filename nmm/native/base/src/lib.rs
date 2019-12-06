@@ -1061,6 +1061,15 @@ mod base_tests {
             mgr.get_position(&Coord::from_str("A1")),
             Some(&PositionStatus::from(Player::PlayerOne))
         );
+    }
+
+    #[test]
+    fn test_unset_position() {
+        use super::{Coord, GameState, Manager, Player, PositionStatus};
+
+        let mut mgr = Manager::new();
+        mgr.set_position(Coord::from_str("A1"), Player::PlayerOne);
+
         mgr.unset_position(&Coord::from_str("A1"));
         assert_eq!(
             mgr.get_position(&Coord::from_str("A1")),
@@ -1069,8 +1078,38 @@ mod base_tests {
     }
 
     #[test]
+    fn test_move_into_position_new_board() {
+        use super::{Coord, Manager, Player, PositionStatus};
+
+        let mut mgr = Manager::new();
+        mgr.move_into(&Coord::from_str("A1"), &Player::PlayerOne);
+
+        assert_eq!(
+            mgr.get_position(&Coord::from_str("A1")),
+            Some(&PositionStatus::from(Player::PlayerOne))
+        )
+    }
+
+    #[test]
+    fn test_move_out_position() {
+        use super::{Coord, Manager, Player, PositionStatus};
+
+        let mut mgr = Manager::new();
+        mgr.move_into(&Coord::from_str("A1"), &Player::PlayerOne);
+
+        mgr.move_out(&Coord::from_str("A1"), &Player::PlayerOne);
+        assert_eq!(
+            mgr.get_position(&Coord::from_str("A1")),
+            Some(&PositionStatus::new())
+        )
+    }
+
+    #[test]
     fn test_incomplete_switch() {
-        // TODO test where switch = true but it's a different player than previous turn.
+        use super::{Coord, Manager, Player, PositionStatus};
+
+        let mut mgr = Manager::new();
+        mgr.move_into(&Coord::from_str("A1"), &Player::PlayerOne);
     }
 
     #[test]
@@ -1111,5 +1150,75 @@ mod base_tests {
                 )
             }
         }
+    }
+
+    #[test]
+    fn test_detect_mills_col() {
+        use super::{Coord, MillMap};
+
+        let player_pos_col = vec![
+            Coord::from_str("A1"),
+            Coord::from_str("A4"),
+            Coord::from_str("A7"),
+        ];
+
+        let mill_map = MillMap::default();
+
+        assert_eq!(
+            mill_map.detect_mills(&player_pos_col),
+            vec![[
+                Coord::from_str("A1"),
+                Coord::from_str("A4"),
+                Coord::from_str("A7"),
+            ]]
+        )
+    }
+
+    #[test]
+    fn test_detect_mills_col_none() {
+        use super::{Coord, MillMap};
+
+        let player_pos_col = vec![Coord::from_str("A1"), Coord::from_str("A7")];
+
+        let mill_map = MillMap::default();
+
+        assert_eq!(
+            mill_map.detect_mills(&player_pos_col),
+            Vec::<[Coord; 3]>::new()
+        )
+    }
+
+    #[test]
+    fn test_detect_mills_row() {
+        use super::{Coord, MillMap};
+
+        let player_pos_row = vec![
+            Coord::from_str("A1"),
+            Coord::from_str("D1"),
+            Coord::from_str("G1"),
+        ];
+        let mill_map = MillMap::default();
+
+        assert_eq!(
+            mill_map.detect_mills(&player_pos_row),
+            vec![[
+                Coord::from_str("A1"),
+                Coord::from_str("D1"),
+                Coord::from_str("G1"),
+            ]]
+        )
+    }
+
+    #[test]
+    fn test_detect_mills_row_none() {
+        use super::{Coord, MillMap};
+
+        let player_pos_row = vec![Coord::from_str("A1"), Coord::from_str("G1")];
+        let mill_map = MillMap::default();
+
+        assert_eq!(
+            mill_map.detect_mills(&player_pos_row),
+            Vec::<[Coord; 3]>::new()
+        )
     }
 }
