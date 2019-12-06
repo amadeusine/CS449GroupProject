@@ -611,6 +611,8 @@ impl GameState {
         self.board.clone()
     }
 
+    fn get_player_counts(&self) -> ((u32, u32), (u32, u32)) {
+        (self.p1_count, self.p2_count)
     }
 
     fn set_switch(&mut self, b: bool) {
@@ -758,6 +760,8 @@ impl Manager {
 
         match self.get_position(move_coord) {
             Some(p) => match p.as_tuple() {
+                (true, Some(_p)) if _p == *curr_player && self.is_switch()
+                    => self.failed_poll(PollError::AttackingSelf),
                 (true, Some(_p)) if _p == *curr_player => self.move_out(move_coord, curr_player),
                 (true, Some(_p)) => self.move_attack(move_coord, curr_player),
                 (true, _) => panic!(
@@ -776,13 +780,25 @@ impl Manager {
         match cause {
             // TODO: Integrate error type into ActionResult/Returned values to exported module?
             // PollError::AttackingSelf => ,
-            // PollError::CantAttack => ,
             // PollError::InvalidPosition => ,
             // PollError::NotPlayersTurn => ,
             _ => self.state.set_state(Handle::Err, self.get_prev_trigger()),
         }
     }
-        unimplemented!()
+
+    fn set_result(&mut self) {
+        let ((p1_set, p1_count), (p2_set, p2_count)) = self.get_player_counts();
+        if p1_count < 3 {
+            self.state.set_state(Handle::Ok, Trigger::Lose)
+        } else if p2_count < 3 {
+            self.state.set_state(Handle::Ok, Trigger::Win)
+        } else if p1_count == 3 || p2_count == 3 {
+            self.state.set_state(Handle::Ok, Trigger::Flying)
+        } else if p1_set == 9 && p2_set == 9 {
+            self.state.set_state(Handle::Ok, Trigger::Elimination)
+        } else {
+            self.state.set_state(Handle::Ok, Trigger::Placement)
+        }
     }
 
     fn move_out(&mut self, xy: &Coord, curr_player: &Player) {
@@ -800,10 +816,10 @@ impl Manager {
         }
 
         let prev_mills = self.get_player_mills(curr_player);
-
         self.set_position(*xy, *curr_player);
-
+        self.update_mills();
         let updated_mills = self.get_player_mills(curr_player);
+
         // NOTE: New mill => ability to take an attack immediately after, w/o changing turns.
         // Current solution: compare previous mills to mills after setting piece.
         // If not the same AND <= old, then a new mill was not formed if my logic about gameboard
@@ -819,7 +835,14 @@ impl Manager {
     }
 
     fn move_attack(&mut self, xy: &Coord, curr_player: &Player) {
-        unimplemented!()
+        match self.can_attack(xy, curr_player) {
+            Some(err) => self.failed_poll(err),
+            None => {
+                self.unset_position(xy);
+                self.dec_player_pieces_given(&self.get_opponent(curr_player));
+                self.set_switch(false);
+            }
+        }
     }
 
     fn update_mills(&mut self) {
@@ -830,15 +853,25 @@ impl Manager {
         self.state.player_mills(player)
     }
 
-    fn has_mill(&self, attacker: &Player) -> bool {
-        unimplemented!()
+    fn can_attack(&mut self, xy: &Coord, attacker: &Player) -> Option<PollError> {
+        if self.get_player_mills(&Player::PlayerOne).len() == 0 {
+            Some(PollError::NoMillForAttack)
+        // self.failed_poll(PollError::NoMillForAttack);
+        // return false;
+        } else if !self.can_eliminate_piece(xy, attacker) {
+            Some(PollError::CantAttackMill)
+        // self.failed_poll(PollError::CantAttackMill)
+        } else {
+            None
+        }
     }
 
-    fn update_board(&mut self, player: &Player, pos: &Coord) {
-        // TODO: Should I move the setter one level up into state instead of reaching all the
-        // way into Board? I hate OOP! This shouldn't be a thing I need to even consider! Why
-        // bundle all this state needlessly! Whatever! Figure out what is less horrificaly ugly!
-        self.state.board.update(*pos, PositionStatus::from(*player))
+    fn can_eliminate_piece(&self, xy: &Coord, attacker: &Player) -> bool {
+        let opp_mills = self.get_player_mills(&self.get_opponent(attacker));
+        let opp_count = self.player_pieces_set(&self.get_opponent(attacker));
+
+        !&opp_mills.iter().any(|m| m.contains(xy))
+            || !&opp_mills.iter().any(|m| m.contains(xy)) && opp_mills.len() == opp_count as usize
     }
 
     pub fn get_curr_state(&self) -> (Handle, Trigger, Board) {
@@ -859,14 +892,23 @@ impl Manager {
 
     fn set_position(&mut self, xy: Coord, player: Player) {
         self.state.board.set(xy, player);
+        self.update_mills();
     }
 
     fn unset_position(&mut self, xy: &Coord) {
-        self.state.board.unset(xy)
+        self.state.board.unset(xy);
+        self.update_mills();
     }
 
     fn get_settings(&self) -> GameOpts {
         self.settings
+    }
+
+    fn get_opponent(&self, player: &Player) -> Player {
+        match player {
+            Player::PlayerOne => Player::PlayerTwo,
+            _ => Player::PlayerOne,
+        }
     }
 
     fn get_prev_trigger(&self) -> Trigger {
@@ -884,11 +926,10 @@ impl Manager {
     }
 
     fn player_pieces_set(&self, player: &Player) -> u32 {
-        let (count, _) = match player {
-            &Player::PlayerOne => self.state.p1_count,
-            &Player::PlayerTwo => self.state.p2_count,
-        };
-        count
+        match player {
+            &Player::PlayerOne => self.state.p1_count.0,
+            &Player::PlayerTwo => self.state.p2_count.0,
+        }
     }
 
     fn inc_player_pieces_set(&mut self, player: &Player) {
@@ -898,11 +939,15 @@ impl Manager {
         };
     }
 
-    fn dec_player_pieces_set(&mut self, player: &Player) {
+    fn dec_player_pieces_given(&mut self, player: &Player) {
         match player {
-            &Player::PlayerOne => self.state.p1_count.0 -= 1,
-            &Player::PlayerTwo => self.state.p2_count.0 -= 1,
+            &Player::PlayerOne => self.state.p1_count.1 -= 1,
+            &Player::PlayerTwo => self.state.p2_count.1 -= 1,
         };
+    }
+
+    fn get_player_counts(&self) -> ((u32, u32), (u32, u32)) {
+        self.state.get_player_counts()
     }
 
     fn set_switch(&mut self, b: bool) {
