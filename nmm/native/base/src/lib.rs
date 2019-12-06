@@ -457,6 +457,44 @@ impl MillMap {
         }
         player_mills
     }
+
+    fn detect_potential_mills(&self, player_pos: &Vec<Coord>) -> Vec<Coord> {
+        let mut move_candidates = vec![];
+
+        for (_, mill) in self.0.iter() {
+            let _ = match mill {
+                (m, Some(opt_m)) => {
+                    let x: Vec<_> = m.iter().filter(|m| player_pos.contains(m)).collect();
+                    if x.len() == 2 {
+                        for _m in m {
+                            if !player_pos.contains(_m) {
+                                move_candidates.push(*_m);
+                            }
+                        }
+                    }
+                    let x: Vec<_> = opt_m.iter().filter(|m| player_pos.contains(m)).collect();
+                    if x.len() == 2 {
+                        for _m in opt_m {
+                            if !player_pos.contains(_m) {
+                                move_candidates.push(*_m);
+                            }
+                        }
+                    }
+                }
+                (m, None) => {
+                    let x: Vec<_> = m.iter().filter(|m| player_pos.contains(m)).collect();
+                    if x.len() == 2 {
+                        for _m in m {
+                            if !player_pos.contains(_m) {
+                                move_candidates.push(*_m);
+                            }
+                        }
+                    }
+                }
+            };
+        }
+        move_candidates
+    }
 }
 
 impl Mill {
@@ -653,6 +691,28 @@ impl GameState {
         p1_mills.append(&mut p2_mills);
         self.curr_mills.clear();
         self.curr_mills.append(&mut p1_mills);
+    }
+
+    fn potential_mills(&self, player: &Player) -> Vec<Coord> {
+        let mut positions: Vec<Coord> = vec![];
+        let mut potent_mills = vec![];
+
+        for (xy, pos) in &self.board {
+            match (*pos).as_tuple() {
+                (true, Some(p)) if p == *player => positions.push(*xy),
+                (true, _) => panic!("matched PositionStatus true with None in find_mills"),
+                (false, _) => continue,
+            }
+        }
+        if positions.len() > 2 {
+            for coord in self.mills.detect_potential_mills(&positions) {
+                match self.board.get(&coord) {
+                    Some(_) => continue,
+                    _ => potent_mills.push(coord),
+                }
+            }
+        }
+        potent_mills
     }
 
     fn player_mills(&self, player: &Player) -> Vec<Mill> {
