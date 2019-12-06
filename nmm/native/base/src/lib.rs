@@ -122,7 +122,8 @@ pub struct GameState {
     trigger: Trigger,
     board: Board,
     adj_positions: AdjacentPositionList,
-    mills: Vec<Mill>,
+    mills: MillMap,
+    curr_mills: Vec<Mill>,
     p1_count: (u32, u32),
     p2_count: (u32, u32),
     switch_move: bool,
@@ -393,11 +394,68 @@ impl Default for AdjacentPositionList {
     }
 }
 
+impl Default for MillMap {
+    #[rustfmt::skip]
+    fn default() -> Self {
+        MillMap(
+            enum_map! {
+            // It doesn't matter what order the mills are inserted in the tuple, but I organize this
+            // nasty declaration with the row mill being first when a MillXY is assoc with 2 mills.
+            // Otherwise, the non-option array is whatever mill a MillXY assoc with, whether row
+            // or col
+            MillXY::A1 => ([Coord::from_str("A1"), Coord::from_str("D1"), Coord::from_str("G1")],
+                           Some([Coord::from_str("A1"), Coord::from_str("A4"), Coord::from_str("A7")])),
+            MillXY::A4 => ([Coord::from_str("A4"), Coord::from_str("B4"), Coord::from_str("C4")], None),
+            MillXY::A7 => ([Coord::from_str("A7"), Coord::from_str("D7"), Coord::from_str("G7")], None),
+            MillXY::B2 => ([Coord::from_str("B2"), Coord::from_str("D2"), Coord::from_str("F2")],
+                           Some([Coord::from_str("B2"), Coord::from_str("B4"), Coord::from_str("B6")])),
+            MillXY::B6 => ([Coord::from_str("B6"), Coord::from_str("D6"), Coord::from_str("F6")], None),
+            MillXY::C3 => ([Coord::from_str("C3"), Coord::from_str("D3"), Coord::from_str("E3")],
+                           Some([Coord::from_str("C3"), Coord::from_str("C4"), Coord::from_str("C5")])),
+            MillXY::C5 => ([Coord::from_str("C5"), Coord::from_str("D5"), Coord::from_str("E5")], None),
+            MillXY::D1 => ([Coord::from_str("D1"), Coord::from_str("D2"), Coord::from_str("D3")], None),
+            MillXY::D5 => ([Coord::from_str("D5"), Coord::from_str("D6"), Coord::from_str("D7")], None),
+            MillXY::E3 => ([Coord::from_str("E3"), Coord::from_str("E4"), Coord::from_str("E5")], None),
+            MillXY::E4 => ([Coord::from_str("E4"), Coord::from_str("F4"), Coord::from_str("G4")], None),
+            MillXY::F2 => ([Coord::from_str("F2"), Coord::from_str("F4"), Coord::from_str("F6")], None),
+            MillXY::G1 => ([Coord::from_str("G1"), Coord::from_str("G4"), Coord::from_str("G7")], None),
+        })
+    }
+}
+
 impl MillXY {
     fn as_coord(&self) -> Coord {
         Coord::from_str(self.as_ref())
     }
 }
+
+impl MillMap {
+    fn detect_mills(&self, player_pos: &Vec<Coord>) -> Vec<[Coord; 3]> {
+        let mut player_mills = vec![];
+
+        for (xy, mills) in self.0.iter() {
+            if player_pos.contains(&Coord::from_str(xy.as_ref())) {
+                let _ = match mills {
+                    (mill, Some(opt_mill)) => {
+                        if mill.iter().all(|c| player_pos.contains(c)) {
+                            player_mills.push(*mill);
+                        }
+                        if opt_mill.iter().all(|c| player_pos.contains(c)) {
+                            player_mills.push(*opt_mill);
+                        }
+                    }
+                    (mill, None) => {
+                        if mill.iter().all(|c| player_pos.contains(c)) {
+                            player_mills.push(*mill);
+                        }
+                    }
+                };
+            }
+        }
+        player_mills
+    }
+}
+
 impl Board {
     pub fn new() -> Self {
         Board::default()
@@ -516,7 +574,8 @@ impl GameState {
             trigger: Trigger::None,
             board: Board::default(),
             adj_positions: AdjacentPositionList::default(),
-            mills: vec![],
+            mills: MillMap::default(),
+            curr_mills: vec![],
             p1_count: (0, 9),
             p2_count: (0, 9),
             switch_move: false,
@@ -558,38 +617,40 @@ impl GameState {
         self.switch_move = b;
     }
 
-    fn find_mills(&mut self) {
+    fn update_mills(&mut self) {
         let mut p1_positions: Vec<Coord> = vec![];
+        let mut p1_mills = vec![];
         let mut p2_positions: Vec<Coord> = vec![];
-        let board = &self.board;
-        for (xy, pos) in board.into_iter() {
-            if pos.occupied() {
-                match pos.player() {
-                    Some(p) if p == Player::PlayerOne => p1_positions.push(*xy),
-                    Some(_) => p2_positions.push(*xy),
-                    _ => panic!("matched PositionStatus true with None in find_mills"),
-                }
+        let mut p2_mills = vec![];
+
+        for (xy, pos) in &self.board {
+            match (*pos).as_tuple() {
+                (true, Some(p)) if p == Player::PlayerOne => p1_positions.push(*xy),
+                (true, Some(_)) => p2_positions.push(*xy),
+                (true, _) => panic!("matched PositionStatus true with None in find_mills"),
+                (false, _) => continue,
             }
         }
-    }
-
-    fn update_mills(&self, p1: Vec<Coord>, p2: Vec<Coord>) {
-        let mut p1_mill_candidates: Vec<Coord> = vec![];
-        let mut p2_mill_candidates: Vec<Coord> = vec![];
-        let mut mill_idx = 0;
-
-        for p1_xy in &p1 {
-            for (adj_xy, ls) in &self.adj_positions {
-                if *p1_xy == *adj_xy {
-                    for adjacent in ls.clone() {
-                        if p1.contains(&adjacent.data) && adjacent.data != *p1_xy {
-                            mill_idx += 1;
-                            p1_mill_candidates.push(adjacent.data.clone());
-                        }
-                    }
-                }
+        if p1_positions.len() > 2 {
+            for mill in self.mills.detect_mills(&p1_positions) {
+                p1_mills.push(Mill {
+                    Owner: Player::PlayerOne,
+                    Pieces: mill,
+                })
             }
         }
+        if p2_positions.len() > 2 {
+            for mill in self.mills.detect_mills(&p2_positions) {
+                p2_mills.push(Mill {
+                    Owner: Player::PlayerOne,
+                    Pieces: mill,
+                })
+            }
+        }
+
+        p1_mills.append(&mut p2_mills);
+        self.curr_mills.clear();
+        self.curr_mills.append(&mut p1_mills);
     }
 }
 
