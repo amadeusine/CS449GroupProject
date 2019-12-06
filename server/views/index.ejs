@@ -1,350 +1,465 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href="/stylesheets/default.css" />
-    <script type="text/javascript" src="/javascripts/board.js"></script>
-    <script id="win.js">
-      const toWords = {
-        1: "one",
-        2: "two",
-        3: "three",
-        4: "four",
-        5: "five",
-        6: "six",
-        7: "seven",
-        8: "eight",
-        9: "nine",
-      };
 
-      const pairs = [
-        ['A1', 'A4'],
-        ['A1', 'D1'],
-        ['A4', 'A7'],
-        ['A4', 'B4'],
-        ['A7', 'D7'],
-        ['B2', 'B4'],
-        ['B2', 'D2'],
-        ['B4', 'C4'],
-        ['B4', 'B6'],
-        ['B6', 'D6'],
-        ['C3', 'C4'],
-        ['C3', 'D3'],
-        ['C4', 'C5'],
-        ['C5', 'D5'],
-        ['D1', 'G1'],
-        ['D1', 'D2'],
-        ['D2', 'F2'],
-        ['D2', 'D3'],
-        ['D3', 'E3'],
-        ['D5', 'E5'],
-        ['D5', 'D6'],
-        ['D6', 'F6'],
-        ['D6', 'D7'],
-        ['D7', 'G7'],
-        ['E3', 'E4'],
-        ['E4', 'F4'],
-        ['E4', 'E5'],
-        ['F2', 'F4'],
-        ['F4', 'G4'],
-        ['F4', 'F6'],
-        ['G1', 'G4'],
-        ['G4', 'G7'],
-      ];
+<head>
+  <title><%= title %></title>
+  <link rel='stylesheet' href="/stylesheets/default.css" />
+  <script type="text/javascript" src="/javascripts/board.js"></script>
+  <script id="win.js">
+    /*const sendPress = (elem) => {
+      fetch(`localhost:3000/logic?sender=${document.getElementById("current-player-color")}&&coord=${elem.id}`, {
+        method: 'GET',
+      }).then(resp => resp.json()).then(body => {
+        alert(body);
+      }).catch(alert);
+    };*/
 
-      const adjacents = {};
+    const toWords = {
+      1: "one",
+      2: "two",
+      3: "three",
+      4: "four",
+      5: "five",
+      6: "six",
+      7: "seven",
+      8: "eight",
+      9: "nine",
+    };
 
-      let board = new Board();
+    const pairs = [
+      ['A1', 'A4'],
+      ['A1', 'D1'],
+      ['A4', 'A7'],
+      ['A4', 'B4'],
+      ['A7', 'D7'],
+      ['B2', 'B4'],
+      ['B2', 'D2'],
+      ['B4', 'C4'],
+      ['B4', 'B6'],
+      ['B6', 'D6'],
+      ['C3', 'C4'],
+      ['C3', 'D3'],
+      ['C4', 'C5'],
+      ['C5', 'D5'],
+      ['D1', 'G1'],
+      ['D1', 'D2'],
+      ['D2', 'F2'],
+      ['D2', 'D3'],
+      ['D3', 'E3'],
+      ['D5', 'E5'],
+      ['D5', 'D6'],
+      ['D6', 'F6'],
+      ['D6', 'D7'],
+      ['D7', 'G7'],
+      ['E3', 'E4'],
+      ['E4', 'F4'],
+      ['E4', 'E5'],
+      ['F2', 'F4'],
+      ['F4', 'G4'],
+      ['F4', 'F6'],
+      ['G1', 'G4'],
+      ['G4', 'G7'],
+    ];
 
-      for (const pos of Object.keys(board.board)) {
-        adjacents[pos] = [];
+    const adjacents = {};
+
+    let board = new Board();
+
+    for (const pos of Object.keys(board.board)) {
+      adjacents[pos] = [];
+    }
+
+    for (const [lhs, rhs] of pairs) {
+      adjacents[lhs].push(rhs);
+      adjacents[rhs].push(lhs);
+    }
+    console.log(adjacents);
+
+    const mills = [];
+    for (const [alpha, num] of Object.keys(adjacents)) {
+      mills.push(Object.keys(adjacents).filter(x => x[0] === alpha && alpha !== 'D'));
+      mills.push(Object.keys(adjacents).filter(x => x[1] === num && num !== '4'));
+    }
+    mills.push(['D1', 'D2', 'D3']);
+    mills.push(['D5', 'D6', 'D7']);
+    mills.push(['A4', 'B4', 'C4']);
+    mills.push(['E4', 'F4', 'G4']);
+    console.log(mills);
+
+    class Window {
+      constructor() {
+        this.numberOfMen = 9;
+        this.piecesLeft = this.numberOfMen * 2;
+        this.playerColors = ['<%=color[0]%>', '<%=color[1]%>'];
+        this.currentState = "placement";
+        this.eliminationContext = { from: "" };
+        this.hasAI = confirm("Do you want to play an AI?");
+      }
+      calcPlayer(offset = undefined) {
+        // index of player (0 or 1)
+        let i = this.piecesLeft + (offset || 0);
+        return i % 2;
       }
 
-      for (const [lhs, rhs] of pairs) {
-        adjacents[lhs].push(rhs);
-        adjacents[rhs].push(lhs);
+      isAI() {
+        return this.hasAI && this.getAIPlayer() === this.getCurrentColor();
       }
-      console.log(adjacents);
 
-      const mills = [];
-      for (const [alpha, num] of Object.keys(adjacents)) {
-        mills.push(Object.keys(adjacents).filter(x => x[0] === alpha && alpha !== 'D'));
-        mills.push(Object.keys(adjacents).filter(x => x[1] === num && num !== '4'));
+      getAIPlayer() {
+        return this.playerColors[this.playerColors.length - 1];
       }
-      mills.push(['D1', 'D2', 'D3']);
-      mills.push(['D5', 'D6', 'D7']);
-      mills.push(['A4', 'B4', 'C4']);
-      mills.push(['E4', 'F4', 'G4']);
-      console.log(mills);
 
-      class Window {
-        constructor() {
-          this.numberOfMen = 9;
-          this.piecesLeft = this.numberOfMen * 2;
-          this.playerColors = ['<%=color[0]%>','<%=color[1]%>'];
-          this.currentState = "placement";
-          this.eliminationContext = { from: "" };
-        }
-        calcPlayer(offset = undefined) {
-          // index of player (0 or 1)
-          let i = this.piecesLeft + (offset || 0);
-          return i % 2;
-        }
+      getCurrentPlayer() {
+        return document.getElementById("current-player-color");
+      }
 
-        getCurrentPlayer() {
-          return document.getElementById("current-player-color");
-        }
+      getCurrentColor() {
+        return this.getCurrentPlayer().style.color;
+      }
 
-        getCurrentColor() {
-          return this.getCurrentPlayer().style.color;
-        }
+      getCurrentPlayerIndexed() {
+        return this.playerColors.indexOf(this.getCurrentColor());
+      }
 
-        triggerElimination() {
-          return this.piecesLeft === 0;
-        }
+      triggerElimination() {
+        return this.piecesLeft === 0;
+      }
 
-        setupElimination() {
-          this.currentState = "elimination";
-          this.piecesLeft = {
-            '<%=color[0]%>': 9,
-            '<%=color[1]%>': 9,
-          };
-          this.isEliminating = false;
-        }
+      setupElimination() {
+        alert("Elimination mode!");
+        this.currentState = "elimination";
+        this.piecesLeft = {
+          '<%=color[0]%>': 9,
+          '<%=color[1]%>': 9,
+        };
+        this.isEliminating = false;
+      }
 
-        triggerFlying() {
-          return this.piecesLeft[this.getCurrentColor()] === 3;
-        }
+      triggerFlying() {
+        return this.piecesLeft[this.getCurrentColor()] === 3;
+      }
 
-        setupFlying() {
-          this.currentState = "flying";
-          // confirm("Now in flying mode...");
-        }
+      setupFlying() {
+        alert("Now in flying mode!");
+        this.currentState = "flying";
+        // confirm("Now in flying mode...");
+      }
 
-        triggerEnd() {
-          return this.piecesLeft[this.getCurrentColor()] === 2;
-        }
+      triggerEnd() {
+        return this.piecesLeft[this.getCurrentColor()] === 2;
+      }
 
-        setupEnd() {
-          this.currentState = "end";
-          this.advancePlayer();
-          document.getElementById("container").innerHTML = `
+      setupEnd() {
+        this.currentState = "end";
+        this.advancePlayer(); this.setAILock();
+        document.getElementById("container").innerHTML = `
           <h style="margin: 0 auto;"> ${this.getCurrentColor()} won! </h><br>
           <button onclick="window.location.href = window.location.href">Restart game?</button><br><br><br><br>
           `;
+      }
+
+      eventPress(pieceElement) {
+        if (this.currentState === "placement") {
+          if (this.triggerElimination()) this.setupElimination();
+          else return this.checkSetup(pieceElement);
+        }
+        if (this.currentState === "elimination") {
+          if (this.triggerFlying()) this.setupFlying();
+          else return this.checkElimination(pieceElement);
+        }
+        if (this.currentState === "flying") {
+          if (this.triggerEnd()) this.setupEnd();
+          else return this.checkFlying(pieceElement);
+        }
+      }
+
+      getNextColor() {
+        const currentColor = this.getCurrentColor();
+        const nextColor = this.playerColors[(this.playerColors.indexOf(currentColor) + 1) % 2];
+        return nextColor;
+      }
+
+      advancePlayer() {
+        const currentPlayer = this.getCurrentPlayer();
+        const nextColor = this.getNextColor();
+        currentPlayer.style.color = nextColor;
+        currentPlayer.innerText = nextColor;
+      }
+
+      checkSetup(pieceElement) {
+
+        let pieceStyle = pieceElement.style;
+        if (!this.isEliminating && (pieceStyle.backgroundColor || !this.piecesLeft)) {
+          return new Error(`Position ${pieceElement.id} is occupied.`);
+        }
+        if (this.isEliminating && pieceStyle.backgroundColor !== this.getNextColor()) {
+          return new Error(`Position ${pieceElement.id} is not open to elimination.`);
+        }
+        let i = this.calcPlayer();
+        if (this.isEliminating) {
+          pieceStyle.backgroundColor = '';
+          this.isEliminating = false;
+          
+        } else {
+          pieceStyle.backgroundColor = this.playerColors[i];
+          this.isEliminating = this.inValidMill(pieceElement.id);
         }
 
-        eventPress(pieceElement) {
-          if (this.currentState === "placement") {
-            if (this.triggerElimination()) this.setupElimination();
-            else return this.checkSetup(pieceElement);
-          }
-          if (this.currentState === "elimination") {
-            if (this.triggerFlying()) this.setupFlying();
-            else return this.checkElimination(pieceElement);
-          }
-          if (this.currentState === "flying") {
-            if (this.triggerEnd()) this.setupEnd();
-            else return this.checkFlying(pieceElement);
-          }
+        if (!this.isEliminating) {
+          this.advancePlayer();
+          this.piecesLeft--;
         }
 
-        getNextColor() {
-          const currentColor = this.getCurrentColor();
-          const nextColor = this.playerColors[(this.playerColors.indexOf(currentColor) + 1) % 2];
-          return nextColor;
-        }
-        
-        advancePlayer() {
-          const currentPlayer = this.getCurrentPlayer();
-          const nextColor = this.getNextColor();
-          currentPlayer.style.color = nextColor;
-          currentPlayer.innerText = nextColor;
-        }
+        if (this.isAI()) {
+          setTimeout(() => {
+            console.log('ai turn');
+            pieceStyle = Array.from(document.getElementsByClassName('board-view-piece')).filter(x => x.style.backgroundColor === (this.isEliminating ? this.getNextColor() :''))[0].style;
+            if (!this.isEliminating && (pieceStyle.backgroundColor || !this.piecesLeft)) {
+              return new Error(`Position ${pieceElement.id} is occupied.`);
+            }
+            if (this.isEliminating && pieceStyle.backgroundColor !== this.getNextColor()) {
+              return new Error(`Position ${pieceElement.id} is not open to elimination.`);
+            }
+            i = this.calcPlayer();
+            if (this.isEliminating) {
+              pieceStyle.backgroundColor = '';
+              this.isEliminating = false;
+              
+            } else {
+              pieceStyle.backgroundColor = this.playerColors[i];
+              this.isEliminating = this.inValidMill(pieceElement.id);
+            }
 
-        checkSetup(pieceElement) {
-          const pieceStyle = pieceElement.style;
-          if (!this.isEliminating && (pieceStyle.backgroundColor || !this.piecesLeft)) {
-            console.log('E');
-            return new Error(`Position ${pieceElement.id} is occupied.`);
-          }
-          if (this.isEliminating && pieceStyle.backgroundColor !== this.getNextColor()) {
-            console.log('Press F');
-            return new Error(`Position ${pieceElement.id} is not open to elimination.`);
-          }
-          const i = this.calcPlayer();
-          if (this.isEliminating) {
-            pieceStyle.backgroundColor = '';
-            this.isEliminating = false;
-          } else {
-            pieceStyle.backgroundColor = this.playerColors[i];
-            this.isEliminating = this.inValidMill(pieceElement.id);
-          }
-
-          if (!this.isEliminating) {
+            if (!this.isEliminating) {
               this.advancePlayer();
               this.piecesLeft--;
-          }
-
-          return pieceStyle.backgroundColor;
-        }
-
-        inValidMill(position) {
-          const relevantMills = mills.filter(m => m.includes(position));
-          console.log(`${relevantMills[0]} == ${relevantMills[1]} is ${relevantMills[0] == relevantMills[1]}`);
-          for (let i of relevantMills) {
-            console.log(i);
-          }
-          console.log('Hmm...', relevantMills
-                  .filter(mill => mill.every(pos =>
-                                                  document.getElementById(pos).style.backgroundColor
-                                                  === this.getCurrentColor()
-                                                  ||
-                                                  (document.getElementById(pos).style.backgroundColor
-                                                    === ""
-                                                    &&
-                                                    pos === this.eliminationContext.from))).length !== 0);
-          return relevantMills
-                  .filter(mill => mill.every(pos =>
-                                                  document.getElementById(pos).style.backgroundColor
-                                                  === this.getCurrentColor()
-                                                  ||
-                                                  (document.getElementById(pos).style.backgroundColor
-                                                    === ""
-                                                    &&
-                                                    pos === this.eliminationContext.from))).length !== 0;
-        }
-
-        checkElimination(pieceElement) {
-          const { style, id } = pieceElement;
-          if (this.isEliminating) {
-            // cancel if double click
-            if (this.eliminationContext.from === id) {
-              style.backgroundColor = this.getCurrentColor();
-              this.isEliminating = false;
-            } else if (this.inValidMill(id) && adjacents[id].includes(this.eliminationContext.from) && style.backgroundColor !== this.getCurrentColor()) {
-              --this.piecesLeft[style.backgroundColor];
-              style.backgroundColor = this.getCurrentColor();
-              this.advancePlayer();
-              this.isEliminating = false;
-            } else if (adjacents[id].includes(this.eliminationContext.from) && style.backgroundColor === "") {
-              style.backgroundColor = this.getCurrentColor();
-              this.advancePlayer();
-              this.isEliminating = false;
             }
-          } else if (style.backgroundColor === this.getCurrentColor()) {
-            this.eliminationContext.from = id;
-            this.isEliminating = true;
-            style.backgroundColor = "";
-          }
+          }, 100);
         }
 
-        checkFlying(pieceElement) {
-          const { style, id } = pieceElement;
-          if (this.isEliminating) {
-            // cancel if double click
-            if (this.eliminationContext.from === id) {
-              style.backgroundColor = this.getCurrentColor();
-              this.isEliminating = false;
-            } else if (style.backgroundColor !== this.getCurrentColor()) {
-              --this.piecesLeft[style.backgroundColor];
-              style.backgroundColor = this.getCurrentColor();
-              this.advancePlayer();
-              this.isEliminating = false;
+        return pieceStyle.backgroundColor;
+      }
+
+      setAILock() {
+        /*if (this.isAI()) {
+          for (const piece of document.getElementsByClassName("board-view-piece")) {
+            piece.onclick = (elem) => {};
+          }
+        } else {
+          for (const piece of document.getElementsByClassName("board-view-piece")) {
+            piece.onclick = this.eventPress;
+          }
+        }*/
+      }
+
+      inValidMill(position) {
+        const relevantMills = mills.filter(m => m.includes(position));
+        console.log(`${relevantMills[0]} == ${relevantMills[1]} is ${relevantMills[0] == relevantMills[1]}`);
+        for (let i of relevantMills) {
+          console.log(i);
+        }
+        console.log('Hmm...', relevantMills
+          .filter(mill => mill.every(pos =>
+            document.getElementById(pos).style.backgroundColor
+            === this.getCurrentColor()
+            ||
+            (document.getElementById(pos).style.backgroundColor
+              === ""
+              &&
+              pos === this.eliminationContext.from))).length !== 0);
+        return relevantMills
+          .filter(mill =>
+            mill.every(pos =>
+              document.getElementById(pos).style.backgroundColor
+              === this.getCurrentColor()
+            )).length !== 0;
+      }
+
+      inPotentialMill(position) {
+        const relevantMills = mills.filter(m => m.includes(position));
+        console.log('Hmm...', relevantMills
+          .filter(mill => mill.every(pos =>
+            document.getElementById(pos).style.backgroundColor
+            === this.getCurrentColor()
+            ||
+            (document.getElementById(pos).style.backgroundColor
+              === ""
+              &&
+              pos === this.eliminationContext.from))).length !== 0);
+        return relevantMills
+          .filter(mill =>
+            mill.every(pos =>
+              document.getElementById(pos).style.backgroundColor
+              === this.getCurrentColor() || document.getElementById(pos).style.backgroundColor === ""
+            )).length !== 0;
+      }
+
+      checkElimination(pieceElement) {
+        const { style, id } = pieceElement;
+        if (this.isEliminating) {
+          if (style.backgroundColor === this.getNextColor()) {
+            style.backgroundColor = "";
+            --this.piecesLeft[this.getNextColor()];
+            this.isEliminating = false;
+            this.advancePlayer(); this.setAILock();
+          }
+        } else if (this.isSwitching) {
+          // cancel if double click
+          if (this.eliminationContext.from === id) {
+            style.backgroundColor = this.getCurrentColor();
+            this.isSwitching = false;
+            return;
+          }
+          if (style.backgroundColor === "" && adjacents[id].includes(this.eliminationContext.from)) {
+            style.backgroundColor = this.getCurrentColor();
+            if (this.inValidMill(id)) {
+              this.isEliminating = true;
+            } else {
+              this.advancePlayer(); this.setAILock();
             }
-          } else if (style.backgroundColor === this.getCurrentColor()) {
-            this.eliminationContext.from = id;
-            this.isEliminating = true;
-            style.backgroundColor = "";
+            this.isSwitching = false;
           }
+        } else if (style.backgroundColor === this.getCurrentColor()) {
+          this.eliminationContext.from = id;
+          this.isSwitching = true;
+          style.backgroundColor = "";
         }
       }
 
-      let win = new Window();
-    </script>
-    <script id="test.js">
-      // Crit. 2.
+      checkFlying(pieceElement) {
+        const { style, id } = pieceElement;
+        if (this.isEliminating) {
+          if (style.backgroundColor === this.getNextColor()) {
+            style.backgroundColor = "";
+            --this.piecesLeft[this.getNextColor()];
+            this.isEliminating = false;
+            this.advancePlayer(); this.setAILock();
+          }
+        } else if (this.isSwitching) {
+          // cancel if double click
+          if (this.eliminationContext.from === id) {
+            style.backgroundColor = this.getCurrentColor();
+            this.isSwitching = false;
+            return;
+          }
+          if (style.backgroundColor === "") {
+            style.backgroundColor = this.getCurrentColor();
+            if (this.inValidMill(id)) {
+              this.isEliminating = true;
+            } else {
+              this.advancePlayer(); this.setAILock();
+            }
+            this.isSwitching = false;
+          }
+        } else if (style.backgroundColor === this.getCurrentColor()) {
+          this.eliminationContext.from = id;
+          this.isSwitching = true;
+          style.backgroundColor = "";
+        }
+      }
+    }
 
-      function testUninteractiveElement() {
-        return document.getElementById('container').onclick === null;
-      }
+    const win = new Window();
+  </script>
+  <script id="test.js">
+    // Crit. 2.
 
-      function testInteractiveElement() {
-        return typeof document.getElementById('A1').onclick === 'function';
-      }
-      
-      // Crit. 5.
+    function testUninteractiveElement() {
+      return document.getElementById('container').onclick === null;
+    }
 
-      function testOpenBoardWithUnoccupiedPosition() {
-        return win.eventPress(document.getElementById('A1')) === "blue";
-      }
+    function testInteractiveElement() {
+      return typeof document.getElementById('A1').onclick === 'function';
+    }
 
-      function testOpenBoardWithOccupiedPosition() {
-        win.eventPress(document.getElementById('A1'));
-        return `${win.eventPress(document.getElementById('A1'))}` === "Error: Position A1 is occupied.";
-      }
+    // Crit. 5.
 
-      function setupFullBoard() {
-        win.eventPress(document.getElementById('A1'));
-        win.eventPress(document.getElementById('A4'));
-        win.eventPress(document.getElementById('A7'));
-        win.eventPress(document.getElementById('B2'));
-        win.eventPress(document.getElementById('B4'));
-        win.eventPress(document.getElementById('B6'));
-        win.eventPress(document.getElementById('C3'));
-        win.eventPress(document.getElementById('C4'));
-        win.eventPress(document.getElementById('C5'));
-        win.eventPress(document.getElementById('D1'));
-        win.eventPress(document.getElementById('D2'));
-        win.eventPress(document.getElementById('D3'));
-        win.eventPress(document.getElementById('D5'));
-        win.eventPress(document.getElementById('D6'));
-        win.eventPress(document.getElementById('D7'));
-        win.eventPress(document.getElementById('E3'));
-        win.eventPress(document.getElementById('E4'));
-        win.eventPress(document.getElementById('E5'));
-      }
-      
-      function testFullBoardWithUnoccupiedPosition() {
-        setupFullBoard();
-        return `${win.eventPress(document.getElementById('F4'))}` === "Error: Position F4 is occupied.";
-      }
+    function testOpenBoardWithUnoccupiedPosition() {
+      return win.eventPress(document.getElementById('A1')) === "blue";
+    }
 
-      function testFullBoardWithOccupiedPosition() {
-        setupFullBoard();
-        return `${win.eventPress(document.getElementById('A1'))}` === "Error: Position A1 is occupied.";
-      }
+    function testOpenBoardWithOccupiedPosition() {
+      win.eventPress(document.getElementById('A1'));
+      return `${win.eventPress(document.getElementById('A1'))}` === "Error: Position A1 is occupied.";
+    }
 
-      function testMovingPiece() {
-        setupFullBoard();
-        win.eventPress(document.getElementById('E4'));
-        win.eventPress(document.getElementById('F4'));
-        return !document.getElementById('E4').style.backgroundColor && document.getElementById('F4').style.backgroundColor === 'blue';
-      }
-    </script>
-    <!--link rel='stylesheet' href="/stylesheets/<%= theme %>.css" /-->
-  </head>
-  <body>
-    <div class="main-grid" id="container">
-      <div class="grid-board-view">
-        <img class="board-view-background" src="images/board.png">
-        <div class="board-view-piece-grid">
+    function setupFullBoard() {
+      win.eventPress(document.getElementById('A1'));
+      win.eventPress(document.getElementById('A4'));
+      win.eventPress(document.getElementById('A7'));
+      win.eventPress(document.getElementById('B2'));
+      win.eventPress(document.getElementById('B4'));
+      win.eventPress(document.getElementById('B6'));
+      win.eventPress(document.getElementById('C3'));
+      win.eventPress(document.getElementById('C4'));
+      win.eventPress(document.getElementById('C5'));
+      win.eventPress(document.getElementById('D1'));
+      win.eventPress(document.getElementById('D2'));
+      win.eventPress(document.getElementById('D3'));
+      win.eventPress(document.getElementById('D5'));
+      win.eventPress(document.getElementById('D6'));
+      win.eventPress(document.getElementById('D7'));
+      win.eventPress(document.getElementById('E3'));
+      win.eventPress(document.getElementById('E4'));
+      win.eventPress(document.getElementById('E5'));
+    }
+
+    function testFullBoardWithUnoccupiedPosition() {
+      setupFullBoard();
+      return `${win.eventPress(document.getElementById('F4'))}` === "Error: Position F4 is occupied.";
+    }
+
+    function testFullBoardWithOccupiedPosition() {
+      setupFullBoard();
+      return `${win.eventPress(document.getElementById('A1'))}` === "Error: Position A1 is occupied.";
+    }
+
+    function testMovingPiece() {
+      setupFullBoard();
+      win.eventPress(document.getElementById('E4'));
+      win.eventPress(document.getElementById('F4'));
+      return !document.getElementById('E4').style.backgroundColor && document.getElementById('F4').style.backgroundColor === 'blue';
+    }
+  </script>
+  <!--link rel='stylesheet' href="/stylesheets/<%= theme %>.css" /-->
+</head>
+
+<body>
+  <div class="main-grid" id="container">
+      <div class="p1 grid-board-text">
+          <p>
+            Player One is <b style="color: <%=color[0]%>"><%=color[0]%></b>...<br>
+            <br>
+            <br>
+            <br>The current player is <b style="color: <%=color[0]%>" id="current-player-color">blue</b>.<br>
+          </p>
+        </div>
+    <div class="grid-board-view">
+      <img class="board-view-background" src="images/board.png">
+      <div class="board-view-piece-grid">
         <% for (let [i, arr] of Object.entries(validPositions)) {
             for(let j of arr){ %>
-          <div class="board-view-piece <%= i %> <%= toWords[j] %>" id="<%= i+j %>" onclick="win.eventPress(this)"></div><% 
+        <div class="board-view-piece <%= i %> <%= toWords[j] %>" id="<%= i+j %>" onclick="win.eventPress(this)"></div><% 
             }
           } %>
-        </div>
-      </div>
-      <div class="grid-board-text">
-        <p>
-          Player One is <b style="color: <%=color[0]%>"><%=color[0]%></b>...<br>
-          Player Two is <b style="color: <%=color[1]%>"><%=color[1]%></b>...<br>
-          <br>
-          <br>
-          <br>The current player is <b style="color: <%=color[0]%>" id="current-player-color">blue</b>.<br>
-        </p>
       </div>
     </div>
-  </body>
+    <div class="p2 grid-board-text">
+      <p>
+        Player Two is <b style="color: <%=color[1]%>"><%=color[1]%></b>...<br>
+      </p>
+    </div>
+  </div>
+  <script id="theme.js">
+      if ("<%- theme %>" === "dark") {
+        let view = document.getElementById("container");
+        view.style.backgroundColor = "black";
+        let arr = document.getElementsByClassName("grid-board-text");
+        for (let p of arr) {
+          p.style.color = "white";
+        }
+      }
+    </script>
+</body>
+
 </html>

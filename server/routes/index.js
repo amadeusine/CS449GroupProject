@@ -2,9 +2,8 @@ var express = require('express');
 var router = express.Router();
 var { Board } = require('../public/javascripts/board');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  
+module.exports = (bind) => router.get('/', function(req, res, next) {
+  bind.board = 0;
   let options = {
     title: 'Nine Men\'s Morris',
     theme: req.query.theme || 'default',
@@ -29,8 +28,7 @@ router.get('/', function(req, res, next) {
       9: "nine",
     },
     color: ['blue', 'red'],
+    ai: !!req.query.ai + 0,
   }
   res.render('index', options);
-});
-
-module.exports = router;
+});;
