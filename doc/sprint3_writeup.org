@@ -1,0 +1,2186 @@
+#+TITLE: CS449 Sprint 3 Report
+#+AUTHOR: Team \textbf{Misael's} Project Submission
+#+SUBTITLE: Michael Cu, Elias Julian Marko Garcia, Samuel Lim
+#+LATEX_HEADER: \usepackage{float}
+#+LATEX_HEADER: \usepackage{array}
+
+* Micro Charter
+  :PROPERTIES:
+  :CUSTOM_ID: S1
+  :END:   
+** Project Name
+   :PROPERTIES:
+   :END:
+   N Men Morris
+** Vision Statement
+   :PROPERTIES:
+   :END:
+   Create a extensible framework for board game web apps with scalability and performance.
+** Mission Statement
+   :PROPERTIES:
+   :END:
+   To play Nine Men's Morris on the web browser using a composable web technology stack that allows
+   for future modularity while not foregoing performance.
+** Elevator Pitch and Business Value
+   :PROPERTIES:
+   :END:
+   We are creating Nine Men's Morris on a board game framework using Express.js and Neon for
+   Rust. This allows for a data and type safe application that is capable of composability,
+   scalability, extensibility, and performance.
+** Customers and Users
+   :PROPERTIES:
+   :END:
+   - Customers: Entrepreneurs and ventures that want to deploy board games on the web with low
+     overhead, latency, and maintenance.
+   - Users: Individuals who are passionate about board games and want a new online experience that
+     they can take and play wherever they go with their friends.
+** Metrics
+   :PROPERTIES:
+   :END:
+   By benchmarking N Men Morris, we can compare our solution to other products on the market on:
+   1. latency
+   2. binary size
+   3. up-time
+** Milestones
+   :PROPERTIES:
+   :END:
+   1. First MVP
+   2. First Offline N Men's Morris
+   3. Player versus Player (Offline)
+   4. Player versus Player (Online)
+** Risks
+   :PROPERTIES:
+   :END:
+   1. Inherent complexity of technology stack.
+   2. Inability to cooperate with teammates.
+   3. Plausibility of orphaning project due to development team size.
+** Authors
+   :PROPERTIES:
+   :END:
+   - Michael Cu
+   - Elias Julian Marko Garcia
+   - Samuel Lim
+* User Stories
+  :PROPERTIES:
+  :CUSTOM_ID: S2
+  :END:
+
+  Below you will find a table that makes up our "User Story Board", with some simplifications taken
+  with respect to the total contents of the board. With respect to the final formal documentation,
+  i.e. this paper, we only keep the basic qualitative and quantitative values for each story in the
+  table while giving each user story proper its own section. This makes documenting each story
+  less unruly while also easier to read. Each Story I.D. (SID) value is internally linked to its
+  respective story, which also helps with navigating this section.
+  
+   #+ATTR_LaTeX: :align |c|m{3.5cm}|c|c|c|c|m{2.0cm}|
+   |     |                        |          | Time Est. | Actual |          |                        |
+   | SID | Story Name             | Priority |      (hr) |   (hr) | Status   | Developer(s)           |
+   |-----+------------------------+----------+-----------+--------+----------+------------------------|
+   | [[#SID1][S1]]  | Default Board Layout   | high     |        10 |      4 | DONE     | Sam, Michael, Elias    |
+   |-----+------------------------+----------+-----------+--------+----------+------------------------|
+   | [[#SID2][S2]]  | Mills Board            | high     |        10 |      4 | DONE     | Sam                    |
+   |     | Coordinate System      |          |           |        |          |                        |
+   |-----+------------------------+----------+-----------+--------+----------+------------------------|
+   | [[#SID3][S3]]  | Player Selection       | medium   |        10 |    0.2 | DONE     | Samuel, Michael, Elias |
+   |-----+------------------------+----------+-----------+--------+----------+------------------------|
+   | [[#SID4][S4]]  | Piece Assignment       | medium   |        10 |     .3 | DONE     | Samuel, Michael, Elias |
+   |-----+------------------------+----------+-----------+--------+----------+------------------------|
+   | [[#SID5][S5]]  | Game Menu Prompt       | high     |        10 |      2 | DONE     | Sam, Michael           |
+   |-----+------------------------+----------+-----------+--------+----------+------------------------|
+   | [[#SID6][S6]]  | Start Game Prompt      | medium   |        10 |    0.1 | DONE     | Samuel, Michael        |
+   |-----+------------------------+----------+-----------+--------+----------+------------------------|
+   | [[#SID7][S7]]  | Player Turn Assignment | medium   |        10 |    0.5 | DONE     | Samuel, Michael, Elias |
+   |-----+------------------------+----------+-----------+--------+----------+------------------------|
+   | [[#SID8][S8]]  | Position Selection     | medium   |        10 |   0.25 | DONE     | Samuel, Michael, Elias |
+   |-----+------------------------+----------+-----------+--------+----------+------------------------|
+   | [[#SID9][S9]]  | Position Placement     | medium   |        10 |    0.1 | DONE     | Samuel, Michael, Elias |
+   |-----+------------------------+----------+-----------+--------+----------+------------------------|
+   | [[#SID10][S10]] | Position Movement      | medium   |        10 |    1.5 | DONE     | Samuel, Michael, Elias |
+   |-----+------------------------+----------+-----------+--------+----------+------------------------|
+   | [[#SID11][S11]] | Elimination Movement   | medium   |        10 |    1.0 | DONE     | Samuel, Michael, Elias |
+   |-----+------------------------+----------+-----------+--------+----------+------------------------|
+   | [[#SID12][S12]] | Mill Definition        | medium   |        10 |    2.0 | DONE     | Samuel, Michael, Elias |
+   |-----+------------------------+----------+-----------+--------+----------+------------------------|
+   | [[#SID13][S13]] | Mill Attack Attribute  | medium   |        10 |    0.4 | DONE     | Samuel, Michael, Elias |
+   |-----+------------------------+----------+-----------+--------+----------+------------------------|
+   | [[#SID14][S14]] | Mill Defense Attribute | medium   |        10 |    0.4 | DONE     | Samuel, Michael, Elias |
+   |-----+------------------------+----------+-----------+--------+----------+------------------------|
+   | [[#SID15][S15]] | Mill Piece Movement    | medium   |        10 |    0.3 | DONE     | Samuel, Michael, Elias |
+   |-----+------------------------+----------+-----------+--------+----------+------------------------|
+   | [[#SID16][S16]] | Elimination with Mills | medium   |        10 |    0.5 | DONE     | Samuel, Michael, Elias |
+   |-----+------------------------+----------+-----------+--------+----------+------------------------|
+   | [[#SID17][S17]] | Flying Definition      | medium   |        10 |    0.2 | DONE     | Samuel, Michael, Elias |
+   |-----+------------------------+----------+-----------+--------+----------+------------------------|
+   | [[#SID18][S18]] | Flying Piece Ability   | medium   |        10 |    0.2 | DONE     | Samuel, Michael, Elias |
+   |-----+------------------------+----------+-----------+--------+----------+------------------------|
+   | [[#SID19][S19]] | End Game: Loss         | medium   |        10 |    0.1 | DONE     | Samuel, Michael, Elias |
+   |-----+------------------------+----------+-----------+--------+----------+------------------------|
+   | [[#SID20][S20]] | End Game: Win          | medium   |        10 |    0.1 | DONE     | Samuel, Michael, Elias |
+   |-----+------------------------+----------+-----------+--------+----------+------------------------|
+   | [[#SID21][S21]] | End Game: Tie          | medium   |        10 |      - | PROGRESS | Samuel, Michael, Elias |
+   |-----+------------------------+----------+-----------+--------+----------+------------------------|
+   | [[#SID22][S22]] | Reset Board            | medium   |        10 |    0.1 | DONE     | Samuel, Michael, Elias |
+   |-----+------------------------+----------+-----------+--------+----------+------------------------|
+   | [[#SID23][S23]] | Start New Game         | medium   |        10 |    0.1 | DONE     | Samuel, Michael, Elias |
+   |-----+------------------------+----------+-----------+--------+----------+------------------------|
+   | [[#SID24][S24]] | Choose AI opponent     | Hard     |        10 |    0.1 | DONE     | Samuel, Michael, Elias |
+   |-----+------------------------+----------+-----------+--------+----------+------------------------|
+   | [[#SID25][S25]] | AI position selection  | Hard     |        10 |    1.0 | DONE     | Samuel, Michael, Elias |
+   |-----+------------------------+----------+-----------+--------+----------+------------------------|
+   | [[#SID26][S26]] | AI position placement  | Hard     |        10 |    0.2 | Done     | Samuel, Michael, Elias |
+   |-----+------------------------+----------+-----------+--------+----------+------------------------|
+   | [[#SID27][S27]] | AI mill formation      | Hard     |        10 |    0.1 | DONE     | Samuel, Michael, Elias |
+   |-----+------------------------+----------+-----------+--------+----------+------------------------|
+   | [[#SID28][S28]] | AI piece elimination   | Hard     |        10 |    0.1 | DONE     | Samuel, Michael, Elias |
+   |-----+------------------------+----------+-----------+--------+----------+------------------------|
+   | [[#SID29][S29]] | AI difficulty/metric   | Hard     |        10 |      - | PROGRESS | Samuel, Michael, Elias |
+
+** Default Board Layout
+   :PROPERTIES:
+   :CUSTOM_ID: SID1
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, I need a game board with 4 expanded squares, each with 8 equidistant positions, to
+    play a game of Nine Men's Morris.
+** Mills Board Coordinate System
+   :PROPERTIES:
+   :CUSTOM_ID: SID2
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, I need a way to navigate and read the board to play a game of Nine Men's Morris.
+** Player Selection
+   :PROPERTIES:
+   :CUSTOM_ID: SID3
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+
+    As a user, I want to choose a distinct color for my player.
+
+** Piece Assignment
+   :PROPERTIES:
+   :CUSTOM_ID: SID4
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, I want to receive 9 distinct pieces to place on the board.
+** Game Menu Prompt
+   :PROPERTIES:
+   :CUSTOM_ID: SID5
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, I am prompted with a GUI that shows the game board along with menu items.
+
+** Start Game Prompt
+   :PROPERTIES:
+   :CUSTOM_ID: SID6
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, I need a GUI to prompt me with the options to start a game with either another human
+    or against the computer.
+** Player Turn Assignment
+   :PROPERTIES:
+   :CUSTOM_ID: SID7
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, I want to receive either the first or second player's move at the beginning of the game.
+** Position Selection
+   :PROPERTIES:
+   :CUSTOM_ID: SID8
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, I need to be able to select an empty position to choose it for piece placement.
+
+** Position Placement
+   :PROPERTIES:
+   :CUSTOM_ID: SID9
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, I need to be able to place a piece on an empty position to finish my turn.
+
+** Position Movement
+   :PROPERTIES:
+   :CUSTOM_ID: SID10
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, I want to be able to move my pieces to unoccupied positions.
+
+** Elimination Movement
+   :PROPERTIES:
+   :CUSTOM_ID: SID11
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    
+    As a user, I want to be able to move my pieces into enemy positions should I qualify.
+
+** Mill Definition
+   :PROPERTIES:
+   :CUSTOM_ID: SID12
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, I need the game to recognize when three of my pieces are placed in adjacent positions in order to form a mill.
+
+** Mill Attack Attribute
+   :PROPERTIES:
+   :CUSTOM_ID: SID13
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+
+    As a user, I need the ability to eliminate an enemy piece to attack as a player.
+
+** Mill Defense Attribute
+   :PROPERTIES:
+   :CUSTOM_ID: SID14
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, I need pieces within a recognized mill to be immune from elimination to defend as a
+    player.
+
+** Mill Piece Movement
+   :PROPERTIES:
+   :CUSTOM_ID: SID15
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, I want to move pieces that make up mills into any position not occupied by one of my
+    other pieces.
+
+** Elimination With Mills
+   :PROPERTIES:
+   :CUSTOM_ID: SID16
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, I want my pieces to remove opponent pieces from the board individually.
+
+** Flying Definition
+   :PROPERTIES:
+   :CUSTOM_ID: SID17
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, I need the game to recognize when I have less than 4 pieces to gain the ability to
+    "fly" my pieces.
+
+** Flying Piece Ability
+   :PROPERTIES:
+   :CUSTOM_ID: SID18
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, I need the ability to move a piece to any empty position on the map when I only have
+    3 pieces to fly.
+    
+** End Game: Loss
+   :PROPERTIES:
+   :CUSTOM_ID: SID19
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, the game must recognize when I reach less than 3 pieces to declare me a loser.
+    
+** End Game: Win
+   :PROPERTIES:
+   :CUSTOM_ID: SID20
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, the game must recognize when my opponent reaches less than 3 pieces to declare me the
+    winner.
+
+** End Game: Tie
+   :PROPERTIES:
+   :CUSTOM_ID: SID21
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, the game must recognize when the board state has repeated the same layout N times
+    after a player has reached less than 4 players in order to declare the game a tie ("Remis").
+
+** Reset Board
+   :PROPERTIES:
+   :CUSTOM_ID: SID22
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, I want to be able to restart a game with a new, empty board.
+    
+** Start New Game
+   :PROPERTIES:
+   :CUSTOM_ID: SID23
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, I want to be able to start a new game with the default configuration as before I started the game.
+    
+** Choose AI Opponent
+   :PROPERTIES:
+   :CUSTOM_ID: SID24
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, I want to be able to start a new game with computer opponent (AI).
+    
+
+** AI Position Selection
+   :PROPERTIES:
+   :CUSTOM_ID: SID25
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, I want the AI to be able to choose game positions to make moves through the game.
+    
+
+** AI Position Placement
+   :PROPERTIES:
+   :CUSTOM_ID: SID26
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, I want the AI to be able to place pieces on the game board to progress the game.
+    
+** AI Mill Formation
+   :PROPERTIES:
+   :CUSTOM_ID: SID27
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, I want the AI to know how to form Mills in order to attack.
+    
+** AI Piece Elimination
+   :PROPERTIES:
+   :CUSTOM_ID: SID28
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, I want the AI to be able to select opponent pieces and eliminate them to compete
+    through the game.
+** AI Difficulty/Metric
+   :PROPERTIES:
+   :CUSTOM_ID: SID29
+   :END:
+*** Description
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    As a user, I want the AI to have some measurement of intelligence in its decision making for
+    improved gameplay.
+    
+* Acceptance Criteria
+  :PROPERTIES:
+  :CUSTOM_ID: S3
+  :END:
+
+  The following section covers the acceptance criteria enumerated in response to the User Stories
+  discovered and documented in [[#S2][$\S{2}$]]. In a similar fashion to $\S{2}$, the table documenting these
+  acceptance criteria is in a simplified form. Every Acceptance Criterion has an Acceptance
+  Criterion ID (=ACID=), which is associated in the table below with its respective =SID=, development
+  status, and the developers responsible for implementing it. Each =ACID= is linked to its respective
+  subsection below for viewing the description of each criterion.
+
+   #+ATTR_LaTeX: :align |l|c|c|c|
+   | SID & Name                             | ACID             | Status | Developer(s)           |
+   |----------------------------------------+------------------+--------+------------------------|
+   | [[#SID1][S1]] Default Board Layout     | [[#ACID1][A1]]   | DONE   | Sam, Elias, Michael    |
+   |----------------------------------------+------------------+--------+------------------------|
+   | [[#SID2][S2]] Mills Board Coordinate   | [[#ACID2][A2]]   | DONE   | Sam, Elias, Michael    |
+   | $\hspace{0.4cm}$ System                |                  |        |                        |
+   |----------------------------------------+------------------+--------+------------------------|
+   | [[#SID3][S3]] Player Selection         | [[#ACID3][A3]]   | DONE   | Samuel, Michael, Elias |
+   |----------------------------------------+------------------+--------+------------------------|
+   | [[#SID4][S4]] Piece Assignment         | [[#ACID4][A4]]   | DONE   | Samuel, Michael, Elias |
+   |----------------------------------------+------------------+--------+------------------------|
+   | [[#SID5][S5]] Game Menu Prompt         | [[#ACID5][A5]]   | DONE   | Samuel, Michael        |
+   |----------------------------------------+------------------+--------+------------------------|
+   | [[#SID6][S6]] Start Game Prompt        | [[#ACID6][A6]]   | DONE   | Samuel, Michael        |
+   |----------------------------------------+------------------+--------+------------------------|
+   | [[#SID7][S7]] Player Turn Assignment   | [[#ACID7][A7]]   | DONE   | Samuel, Michael, Elias |
+   |----------------------------------------+------------------+--------+------------------------|
+   | [[#SID8][S8]] Position Selection       | [[#ACID8][A8]]   | DONE   | Samuel, Michael, Elias |
+   |----------------------------------------+------------------+--------+------------------------|
+   | [[#SID9][S9]] Position Placement       | [[#ACID9][A9]]   | DONE   | Samuel, Michael, Elias |
+   |----------------------------------------+------------------+--------+------------------------|
+   | [[#SID10][S10]] Position Movement      | [[#ACID10][A10]] | DONE   | Samuel, Michael, Elias |
+   |----------------------------------------+------------------+--------+------------------------|
+   | [[#SID11][S11]] Elimination Movement   | [[#ACID11][A11]] | DONE   | Samuel, Michael, Elias |
+   |----------------------------------------+------------------+--------+------------------------|
+   | [[#SID12][S12]] Mill Definition        | [[#ACID12][A12]] | DONE   | Samuel, Michael, Elias |
+   |----------------------------------------+------------------+--------+------------------------|
+   | [[#SID13][S13]] Mill Attack Attribute  | [[#ACID13][A13]] | DONE   | Samuel, Michael, Elias |
+   |----------------------------------------+------------------+--------+------------------------|
+   | [[#SID14][S14]] Mill Defense Attribute | [[#ACID14][A14]] | DONE   | Samuel, Michael, Elias |
+   |----------------------------------------+------------------+--------+------------------------|
+   | [[#SID15][S15]] Mill Piece Movement    | [[#ACID15][A15]] | DONE   | Samuel, Michael, Elias |
+   |----------------------------------------+------------------+--------+------------------------|
+   | [[#SID16][S16]] Elimination with Mills | [[#ACID16][A16]] | DONE   | Samuel, Michael, Elias |
+   |----------------------------------------+------------------+--------+------------------------|
+   | [[#SID17][S17]] Flying Definition      | [[#ACID17][A17]] | DONE   | Samuel, Michael, Elias |
+   |----------------------------------------+------------------+--------+------------------------|
+   | [[#SID18][S18]] Flying Piece Ability   | [[#ACID18][A18]] | DONE   | Samuel, Michael, Elias |
+   |----------------------------------------+------------------+--------+------------------------|
+   | [[#SID19][S19]] End Game: Loss         | [[#ACID19][A19]] | DONE   | Samuel, Michael, Elias |
+   |----------------------------------------+------------------+--------+------------------------|
+   | [[#SID20][S20]] End Game: Win          | [[#ACID20][A20]] | DONE   | Samuel, Michael, Elias |
+   |----------------------------------------+------------------+--------+------------------------|
+   | [[#SID21][S21]] End Game: Tie          | [[#ACID21][A21]] | TODO   | Samuel, Michael, Elias |
+   |----------------------------------------+------------------+--------+------------------------|
+   | [[#SID22][S22]] Reset Board            | [[#ACID22][A22]] | DONE   | Samuel, Michael, Elias |
+   |----------------------------------------+------------------+--------+------------------------|
+   | [[#SID23][S23]] Start New Game         | [[#ACID23][A23]] | DONE   | Samuel, Michael, Elias |
+   |----------------------------------------+------------------+--------+------------------------|
+   | [[#SID24][S24]] Choose AI Opponent     | [[#ACID24][A24]] | DONE   | Samuel, Michael, Elias |
+   |----------------------------------------+------------------+--------+------------------------|
+   | [[#SID25][S25]] AI Position Selection  | [[#ACID25][A25]] | DONE   | Samuel, Michael, Elias |
+   |----------------------------------------+------------------+--------+------------------------|
+   | [[#SID26][S26]] AI Position Placement  | [[#ACID26][A26]] | DONE   | Samuel, Michael, Elias |
+   |----------------------------------------+------------------+--------+------------------------|
+   | [[#SID27][S27]] AI Mill Formation      | [[#ACID27][A27]] | DONE   | Samuel, Michael, Elias |
+   |----------------------------------------+------------------+--------+------------------------|
+   | [[#SID28][S28]] AI Piece Elimination   | [[#ACID28][A28]] | DONE   | Samuel, Michael, Elias |
+   |----------------------------------------+------------------+--------+------------------------|
+   | [[#SID29][S29]] AI Difficulty/Metric   | [[#ACID29][A29]] | DONE   | Samuel, Michael, Elias |
+
+** Criterion 1
+   :PROPERTIES:
+   :CUSTOM_ID: ACID1
+   :END:
+    #+ATTR_LaTeX: :align |c|p{12.0cm}|
+    |      | <71>                                                                    |
+    | ACID | Description                                                             |
+    |------+-------------------------------------------------------------------------|
+    |  1.0 | Given a User...                                                         |
+    |------+-------------------------------------------------------------------------|
+    |  1.1 | When the board appears, it will render the default layout for Nine Men's Morris |
+    |      |                                                                         |
+    |  1.2 | When the User does not visit our site (IP), the board will not appear.  |
+
+** Criterion 2
+   :PROPERTIES:
+   :CUSTOM_ID: ACID2
+   :END:
+   #+ATTR_LaTeX: :align |c|p{12.0cm}|
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   |  2.0 | Given a User...                                                         |
+   |------+-------------------------------------------------------------------------|
+   |  2.1 | When the board is rendered, it will include a coordinate system along the axis. |
+   |      |                                                                         |
+   |  2.2 | When the board is not rendered, there will be no coordinate system.     |
+
+** Criterion 3
+   :PROPERTIES:
+   :CUSTOM_ID: ACID3
+   :END:
+   #+ATTR_LaTeX: :align |c|p{12.0cm}|
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   |  3.0 | Given a user...                                                         |
+   |------+-------------------------------------------------------------------------|
+   |  3.1 | When a user chooses one of two colors, then their player pieces will    |
+   |      | be the chosen color.                                                    |
+   |      |                                                                         |
+   |  3.2 | When a user chooses one of the two colors, and it is already taken,     |
+   |      | then they will not be the chosen color.                                 |
+   |      |                                                                         |
+   |  3.3 | When a user does not choose one of the two colors, then they will not   |
+   |      | be assigned a color.                                                    |
+
+** Criterion 4
+   :PROPERTIES:
+   :CUSTOM_ID: ACID4
+   :END:
+   #+ATTR_LaTeX: :align |c|p{12.0cm}|
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   |  4.0 | Given a user...                                                         |
+   |------+-------------------------------------------------------------------------|
+   |  4.1 | When users chooses one of two players, then the users will be assigned  |
+   |      | N pieces of their color.                                                |
+   |      |                                                                         |
+   |  4.2 | When a user does not choose one of the two players, then the user will  |
+   |      | not be assigned N pieces of their color.                                |
+
+** Criterion 5
+   :PROPERTIES:
+   :CUSTOM_ID: ACID5
+   :END:
+   #+ATTR_LaTeX: :align |c|p{12.0cm}|
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   |  5.0 | Given a User...                                                         |
+   |------+-------------------------------------------------------------------------|
+   |  5.1 | When the website is loaded, it will show the game along with a menu buttons. |
+   |      |                                                                         |
+   |  5.2 | When the website is not loaded, it will not show the game or the game menu system.. |
+
+** Criterion 6
+   :PROPERTIES:
+   :CUSTOM_ID: ACID6
+   :END:
+   #+ATTR_LaTeX: :align |c|p{12.0cm}|
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   |  6.0 | Given a User...                                                         |
+   |------+-------------------------------------------------------------------------|
+   |  6.1 | When the menu options are rendered, there is a button that displays start game. |
+   |      |                                                                         |
+   |  6.2 | When the menu options are not rendered, it will not show a button to start the game. |
+
+** Criterion 7
+   :PROPERTIES:
+   :CUSTOM_ID: ACID7
+   :END:
+  
+   #+ATTR_LaTeX: :align |c|p{12.0cm}|
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   |  7.0 | Given a user...                                                         |
+   |------+-------------------------------------------------------------------------|
+   |  7.1 | When a user chooses which turn to play, then a user will recieve the    |
+   |      | corresponding turn.                                                     |
+   |      |                                                                         |
+   |  7.2 | When a user does not choose a turn to play, then a user will not        |
+   |      | receive the corresponding turn.                                         |
+   
+** Criterion 8
+   :PROPERTIES:
+   :CUSTOM_ID: ACID8
+   :END:
+   #+ATTR_LaTeX: :align |c|p{12.0cm}|
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   |  8.0 | Given a User...                                                         |
+   |------+-------------------------------------------------------------------------|
+   |  8.1 | When it is my turn, I can click on a empty board position.              |
+   |      |                                                                         |
+   |  8.2 | When it is not my turn, I cannot click on an empty board position.      |
+   
+** Criterion 9
+   :PROPERTIES:
+   :CUSTOM_ID: ACID9
+   :END:
+   #+ATTR_LaTeX: :align |c|p{12.0cm}|
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   |  9.0 | Given a User...                                                         |
+   |------+-------------------------------------------------------------------------|
+   |  9.1 | When it is my turn, I can place a piece on an empty position I have selected. |
+   |      |                                                                         |
+   |  9.2 | When it is not my turn, I cannot place a piece on an empty position.    |
+
+** Criterion 10
+   :PROPERTIES:
+   :CUSTOM_ID: ACID10
+   :END:
+   #+ATTR_LaTeX: :align |c|p{12.0cm}|
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   | 10.0 | Given a user...                                                         |
+   |------+-------------------------------------------------------------------------|
+   | 10.1 | When a user moves a piece to an unoccupied position, then the user's    |
+   |      | piece assumes the new position.                                         |
+   |      |                                                                         |
+   | 10.2 | When a user moves a piece to an occupied position of their own, then    |
+   |      | the user's piece is not moved to the new position.                      |
+
+** Criterion 11
+   :PROPERTIES:
+   :CUSTOM_ID: ACID11
+   :END:
+   #+ATTR_LaTeX: :align |c|p{12.0cm}|
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   | 11.0 | Given a user...                                                         |
+   |------+-------------------------------------------------------------------------|
+   | 11.1 | When a user moves their piece into an enemy position, then the user's   |
+   |      | move will not qualify.                                                  |
+
+** Criterion 12
+   :PROPERTIES:
+   :CUSTOM_ID: ACID12
+   :END:
+   #+ATTR_LaTeX: :align |c|p{12.0cm}|
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   | 12.0 | Given a User...                                                         |
+   |------+-------------------------------------------------------------------------|
+   | 12.1 | When I place three pieces adjacent to each other, the game recognizes   |
+   |      | it as a mill.                                                           |
+   |      |                                                                         |
+   | 12.2 | When I do not place a piece that forms three adjacent occupied          |
+   |      | positions, it is not recognized as a mill.                              |
+** Criterion 13
+   :PROPERTIES:
+   :CUSTOM_ID: ACID13
+   :END:
+   #+ATTR_LaTeX: :align |c|p{12.0cm}|
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   | 13.0 | Given a User...                                                         |
+   |------+-------------------------------------------------------------------------|
+   | 13.1 | When it is my turn, and I have a mill formed, then I have the ability   |
+   |      | to eliminate an opponent's piece.                                       |
+   |      |                                                                         |
+   | 13.2 | When it is my turn, and I do not have a mill formed, then I do not      |
+   |      | have the ability to attack.                                             |
+   |      |                                                                         |
+   | 13.3 | When it is not my turn, and I have a mill formed, then I do not have    |
+   |      | the ability to attack.                                                  |
+   |      |                                                                         |
+   | 13.4 | When it is not my turn, and I do not have a mill formed, then I do      |
+   |      | not have the ability to attack.                                         |
+** Criterion 14
+   :PROPERTIES:
+   :CUSTOM_ID: ACID14
+   :END:
+   #+ATTR_LaTeX: :align |c|p{12.0cm}|
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   | 14.0 | Given a User...                                                         |
+   |------+-------------------------------------------------------------------------|
+   | 14.1 | When it is my turn, and I have a mill formed, then the pieces in my     |
+   |      | mill are defended from elimination.                                     |
+   |      |                                                                         |
+   | 14.2 | When it is my turn, and I do not have a mill formed, then my pieces     |
+   |      | are not defended from elimination.                                      |
+   |      |                                                                         |
+   | 14.3 | When it is not my turn, and I have a mill formed, then the pieces       |
+   |      | in my mill are defended from elimination.                               |
+   |      |                                                                         |
+   | 14.4 | When it is not my turn, and I do not have a mill formed, then my pieces |
+   |      | are not defended from elimination.                                      |
+** Criterion 15
+   :PROPERTIES:
+   :CUSTOM_ID: ACID15
+   :END:
+   #+ATTR_LaTeX: :align |c|p{12.0cm}|
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   | 15.0 | Given a User...                                                         |
+   |------+-------------------------------------------------------------------------|
+   | 15.1 | When a user selects a piece in a mill to move to an open position, then |
+   |      | the piece will be moved to that new position outside of the mill        |
+   |      |                                                                         |
+   | 15.2 | When a user selects a piece in a mill to move to an invalid position,   |
+   |      | then the piece will not be moved.                                       |
+   |      |                                                                         |
+
+** Criterion 16
+   :PROPERTIES:
+   :CUSTOM_ID: ACID16
+   :END:
+   #+ATTR_LaTeX: :align |c|p{12.0cm}|
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   | 16.0 | Given a User...                                                         |
+   |------+-------------------------------------------------------------------------|
+   | 16.1 | When a user removes opponent pieces from the board, then the opponent's |
+   |      | piece will no longer appear on the board.                               |
+   |      |                                                                         |
+   | 16.2 | When a user removes their own piece from the board, then the piece will |
+   |      | not be removed from the board.                                          |
+
+** Criterion 17
+   :PROPERTIES:
+   :CUSTOM_ID: ACID17
+   :END:
+   #+ATTR_LaTeX: :align |c|p{12.0cm}|
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   | 17.0 | Given a User...                                                         |
+   |------+-------------------------------------------------------------------------|
+   | 17.1 | When it is my turn, and I only have three pieces, then I gain the       |
+   |      | ability to "fly" across the board.                                      |
+   |      |                                                                         |
+   | 17.2 | When it is my turn, and I have more than three pieces, then I do not    |
+   |      | gain the ability to "fly" across the board.                             |
+   |      |                                                                         |
+   | 17.3 | When it is not my turn, and I only have three pieces, then I do not     |
+   |      | gain the ability to "fly" across the board.                             |
+   |      |                                                                         |
+   | 17.4 | When it is not my turn, and I have more than three pieces, then I do    |
+   |      | not gain the ability to "fly" across the board.                         |
+** Criterion 18
+   :PROPERTIES:
+   :CUSTOM_ID: ACID18
+   :END:
+   #+ATTR_LaTeX: :align |c|p{12.0cm}|
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   | 18.0 | Given a User...                                                         |
+   |------+-------------------------------------------------------------------------|
+   | 18.1 | When it is my turn, and I only have three pieces, then I can "fly"      |
+   |      | a piece I own to any open position on the board.                        |
+   |      |                                                                         |
+   | 18.2 | When it is my turn, and I have more than three pieces, then I can't     |
+   |      | "fly" a piece I own to any open position.                               |
+   |      |                                                                         |
+   | 18.3 | When it is not my turn, and I only have three pieces, then I can't      |
+   |      | "fly" my piece across the board.                                        |
+   |      |                                                                         |
+   | 18.4 | When it is not my turn, and I have more than three pieces, then I can't |
+   |      | "fly" my piece across the board.                                        |
+
+** Criterion 19
+   :PROPERTIES:
+   :CUSTOM_ID: ACID19
+   :END:
+   #+ATTR_LaTeX: :align |c|p{12.0cm}|
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   | 19.0 | Given a User...                                                         |
+   |------+-------------------------------------------------------------------------|
+   | 19.1 | When I am reduced to less than three pieces, the game must declare me   |
+   |      | the loser and end the game.                                             |
+   |      |                                                                         |
+   | 19.2 | When I am not reduced to less than three pieces, then the game does not |
+   |      | declare me the loser nor end the game.                                  |
+
+** Criterion 20
+   :PROPERTIES:
+   :CUSTOM_ID: ACID20
+   :END:
+   #+ATTR_LaTeX: :align |c|p{12.0cm}|
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   | 20.0 | Given a User...                                                         |
+   |------+-------------------------------------------------------------------------|
+   | 20.1 | When I reduce my opponent to less than three pieces, the game must      |
+   |      | declare me the winner and end the game.                                 |
+   |      |                                                                         |
+   | 20.2 | When I do not reduced my opponent to less than three pieces, then the   |
+   |      | game does not declare me the winner nor end the game.                   |
+** Criterion 21
+   :PROPERTIES:
+   :CUSTOM_ID: ACID21
+   :END:
+   #+ATTR_LaTeX: :align |c|p{12.0cm}|
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   | 21.0 | Given a User...                                                         |
+   |------+-------------------------------------------------------------------------|
+   | 21.1 | When neither my opponent and I are reduced to less than three pieces    |
+   |      | and we repeat the same board arrangement more than N times, then the    |
+   |      | game is declared a "Remi", e.g. a tie, and the game is ended.           |
+   |      |                                                                         |
+   | 21.2 | When neither my opponent and I are reduced to less than three pieces    |
+   |      | and we do not repeat the same board arrangement more than N times,      |
+   |      | then the game is not declared "Remi" and is not ended.                  |
+
+** Criterion 22
+   :PROPERTIES:
+   :CUSTOM_ID: ACID22
+   :END:
+   #+ATTR_LaTeX: :align |c|p{12.0cm}|
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   | 22.0 | Given a User...                                                         |
+   |------+-------------------------------------------------------------------------|
+   | 22.1 | When a user restarts the game, then the board will restart with an      |
+   |      | empty board.                                                            |
+   |      |                                                                         |
+   |      |                                                                         |
+   | 22.2 | When a user does not restart the game, then the board will retain the   |
+   |      | current layout it contains.                                             |
+
+** Criterion 23
+   :PROPERTIES:
+   :CUSTOM_ID: ACID23
+   :END:
+   #+ATTR_LaTeX: :align |c|p{12.0cm}|
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   | 22.0 | Given a User...                                                         |
+   |------+-------------------------------------------------------------------------|
+   | 22.1 | When a user starts a new game, then a user's default configuration will |
+   |      | be used when a new game is started.                                     |
+   |      |                                                                         |
+   |      |                                                                         |
+   | 22.2 | When a user does not start a new game, then the configuration will      |
+   |      | remain unchanged.                                                       |
+
+   \newpage
+** Criterion 24
+   :PROPERTIES:
+   :CUSTOM_ID: ACID24
+   :END:
+   #+ATTR_LaTeX: :align |c|p{12.0cm}|
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   | 24.0 | Given a User...                                                         |
+   |------+-------------------------------------------------------------------------|
+   | 24.1 | When a user starts a new game, they are given the prompt to play        |
+   |      | against an AI opponent.                                                 |
+   |      |                                                                         |
+   | 24.2 | When a user chooses to play against an AI opponent, then the game will  |
+   |      | begin for the player with an AI opponent                                |
+   |      |                                                                         |
+   | 24.3 | When a user does not choose to play against the AI, then the            |
+   |      | game will begin with two human players.                                 |
+
+   
+** Criterion 25
+   :PROPERTIES:
+   :CUSTOM_ID: ACID25
+   :END:
+   #+ATTR_LaTeX: :align |c|p{12.0cm}|
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   | 25.0 | Given an AI...                                                          |
+   |------+-------------------------------------------------------------------------|
+   | 25.1 | When an AI plays a game, then the AI will search for valid moves to     |
+   |      | make on its turn.                                                       |
+   |      |                                                                         |
+   | 25.2 | When an AI does not play a game, then the AI will not search for valid  |
+   |      | moves.                                                                  |
+
+
+** Criterion 26
+   :PROPERTIES:
+   :CUSTOM_ID: ACID26
+   :END:
+   #+ATTR_LaTeX: :align |c|p{12.0cm}|
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   | 26.0 | Given an AI...                                                          |
+   |------+-------------------------------------------------------------------------|
+   | 26.1 | When it is the AI's turn during the placement phase, then the AI will   |
+   |      | place a piece on the board.                                             |
+   |      |                                                                         |
+   | 26.2 | When the AI is placing a piece, it will prioritize blocking an          |
+   |      | an opponent from forming a mill over placement elsewhere.               |
+   |      |                                                                         |
+   | 26.3 | When the AI is placing a piece and a potential mill is not detected,    |
+   |      | it will choose a random position on the board for placement.            |
+   |      |                                                                         |
+   | 26.4 | When it is not the AI's turn, then the AI will not place a piece on the |
+   |      | board.                                                                  |
+
+** Criterion 27
+   :PROPERTIES:
+   :CUSTOM_ID: ACID27
+   :END:
+   #+ATTR_LaTeX: :align |c|p{12.0cm}|
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   | 27.0 | Given an AI...                                                          |
+   |------+-------------------------------------------------------------------------|
+   | 27.1 | When it's the AI turn during the game, then the AI will attempt to form |
+   |      | mills when determined optimal.                                          |
+   |      |                                                                         |
+   | 27.2 | When it's the placement phase, the AI will only attempt to form mills   |
+   |      | when no potential opponent mills are detected.                          |
+   |      |                                                                         |
+   | 27.3 | When it's the elimination or flying phases, the AI will only attempt    |
+   |      | to form mills when no potential enemy mills are detected.               |
+   |      |                                                                         |
+   | 27.4 | When it's any other phase, the AI will not attempt to form mills.       |
+   |      |                                                                         |
+   | 27.5 | When it's not the AI's turn, the AI will not attempt to form mills.     |
+
+
+** Criterion 28
+   :PROPERTIES:
+   :CUSTOM_ID: ACID28
+   :END:
+   #+ATTR_LaTeX: :align |c|p{12.0cm}|
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   | 28.0 | Given an AI...                                                          |
+   |------+-------------------------------------------------------------------------|
+   | 28.1 | When it's the AI's turn during the game, then the AI will attempt to    |
+   |      | attack when a mill is formed.                                           |
+   |      |                                                                         |
+   | 28.2 | When attacking, the AI will prioritize enemy pieces it detects are      |
+   |      | close to forming a mill over others.                                    |
+   |      |                                                                         |
+   | 28.3 | When attacking, the AI will not attack pieces in opponent's mills       |
+   |      | unless all opponent pieces are in a mill                                |
+   |      |                                                                         |
+   | 28.4 | When it's not the AI's turn during the game, then the AI will not       |
+   |      | attempt to eliminate opponent pieces.                                   |
+
+** Criterion 29
+   :PROPERTIES:
+   :CUSTOM_ID: ACID29
+   :END:
+   #+ATTR_LaTeX: :align |c|p{12.0cm}|
+   |      | <71>                                                                    |
+   | ACID | Description                                                             |
+   |------+-------------------------------------------------------------------------|
+   | 29.0 | Given an AI...                                                          |
+   |------+-------------------------------------------------------------------------|
+   | 29.1 | When an AI plays a game, it will behave "intelligently" compared to     |
+   |      | random behavior                                                         |
+   |      |                                                                         |
+   | 29.2 | When playing a game, the AI will optimize by seeking to block opponent  |
+   |      | offensive moves over offensive  moves of its own.                       |
+
+   \newpage
+   
+* Code Review
+  :PROPERTIES:
+  :CUSTOM_ID: S4
+  :END:
+** Checklist
+    #+ATTR_LaTeX: :environment longtable :align |m{2.0cm}|m{3.0cm}|m{8.0cm}|
+    |                   |                                             |                                                                                                                                                                                                                                                                                                                                         |
+    | Checklist         | Item                                        | Findings                                                                                                                                                                                                                                                                                                                                |
+    |-------------------+---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    | Coding Standards  |                                             |                                                                                                                                                                                                                                                                                                                                         |
+    |-------------------+---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    |                   | Naming \newline Conventions                 | All naming conventions link directly to their use case and structs have compact naming systems relating to their purpose or game identity. This relates heavily to game component system design patter, i.e. ECS                                                                                                                        |
+    |-------------------+---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    |                   | Argument \newline ordering                  | Rust's formal parameter argument ordering is strict, i.e. the order of arguments cannot vary between calls for the same method. For JavaScript equivalent, same restrictions apply due to conversion.                                                                                                                                   |
+    |-------------------+---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    |                   | Comments                                    | Commenting could be improved by adding clarity in areas that handle pattern matching on handling of board inputs and conversions. No verbose comments and existing comments are well placed.                                                                                                                                            |
+    |-------------------+---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    |                   | Code Style                                  | Rustc comes with a component called Rustfmt that automatically formats code upon save to keep a consistent style across the codebase inline with Rust code formatting standards. Javascript is compliant with ES6 Lint.                                                                                                                 |
+    |-------------------+---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    |                   | Indentation                                 | See above for answer. Both handled by linters provided.                                                                                                                                                                                                                                                                                 |
+    |-------------------+---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    | Design Principles |                                             |                                                                                                                                                                                                                                                                                                                                         |
+    |-------------------+---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    |                   | Abstraction \newline and Interfaces         | Due to ECS, each component has high cohesion and loose coupling natively. Each entity as defined in the rust module is single purpose, and is incrementally composed from smaller entities defined for the game. Js mimics this, with abstraction mostly occurring in the module. Browser interactions make for event based components. |
+    |-------------------+---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    |                   | Proper \newline Encapsulation               | JS x Rust interop makes for high modularity within types and their methods. Only that which is necessary to be exposed publicly is exposed as such, and FFI wrappings enforce a minimally exposed API to the server for handling game logic.                                                                                            |
+    |-------------------+---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    |                   | Command Query \newline Separation Principal | JS calls to rust module's methods, which in turn have a minimal API exposed through Manager. Manager, in turn, only have mutators or accessors for its private GameState object. These call to GameState itself through basic getters and setters.                                                                                      |
+    |-------------------+---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    |                   | Design by \newline Contract                 | The strict typing over the possible game states representable allow for exhaustive matching over the game variants. The JS poll's input objects are strict to their parameters passed to Rust.                                                                                                                                          |
+    |-------------------+---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    |                   | Reasonable pre and post conditions          | Yes. The typing models the domain space so we can keep track of pre/post conditions at an abstract level.                                                                                                                                                                                                                               |
+    |-------------------+---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    |                   | Open Closed Principal                       | JS can directly inherit class models from Rust, extending their functionality while not disturbing native code and implementation logic. This allows for modification of input logic while the game logic remains consistent and unaffected by irrelevant mutation.                                                                     |
+    |-------------------+---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    |                   | Single Responsibility Principal             | Due to our usage of the ECS design model/pattern, our classes, structure, and types, both in JS and Rust, are highly cohesive yet maintain individual responsibility for their logic.                                                                                                                                                   |
+    |-------------------+---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    | Code Smells       |                                             |                                                                                                                                                                                                                                                                                                                                         |
+    |-------------------+---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    |                   | Magic Numbers                               | None.                                                                                                                                                                                                                                                                                                                                   |
+    |-------------------+---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    |                   | Unnecessary Globals/Class vars              | None.                                                                                                                                                                                                                                                                                                                                   |
+    |-------------------+---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    |                   | Duplicate Code                              | Due to the nature of entity component systems (ECS), which our program uses as a design pattern for the game, there are no instance of duplication, only interactions with types.                                                                                                                                                       |
+    |-------------------+---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    |                   | Long Methods                                | None.                                                                                                                                                                                                                                                                                                                                   |
+    |-------------------+---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    |                   | Long parameter list                         | None, due to ECS.                                                                                                                                                                                                                                                                                                                       |
+    |-------------------+---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    |                   | Over-complex expression                     | None.                                                                                                                                                                                                                                                                                                                                   |
+    |-------------------+---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    |                   | Unnecessary Branching                       | None, where branching occurs through match statements, it is exhaustive of the game state without being enumerable.                                                                                                                                                                                                                     |
+    |-------------------+---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    |                   | Bad method/variable naming                  | None, see Coding Standards: Naming Conventions.                                                                                                                                                                                                                                                                                         |
+    |-------------------+---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    |                   | Similar methods in other classes            | None, due to ECS.                                                                                                                                                                                                                                                                                                                       |
+    |-------------------+---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+** Bugs Discovered
+    #+ATTR_LaTeX: :align |l|l|m{2.0cm}|m{3.5cm}|m{5.0cm}|
+    | Bugs | Status | buggy code snippet | bug summary                                                                        | bug logic                                                                                                                   |
+    |------+--------+--------------------+------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------|
+    | #1   | Fixed  | calcPlayer(1)      | The board text displays the player who last played as the current player.          | Is nullified by the piecesLeft decrement that precedes it, resulting in referring to the previous colour as the new colour. |
+    |------+--------+--------------------+------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------|
+    | #2   | Fixed  | pub fn poll        | Manager's hidden gamestate moves instead of copy/clone when using basic accessors. | Ownership defined for accessors in GameState resulted in unnecessary moves of Manager's hidden Gamestate                    |
+    |      |        |                    |                                                                                    |                                                                                                                             |
+
+* Implementation Tasks
+  :PROPERTIES:
+  :CUSTOM_ID: S5
+  :END:
+
+  This section summarizes the details of implementation tasks for the project. You will find in each
+  subsection a table similar to those found in [[#SID2][$\S{2}$]] and [[#SID3][$\S{3}$]].
+
+** Summary of Production Code
+
+   The number of methods, classes, and structs implemented to see our features through to their
+   delivery far outstrip those listed below, both because of magnitude but also (*unfortunately*) due
+   to time constraints in making this submission for sprint 3. Sincerest apologies.
+
+   #+ATTR_LaTeX: :align |p{3.0cm}|p{4.0cm}|p{5.0cm}|c|
+   |                                                                                                        |                                                                                                             | Class                                           |        |
+   | SID                                                                                                    | ACID                                                                                                        | Name(s)                                         | Status |
+   |--------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------+-------------------------------------------------+--------|
+   | [[#SID3][S3]]                                                                                          | [[#ACID3][A3]]                                                                                              | [[#PID1][Window, Board]]                        | Done   |
+   |--------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------+-------------------------------------------------+--------|
+   | [[#SID1][S1]], [[#SID8][S8]], [[#SID9][S9]]                                                            | [[#ACID1][A1]], [[#ACID8][A8]], [[#ACID9][A9]]                                                              | [[#PID2][Manager]]                              | Done   |
+   |--------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------+-------------------------------------------------+--------|
+   | [[#SID2][S2]] Coordinate System                                                                        | [[#ACID2][A2]]                                                                                              | [[#PID3][Coord]]                                | Done   |
+   |--------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------+-------------------------------------------------+--------|
+   | [[#SID3][S3]], [[#SID4][S4]], [[#SID8][S8]], [[#SID9][S9]], [[#SID10][S10]]                            | [[#ACID3][A3]], [[#ACID4][A4]], [[#ACID8][A8]], [[#ACID9][A9]]                                              | [[#PID4][Board]] (Rust)                         | Done   |
+   |--------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------+-------------------------------------------------+--------|
+   | [[#SID11][S11]], [[#SID16][S16]], [[#SID18][S18]], [[#SID8][S8]],  [[#SID9][S9]]                       | [[#ACID11][S11]], [[#ACID16][S16]], [[#ACID18][S18]], [[#ACID8][S8]],  [[#ACID9][S9]]                       | [[#PID5][Manager (Rust)]], [[#PID6][GameState]] | Done   |
+   |--------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------+-------------------------------------------------+--------|
+   | [[#SID24][S24]], [[#SID25][S25]], [[#SID26][S26]],  [[#SID27][S27]], [[#SID28][S28]],  [[#SID29][S29]] | [[#ACID24][S24]],  [[#ACID25][S25]], [[#ACID26][S26]], [[#ACID27][S27]], [[#ACID28][S28]], [[#ACID29][S29]] | [[#PID8][MillMap]], [[#PID9][Adjacency]]        | Done   |
+
+
+*** Class =Window=, =Board=
+    :PROPERTIES:
+    :CUSTOM_ID: PID1
+    :END:
+
+    #+ATTR_LaTeX: :align |l|l|
+    |               | <71>                                                                    |
+    | Method        | Notes                                                                   |
+    |---------------+-------------------------------------------------------------------------|
+    | 1. =eventPress= | These functions relate to a pseudo-epic, and thus the testing will be   |
+    | 2. =at=         | generic.                                                                |
+    |               |                                                                         |
+*** Class =Manager=
+    :PROPERTIES:
+    :CUSTOM_ID: PID2
+    :END:
+
+    #+ATTR_LaTeX: :align |l|l|
+    |              | <71>                                                                    |
+    | Method       | Notes                                                                   |
+    |--------------+-------------------------------------------------------------------------|
+    | 1. =poll=      | Called by JS front-end to query, check, and get the next game state.    |
+    | 2. =get_board= | Returns the current game board layout..                                 |
+*** Class =Coord=
+    :PROPERTIES:
+    :CUSTOM_ID: PID3
+    :END:
+
+    #+ATTR_LaTeX: :align |l|l|
+    |              | <71>                                                                    |
+    | Method       | Notes                                                                   |
+    |--------------+-------------------------------------------------------------------------|
+    | 1. =as_string= | String representation of =Coord= value.                                   |
+*** Class =Board= (Rust)
+    :PROPERTIES:
+    :CUSTOM_ID: PID4
+    :END:
+
+    #+ATTR_LaTeX: :align |l|l|
+    |          | <71>                                                                    |
+    | Method   | Notes                                                                   |
+    |----------+-------------------------------------------------------------------------|
+    | 1. =len=   | Gets the length of the board.                                           |
+    | 2. =set=   |                                                                         |
+    | 2. =unset= |                                                                         |
+    | 3. =get=   |                                                                         |
+*** Class =Manager= (Rust)
+    :PROPERTIES:
+    :CUSTOM_ID: PID5
+    :END:
+    #+ATTR_LaTeX: :align |l|l|
+    |                         | <71>                                                                    |
+    | Method                  | Notes                                                                   |
+    |-------------------------+-------------------------------------------------------------------------|
+    | 1. =poll=                 |                                                                         |
+    | 2. =validate=             |                                                                         |
+    | 3. =new_opts=             |                                                                         |
+    | 4. =setup=                |                                                                         |
+    | 5. =failed_poll=          |                                                                         |
+    | 6. =move_out=             |                                                                         |
+    | 7. =move_into=            |                                                                         |
+    | 8. =move_attack=          |                                                                         |
+    | 9. =can_attack=           |                                                                         |
+    | 10. =can_eliminate_piece= |                                                                         |
+
+*** Class =GameState= (Rust)
+    :PROPERTIES:
+    :CUSTOM_ID: PID6
+    :END:
+    #+ATTR_LaTeX: :align |l|l|
+    |                      | <71>                                                                    |
+    | Method               | Notes                                                                   |
+    |----------------------+-------------------------------------------------------------------------|
+    | 1. =update_mills=      |                                                                         |
+    | 2. =potential_mills=   |                                                                         |
+    | 3. =set_state=         |                                                                         |
+    | 4. =get_player_counts= |                                                                         |
+    | 5. =player_mills=      |                                                                         |
+
+*** Class =GameOpts= (Rust)
+    :PROPERTIES:
+    :CUSTOM_ID: PID7
+    :END:
+    #+ATTR_LaTeX: :align |l|l|
+    |                  | <71>                                                                    |
+    | Method           | Notes                                                                   |
+    |------------------+-------------------------------------------------------------------------|
+    | 1. =new_game_opt=  |                                                                         |
+    | 2. =new_piece_opt= |                                                                         |
+*** Class =MillMap= (Rust)
+    :PROPERTIES:
+    :CUSTOM_ID: PID8
+    :END:
+    #+ATTR_LaTeX: :align |l|l|
+    |                             | <71>                                                                    |
+    | Method                      | Notes                                                                   |
+    |-----------------------------+-------------------------------------------------------------------------|
+    | 1. =detect_mills=           |                                                                         |
+    | 2. =detect_potential_mills= |                                                                         |
+
+*** Class =AdjacencyPositionList= (Rust)
+    :PROPERTIES:
+    :CUSTOM_ID: PID9
+    :END:
+    #+ATTR_LaTeX: :align |l|l|
+    |                | <71>                                                                    |
+    | Method         | Notes                                                                   |
+    |----------------+-------------------------------------------------------------------------|
+    | 1. =get=       |                                                                         |
+    | 2. =into_iter= |                                                                         |
+
+** Automated Test Code
+
+   There are actually a ton of automated tests in our code, but we fell extremely short of time and
+   thus failed to list any of them. To see some of our tests, simply look under
+   =nmm/lib/tests/export.js=, the twenty or so unit tests for the back-end at the end of
+   =nmm/native/base/src/lib.rs=, and so forth.
+
+   #+ATTR_LaTeX: :align |l|l|p{2.5cm}|p{2.5cm}|p{2.5cm}|l|l|
+   |            |      | Class   | Method  |             |        |           |
+   | SID & Name | ACID | Name(s) | Name(s) | Description | Status | Developer |
+   |------------+------+---------+---------+-------------+--------+-----------|
+   |            |      |         |         |             |        |           |
+** Manual Test Code 
+   
+   All manual tests before M7 are from the previous sprint and no longer accurately link to their
+   issues earlier in the documentation due to refinement changes.
+
+   *All missing tests are to still be found within the source code provided with the Sprint 2*
+   *Submission. Lack of documentation in this artifact is not lack of existence*
+
+   #+ATTR_LaTeX: :align |p{4.5cm}|c|c|c|p{3.0cm}|
+   |                                        |                    |                |        |                 |
+   | SID & Name                             | ACID               | MTID           | Status | Developer(s)    |
+   |----------------------------------------+--------------------+----------------+--------+-----------------|
+   | [[#SID2][S2]] User Input and Selection | [[#ACID2][A2.1]]   | [[#MTID1][M1]] | DONE   | Samuel, Michael |
+   | [[#SID2][S2]] User Input and Selection | [[#ACID2][A2.2]]   | [[#MTID2][M2]] | DONE   | Samuel, Michael |
+   | [[#SID5][S5]] Piece Placement          | [[#ACID5][A5.1.1]] | [[#MTID3][M3]] | DONE   | Samuel, Michael |
+   | [[#SID5][S5]] Piece Placement          | [[#ACID5][A5.1.2]] | [[#MTID4][M4]] | DONE   | Samuel, Michael |
+   | [[#SID5][S5]] Piece Placement          | [[#ACID5][A5.2.1]] | [[#MTID5][M5]] | DONE   | Samuel, Michael |
+   | [[#SID5][S5]] Piece Placement          | [[#ACID5][A5.2.2]] | [[#MTID6][M6]] | DONE   | Samuel, Michael |
+   | [[#SID3][S3]] Player Selection         | [[#ACID3][A3]]     | [[#MTID7][M7]] | DONE   | Samuel, Michael |
+   | [[#SID4][S4]] Piece Assignment         | [[#ACID4][A4]]     | [[#MTID8][M8]] | DONE   | Samuel, Michael |
+   | [[#SID7][S7]] Player Turn Assignment   | [[#ACID7][A7]]     | [[#MTID9][M9]] | DONE   | Samuel, Michael |
+   | [[#SID10][S10]] Position Movement      | [[#ACID10][A10]]   | M10            | DONE   | Samuel, Michael |
+   |                                        |                    |                |        |                 |
+   
+*** Manual Test 1
+    :PROPERTIES:
+    :CUSTOM_ID: MTID1
+    :END:
+
+    #+ATTR_LaTeX: :align |p{6.0cm}|p{4.0cm}|p{3.0cm}|
+    | Test Input            | Test Oracle        | Notes                        |
+    |-----------------------+--------------------+------------------------------|
+    | document              | function onclick() | Checks if element clickable. |
+    | .getElementById("A1") |                    |                              |
+    | .onclick              |                    |                              |
+
+*** Manual Test 2
+    :PROPERTIES:
+    :CUSTOM_ID: MTID2
+    :END:
+
+    #+ATTR_LaTeX: :align |p{6.0cm}|p{4.0cm}|p{3.0cm}|
+    | Test Input                   | Test Oracle | Notes                        |
+    |------------------------------+-------------+------------------------------|
+    | document                     | "undefined" | Checks if element clickable. |
+    | .getElementById("container") |             |                              |
+    | .onclick                     |             |                              |
+
+*** Manual Test 3
+    :PROPERTIES:
+    :CUSTOM_ID: MTID3
+    :END:
+
+    #+ATTR_LaTeX: :align |p{4.0cm}|p{6.0cm}|p{3.0cm}|
+    | Test Input | Test Oracle                | Notes                                |
+    |------------+----------------------------+--------------------------------------|
+    | "A1"       | elem.style.backgroundColor | This is a GUI test.                  |
+    |            | !== undefined              |                                      |
+    |            |                            | GUI will show piece placed in bottom |
+    |            |                            | left corner.                         |
+
+*** Manual Test 4
+    :PROPERTIES:
+    :CUSTOM_ID: MTID4
+    :END:
+
+    #+ATTR_LaTeX: :align |p{2.0cm}|p{8.0cm}|p{3.0cm}|
+    | Test Input | Test Oracle                                  | Notes                                |
+    |------------+----------------------------------------------+--------------------------------------|
+    | "A1", "A1" | "elem.style.backgroundColor === previousColor" | This is a GUI test.                  |
+    |            |                                              |                                      |
+    |            |                                              | GUI will show piece placed in bottom |
+    |            |                                              | left corner.                         |
+*** Manual Test 5
+    :PROPERTIES:
+    :CUSTOM_ID: MTID5
+    :END:
+
+    #+ATTR_LaTeX: :align |p{4.0cm}|p{6.0cm}|p{3.0cm}|
+    | Test Input | Test Oracle             | Notes                                |
+    |------------+-------------------------+--------------------------------------|
+    | "D6"       | "board === previousBoard" | This is a GUI test.                  |
+    |            |                         |                                      |
+    |            |                         | GUI will show piece placed in bottom |
+    |            |                         | left corner.                         |
+*** Manual Test 6
+    :PROPERTIES:
+    :CUSTOM_ID: MTID6
+    :END:
+
+    #+ATTR_LaTeX: :align |p{4.0cm}|p{6.0cm}|p{3.0cm}|
+    | Test Input | Test Oracle             | Notes                                |
+    |------------+-------------------------+--------------------------------------|
+    | "A1"       | "board === previousBoard" | This is a GUI test.                  |
+    |            |                         |                                      |
+    |            |                         | GUI will show piece placed in bottom |
+    |            |                         | left corner.                         |
+*** Manual Test 7
+    :PROPERTIES:
+    :CUSTOM_ID: MTID7
+    :END:
+
+    #+begin_verse
+    document.getElementsByClass("turn-button")
+    [...].includes(pieceElement)
+    Choose the turn order
+    #+end_verse
+
+*** Manual Test 8
+    :PROPERTIES:
+    :CUSTOM_ID: MTID8
+    :END:
+
+    #+begin_verse
+    document.getElementById('E4')
+    (setupFullBoard() && move('E4', 'F4')) && document.getElementById('F4').style.backgroundColor === 'blue'
+    #+end_verse
+
+*** Manual Test 8
+    :PROPERTIES:
+    :CUSTOM_ID: MTID9
+    :END:
+
+    #+begin_verse
+    document.getElementById('E4')
+    (setupFullBoard() && formMill('red') && move('E4', 'F4')) && document.getElementById('F4').style.backgroundColor === 'red'
+    #+end_verse
+
+** Other Manual Test Code
+
+   There were no other manual tests for this sprint.
+
+   #+ATTR_LaTeX: :align |c|c|c|c|c|c|c|
+   |    |            |          |       |             |        |           |
+   |    |            | Expected | Class | Method Name |        |           |
+   | ID | Test Input | Result   | Name  | of Test     | Status | Developer |
+   |----+------------+----------+-------+-------------+--------+-----------|
+   |    |            |          |       |             |        |           |
+
+* Meeting Minutes
+  :PROPERTIES:
+  :ALT_TITLE: Meeting Minutes
+  :APPENDIX: t
+  :CUSTOM_ID: S6
+  :END:
+** Meeting 2019.09.04
+   - Duration: 1 Hour
+   - Location: Miller Nichols Library
+*** Agenda
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - going over project pdf as group
+      - discussing tech stack
+      - going over sprint assignments
+      - going over normal assignments
+    - discussing the actual structure of sprint 1
+      - requirements
+      - user stories
+      - what submission might look like
+      - discussion of who gets to do what
+      - discussion of when to meet, general availability
+        - Sam will be gone from 9th through 19th
+        - Elias will be gone through the 12th - 14th
+*** project 1 report 
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - want to get scrum documentation done
+    - get general idea down by end of this friday (2019.09.06)
+      - structure of the project
+      - how to use the frameworks/libraries involved (personal research/reading
+        per individual)
+        - Neon for rust
+        - node.js
+        - potentially express.js
+    - generating cards, user stories
+** Meeting 2019.09.06
+   - Duration: 1 Hour
+   - Location: Miller Nichols Library
+*** Agenda
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - discussing game rules
+    - discussing/writing user stories
+    - discussing tooling
+    - discussing design
+*** Game Rules
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - watched a video demo'ing the game
+    - discussed/clarify mechanics
+      - whether or not to include coin flip
+      - terms of loss
+      - flying mechanic
+*** User stories
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - elias wrote user stories in a new org mode file called kanban.org on the
+      repository
+    - discussed problem of documentation given requirements from the pdf for
+      sprint 1
+    - discussed alternative means of documenting, carrying out execution of our
+      cards for the project
+*** Tooling & Design
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - did not achieve agenda, did not get to these topics because of the time
+      it took to discuss our epics/user stories.
+*** TODO 
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - [ ] discuss tooling
+      + need to finalize what our stack will look like and frameworks to be
+         used.
+      + elias has experimented with Neon and reports that it works well, seems
+         viable for the product.
+    - [ ] discuss design
+      + need to discuss how the actual product will be packaged and its
+         architecture.
+** Meeting 2019.09.27
+   - Duration: 1 Hour, 30 minutes
+   - Location: Miller Nichols Library
+*** Agenda
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - discuss project structure
+    - acceptance criteria
+    - work assignment
+    - remaining TODOs
+*** Project Structure
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - express.js has a lot of dependencies, only really need connect.js
+      + might try just using connect.js, which would be a lot simpler
+      + will continue with using Neon
+    - board
+      + gui
+        - js renders the fontend
+        - logic/data is all handled on back
+      + data structure/representation
+        + two choices:
+          1. one big board object that includes methods for both resolving where players are *and*
+             where things like mills are
+          2. two object entities, one is purely for the GUI (tracking positions on the board), the
+             other would be some kind of graph structure that allows position nodes to check peers
+             for occupation and whether it is the same or opposing players
+      + movement and move validity
+        - need to track flying
+          + proposition: flying is a universal property, merely constrained until player count is
+            reduced.
+            - need some kind of getter/setter between board and entity management system
+          + mill detection
+            - if going with entity system, would merely be a graph traversal from any given node
+            - another idea: create a mill entity system that tracks active mills and checks each
+              mill upon each turn(?) and modifies or destroys the mill as necessary.
+              + could save a lot of checking
+              + as for organization/logical membership, would keep such a mill entity system
+                independent of other objects in the system for simplicity, at least for now.
+          + Checking for attack
+            - if a mill entity system is used, we natively have a means to detect valid attacks. so
+              long as the node is not in one of the mills, do not attack *unless* all available
+              nodes are in mills.
+      + game driver
+        - Will have some kind of Game entity/manager object that drives the game event loop.
+          + will take inputs from players, run them as game moves
+            + however, internal logic to the entity management system is what will ultimately validate moves
+            + game manager will have no logic for why this happens, only passes back and for game
+              inputs and the results of moves.
+          + consequentially, need to codify where and how game validation logic happens
+      + validation logic
+        - as of now, think it will be handled by the main entity management system
+        - will have a set of logic checking methods defined over the system that verify whether a
+          given move is allowed
+*** Acceptance Criteria
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - realized we need to add numbering to the board GUI (a-g, 1-7)
+    - (deferred, Sam will begin working on before next meeting)
+*** Work Assignment
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - elias will begin on exploratory work for the backend (board, entity management, etc)
+    - sam, michael will begin exploratory work for the frontend (GUI, communicating with backend)
+*** TODO
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - [ ] kanban board setup, finalization of workflow for documentation
+      + can probably just use github for real time management, but keep organizational and notes in
+         =kanban.org= file on the repo.
+    - [ ] defining test cases for stories and acceptance criteria
+    - [ ] refining stories
+      + same case applies with above: refine stories, and put them on github's project management
+         board accordingly; actual refinement can be delegated to within =kanban.org= file.
+** Meeting 2019.10.02
+   - Duration: 1 Hour, 40 Minutes
+   - Location: Miller Nichols Library
+*** Agenda
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - addressing tagged issues generated on GitHub
+    - settling on how front-end talks to back-end
+    - documentation/design stuff
+*** Issues on GitHub
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+**** issue #3: determine communication channel between js and rust
+     - event polling seems overkill for what we need
+     - even handler on front-end which speaks to an entity ManagerGlue, which will be the JS that
+       talks to rust backend
+       + There will be a manager in the back-end, which will generate game state, and return that to
+         the front-end
+       + back-end will also have triggers (flags? Enums?) which signal to front-end when certain
+         actions are no longer needed or valid, i.e. button inputs or game state continuation
+     - JSON seems like a good enough medium for message passing between front and back components
+***** issue #4 is largely tagged to #3, so this resolves that
+      - =State=: Input Handle + BoardStruct + Trigger)
+      - =BoardState=
+        + this is what gets sent back to the JS
+        + 1D array of the =State= struct
+          - this array will be handed off as a NeonJS object, whatever it's called in neon
+          - 
+**** issue #6: Front-end/GUI Skeleton, Basic Design
+     1. Neon builds a node module
+     2. This is sent to express.js
+        - accepts it as a bunch of js functions
+     3. Express takes this, as a bunch of objects, and then saves as strings to JS files, in turn
+        statically served to end user (i.e. browser)
+        - express.js interaction is a one-off affair
+     4. Stretch goal: being able to set different themes on the front-end
+**** issue #8: CI/CD
+     - GitHub has native CI/CD now via it's Action's service.
+     - can impl for both Rust and Node.js
+*** TODO
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - [ ] Design docs(?)
+      + at least 3 needed:
+        1) event diagram
+        2) general UML diagram for total project
+        3) class hierarchy/component diagram
+** Meeting 2019.10.03
+   - Discord: 1 Hour, 53 Minutes
+   - Location: Video Call
+*** Agenda
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+     - how to branch
+     - branching basic_gui
+     - GitHub PR format
+     - styling format
+*** GitHub PR format
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+     - Show Michael how to create a branch
+     - name the branch and pull from remote
+     - push the branch from local
+     - sync branches
+     - checkout a branch
+*** Branching =basic_gui=
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+     - created a branch =basic_gui=
+     - set up an issue with the branch for PR
+     - push a commit from local to remote branch
+*** GitHub PR format
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+     - went through how to form a PR from different branches
+     - how to further commit to the compare branch
+*** Styling Format
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+     - no bootstrap, no jquery
+     - setup proper layouts for the GUI
+     - discussed how we want to handle events onclick
+*** TODO
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+     - push scaffolds for the website GUI
+     - handle basic logic for pushing items to back-end storage
+     - create mock of Rust functionality in TypeScript for further discussion
+** Meeting 2019.10.05
+   - Duration: 1 Hour, 16 Minutes
+   - Location: Video Call
+*** Agenda
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+     - CSS Grid
+     - SASS
+     - TypeScript
+     - build script compilation and runtime
+     - proper layout for GUI
+*** CSS Grid
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+     - teach Michael about CSS Grid
+     - pure CSS, not bootstrap (Elias)
+     - use columns properly
+     - no need for floats / flexbox
+*** SASS
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+     - transpiler for CSS
+     - allows nested functionality
+     - separate compiled/uncompiled folders
+     - use =watch= script to sync changes
+*** TypeScript
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+     - better able to handle equivalence mocking to Rust
+     - easy to push onto browser
+     - separate folders (see above)
+     - push to public folder for site access
+*** Build Script Compilation and Runtime
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+     - use watch and start scripts to build site
+     - separate scripts will be run for Rust beforehand
+     - build scripts allow for synced changes between folders (see above)
+*** Proper Layout for GUI
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+     - use column areas in CSS Grid
+     - main column for game
+     - nested grid for board layout (tentative)
+     - proportion text for board side-by-side
+*** TODO
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+     - design docs
+     - microcharter
+     - mocking TS => Rust
+     - event keys on front-end (browser)
+** Meeting 2019.10.06
+   - Duration: 7 hours
+   - Location: Video Call
+*** Agenda
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - Tying up loose ends with respect to documentation and write up
+    - Tying up loose ends with respect to UI/JS end of the application
+    - Discussing what is left to do with the project
+*** Documentation and Write-up
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - Figured out how to format the tables given that many of the ones provided do not play well
+      with latex/org-mode markdown
+    - Similarly, decided on how to interconnect documentation components between sections
+    - Discussed the remaining things left undocumented, particularly pair ratings.
+*** UI/JS Loose Ends
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - Complete manual testing of interacting elements
+    - Finalize positions of clickable elements on the board grid.
+    - Alternating player logic for placement of pieces.
+    - Limiting piece placement to nine.
+*** Discussing Future Sprint/Direction of Project
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - Current User Stories are pseudo-Epics and need to be refined into better User stories aside
+      from [[#SID1][S1]]. As they stand, discussing the current user stories makes for overly generic/abstract
+      discussion and doesn't meaningfully translate into logic/behavior to implement and actual
+      engineering tasks.
+    - Currently, the front end mocks all of the behavior/functionality that would otherwise be
+      provided by the backend. In sprint 2, this is where the real meat of programming will come in
+      as we learn to make the back-end and front-end interface, particularly with translating data
+      types across the FFI boundary through Neon.
+    - We need to improve the current state documentation massively.
+      + Design diagrams.
+      + Docstrings across software code base.
+      + Event diagrams.
+    - Translate the above issues into their proper documentation for the master documentation and
+      write-up file
+    - How to test more of the functionality given that a major component of this application is
+      running directly on the browser.
+** Meeting 2019.10.11
+   - Duration: 2 hour
+   - Location: Miller Nichols Library
+*** Agenda
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - review sprint 1
+      + bugs
+    - roadmap sprint 2
+      + outline what is needed
+      + setup project board
+      + issues
+      + interface between front/end
+*** Review of Sprint 1
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - GUI
+      + coordinate system
+      + testing was not fun w/ current setup
+    - backend
+      + types, not much else
+    - documentation
+      + implemented a decent workflow for putting together and compiling a documentation artifact
+        for submission
+    - complains
+      + mostly just not having enough meetings despite getting 6 of them in before deadline.
+        * had one right before submission, was clearly heavily crunch oriented.
+        * documentation was a major pain point given the ratio of code/work to actual required
+          documentation.
+*** Sprint 2 Roadmap 
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+**** bugs
+     - Wrong current player display
+     - Bad formatting of org mode files on GH
+       + won't fix bc final artifact pdf, that looks fine
+     - Bad formatting of code inputs/outputs on manual tests within tables as currently.
+**** submission requirements of Sprint 2
+     - full human player vs human player functionality
+       + piece movement
+       + piece elimination
+       + mill formation
+       + (optional) piece flying
+       + end game
+     - All proper documentation wrt to above new functionality and its implementation
+       + User story refinements
+         * side note: this is actually more sizeable then what it appears
+       + AC and respective refinements
+         * at least one manual *or* automatic
+       + all test code and documentation
+         * aside from manual/automatic requirements, all units of code should have a accompanying
+           unit test.
+**** project board (backlog/requirement refinement)
+     1. Front End -> Backend communication
+        - JS speaks to rust
+          + Struct will have a position struct and an event enum that dictates to backend what to
+            do next.
+          + let's call this object a =PushEventStruct=
+          + This represents the attempted inputs/moves of the current player
+     2. Backend -> Front end communication
+        - backend runs actual logic and validation
+        - upon receiving a =PushEventStruct=, the back-end:
+          1. Does a validation:
+             - Checks whether requested action is valid in the current game state
+             - When not valid, immediate returns:
+               1. Original =BoardStruct=
+               2. =InputHandle= -> Error that rust handles, and returns "none" to JS
+               3. =Trigger= dependent on game state transition
+          2. Game Manager handles event:
+             - Processes game events and generates resulting new game state
+          3. Back-end returns new =State=, where:
+             - =InputHandle= is =Success=
+             - =BoardStruct= is the new =State=
+             - =Trigger= of the condition of the phase is satisfied
+               + =none=
+               + =elimination=
+               + =flying=
+               + =gameover=
+     3. Proper GUI styling
+        - Add Game meta information
+          + how many pieces left for each player
+          + current phase (turn)
+          + (optional/idea) GUI indicates existing mills
+        - game menu
+          + theme options
+          + game options
+          + how to play
+        - mobile/responsive design
+**** snow plow form sprint 1
+     1. design docs
+     2. Development Workflow
+        - CI/CD with GitHub Actions
+          + CI
+            * need front-end GH Action
+            * need back-end GH Action
+            * figure out action for integration between front/back components
+        - Development environment documentation
+          + How to setup local machine to build both the front and back-end
+** Meeting 2019.10.25
+   - Duration: 2 hours
+   - Location: Miller Nichols Library
+*** Agenda
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - new project format
+    - testing
+      + server
+      + gui
+      + unit testing
+    - interop/ffi/interfaces
+      + managerGlue
+    - general development/programming
+*** Project Format
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - rust projects using neon have a default layout
+      + not friendly for testing the rust specific code
+      + similarly, not friendly for testing the node/js/front-end code not involved with rust
+        exported module
+    - solution: rust workspaces
+      + simply change top level to have cargo file with workspace member declarations
+      + well documented here: https://github.com/neon-bindings/examples/tree/master/workspace
+    - benefits:
+      + can now run rust tests independent of node/js via traditional ~cargo test~ and ~cargo check~
+      + furthermore, now have backend code organized as:
+        #+begin_verse
+        .
+        ├── Cargo.lock
+        ├── Cargo.toml
+        ├── lib
+        │   └── index.js
+        ├── native
+            ├── artifacts.json
+            ├── base
+            │   ├── Cargo.toml
+            │   └── src
+            ├── build.rs
+            ├── Cargo.toml
+            ├── index.node
+            ├── src
+            │   └── lib.rs
+            └── target
+        #+end_verse
+      + This allows us to move all logic into a sub-crate, =base=, which is private and internal to
+         the backend. An API for the module that provides the backend functionality is the only thing
+         exposed in the main ~native/src/lib.rs~ file, which is what is compiled and exported to node.
+        - i.e. we keep our code enapsulated and enforce demeter's law
+      + finally, means all integrations tests on node side only test the actual interopability logic
+        and functionality rather than any of the rust specific code and logic.
+*** Testing
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - ibid project format for overall structure's effect on testing approach
+    - server (node):
+      + no browser tests
+      + check if all functions are translated properly
+        * node functions get translated to plaintext js functions
+      + request testing
+        * extra assets (GET stuff)
+        * further research/parking lot:
+          - coop and multiple clients
+    - gui (client stuff):
+      + test functions within test module:
+        * master functions that assert all tests at instantiation
+        * i.e. when browser pulls the plain js
+        * pull from dev endpoint
+      + manual testing:
+        * automated testing on browser is pretty bad/gross
+        * getting setup not really worth it, so opting for manual tests as necessary.
+      + three layer testing (~eventPress~):
+        * log input events from divs
+        * validation testing on newly retrieved ~BoardState~
+    - unit testing:
+      + *reminder*: 1:1 ratio between functions and tests at minimum, 2:3 ideally
+      + rust is pretty straight forward, built in as first class feature.
+        * managerGlue
+          - dedicated interop testing
+          - mutation of state from rust
+          - this is probably going to mocking
+*** Interop/FFI/Interface
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - rust -> neon -> index.node -> yields an array of exports, i.e. ~register_module!~
+    - managerGlue
+      + pulls rust functions into script source, i.e. require
+      + completely server side
+      + browser does not support at current level
+        * node has a virtual dom representation that browsers simply don't support
+        * this is why node gets trans to strings, saved as asset/js,  and pulled into browser
+*** TODO action items
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - refine user stories generally
+      + currently are epic-y, need to be more specific and decomposable
+    - Generate acceptance criterions from new refinements + issues discussed in today's meeting
+      + add as items to issues/sprint 2 board on GH
+** Meeting 2019.11.01
+   - duration: 2 hours
+   - Location: Miller Nichols Library
+*** Agenda
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+     - updates on back-end
+     - discuss change of server structure
+     - code review
+     - refinement user stories
+     - refinement acceptance criteria
+     - matching browser to server requirements
+*** Back-end Updates
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - made a [[https://github.com/amadeusine/CS449GroupProject/issues/22][tracking issue]] on GH for all requirements of sprint2 with respect to back-end
+    - consists of multiple tasks derived from acceptance criterion and user story relevant to
+      game board
+      + #23: align back-end types with front-end types due to requirement changes (DONE)
+      + #28: add file reader utility (DONE)
+      + #24: exporting rust types to js equivs (Nearly done)
+      + #25: importing js types to rust equivs (TODO)
+      + #26: game validation logic (#)
+    - *NOTE about game movement*
+      * No longer have PieceSwitch/PieceMove enums.
+      * Instead, option will yield a player and a position
+      * backend will know from gamestate whether this is a piece moving OUT or INTO a position
+      * will check accordingly
+*** Server Structure Changes
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - Four changes coming out:
+      1. break out static files from server
+         - tightly coupled with server currently
+         - as if local app
+      2. adding 3 endpoints for:
+         - logic
+         - theme
+         - setup: (reach stuff for sprint3)
+      3. new structures and classes (issue #31)
+         - client connection class
+           + browser & networking validation
+           + putting in place design necessary to allow program to be extended to client-client
+             interactions
+           + separation of game and web-server
+         - onclick request (Browser side)
+           + setup structure for binding between browser and server, 1:1
+           + each event calls back to browser's main function for getRequest
+             * send off payload to server, which sends to rust module export
+         - browser needs its own board manager, separate from ManagerGlue
+           + allows for state to be accepted on browser side
+         - BoardReceptor (server)
+           + scaffold for endpoint components
+           + allows browser to hit endpoints/communicate with server
+*** Code Review
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - documented in sprint2_writeup.org
+*** Matching Browser-Server Reqs
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - Reference: server structure changes list item 3
+    - triggers are sent from server to browser
+      + new components are entered on display
+        * menu item
+        * removal of input during player's turn, on opponent
+        * game over
+        * restart
+*** TODO
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - refinement (grooming) of US, AC, and tasks.
+** Meeting 2019.11.02
+   - Duration: 2 hour
+   - Location: Voice Chat
+*** Agenda
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+ - refactor server templating
+ - add endpoints
+ - revise UI
+*** Refactor Server Templating
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+     - board grid elements can be iterated
+     - colors can be templated
+     - tests can be separated
+     - scripts can be separated
+*** Add Endpoints
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+     - see last meeting (endpoint list)
+     - logic receives payload, returns native response
+     - BoardReceptor now implied, soon to be implemented (sprint #3)
+     - error component templates on bad payload
+*** Revise UI
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+     - Figma for design mockups
+     - Get menu bar up and running (Michael)
+     - Reconfigure game site layout
+     - information page?
+*** TODO
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+     - add final endpoints for talkback
+     - browser's `Window`/`Board` needs HTTP adhesion to server
+     - design reconfiguration
+** Meeting 2019.11.03
+   - Duration: 7 hour
+   - Location: Voice Chat
+*** agenda
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - Blitzing remaining issues
+    - Blitzing documentation
+*** Remaining Issues
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - Mocking final game logic with typescript
+    - Adding tests
+    - Definition of Done: Hit all story points that have been listed thus far.
+*** Blitzing Documentation
+    :PROPERTIES:
+    :UNNUMBERED: t
+    :END:
+    - Updating all tables
+    - Fixing formatting on code review tables
+    - Adding new meeting minutes
+** meeting 2019.11.08
+   - Duration: 1 hour
+   - Location: Miller Nichols Library
+*** agenda
+    - stubs
+    - fix sprint 2 report
+    - integration js x rust
+*** stubs
+    - (Sam): JS Integration Stubs will be written, PR
+    - (Sam): Game logic compatibility between mock and rust, PR
+      + checks logic between what is being tested out of rust and what is being mocked
+      + See rust unit test code
+    - Tests between client-server interaction
+*** fix sprint 2 report
+    - updated us/ac table statuses
+    - added us stories for AI feature
+*** integration
+    - makefile/development script for building neon module then running server against it
+    - semaphore CI for repo is up
+    - adjust js functions to reflect naming scheme in exported module
+    - integration (poll/get_curr_state functions) on event loop
+*** TODO
+    - add AC for AI
+    - add descriptions for AI US
+    - add impl tasks stubs to reflect stubs in stub section
+    - (all things missed in sprint 2 docs)
+    - diagram event loop
+** Meeting 2019.11.15
+   - Duration: 2 hour
+   - Location: Miller Nichols Library
+*** Agenda
+    - Review
+    - Diagram
+    - AC
+*** Review
+    - Elias
+      - Finished interface between front and back-end (PR #35)
+      - Finished refactoring of interface API (PR #44)
+      - Finished part 1 of Game Logic Validation #26 (PR #42)
+      - Started part 2 of Game Logic Validation #26 (PR #45)
+    - Sam
+      - Added mocks to master (PR #41)
+      - Worked on server testing
+      - Worked on board receptor, i.e. server endpoints
+    - Michael 
+      - Began working on options menu UI
+      - Refactored templating for turn based play
+*** Diagram
+    - Event Loop
+      - Game state
+      - Call backs
+    - Class Structure
+      - Front end
+      - Back end
+    - Architecture diagram
+      - i.e. how everything plugs in
+    - *proceeded to draw these things*
+*** AC
+    - didn't get to it
+*** TODO
+    - AC!
+    - Documenting all the changes done thus far instead of waiting until submission time!
+** Meeting 2019.12.06
+   - Duration: 2 Hour
+   - Location: Miller Nichols Library
+*** Agenda
+    - Finalizing AI logic
+    - Presentation preparation
+    - Finalizing UI stuff
+*** AI Logic
+    - Attacking and piece placement behavior
+      + Choosing intelligently
+      + Blocking "potential" enemy mills by searching board space for 2 sequential pieces
+    - Move validation, verification
+    - Integration into polling
+*** Presentation
+    - Slides
+    - Material to discuss
+* Team Ratings
+  :PROPERTIES:
+  :CUSTOM_ID: S7
+  :END:
+  Submission document does not specify scale, so it is assumed out of 5 with 1 being "Worst" and 5
+  being "Excellent".
+
+  #+ATTR_LaTeX: :align |c|c|c|c|
+  |---------------------------+---------------------------+---------------+---------------------|
+  |                           | Elias Julian Marko Garcia | Michael Sy Cu | Samuel Chia Ern Lim |
+  |---------------------------+---------------------------+---------------+---------------------|
+  | Elias Julian Marko Garcia |                         - |             5 |                   5 |
+  |---------------------------+---------------------------+---------------+---------------------|
+  | Michael Sy Cu             |                         5 |             - |                   5 |
+  |---------------------------+---------------------------+---------------+---------------------|
+  | Samuel Chia Ern           |                         5 |             5 |                   - |
+  |---------------------------+---------------------------+---------------+---------------------|
+  | Average                   |                         5 |             5 |                   5 |
+  |---------------------------+---------------------------+---------------+---------------------|
+
+

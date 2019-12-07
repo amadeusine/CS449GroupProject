@@ -1,0 +1,260 @@
+% Created 2019-12-06 Fri 14:28
+% Intended LaTeX compiler: xelatex
+\documentclass[allowframebreaks]{beamer}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\usepackage{fontspec}
+\setmonofont{Fira Code}[
+Contextuals={Alternate}
+]
+\usepackage{lstfiracode}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{listings-rust}
+\usepackage[backend=bibtex, style=numeric, autocite=superscript]{biblatex}
+\bibliographystyle{acm}
+\bibliography{parsers.bib}
+\lstset{language=Rust,style=colouredRust, style=FiraCodeStyle,basicstyle=\ttfamily}
+\usetheme[progressbar=head]{metropolis}
+\author{Samuel Lim, Michael Cu, Elias Garcia}
+\date{2019.12.06}
+\title{Sprint \#3Presentation}
+\subtitle{CS449}
+\setmainfont{Fira Code}
+\setbeamertemplate{section in toc}[sections numbered]
+\hypersetup{
+ pdfauthor={Samuel Lim, Michael Cu, Elias Garcia},
+ pdftitle={Sprint \#3Presentation},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 26.3 (Org mode 9.1.9)}, 
+ pdflang={English}}
+\begin{document}
+
+\maketitle
+\begin{frame}{Outline}
+\tableofcontents
+\end{frame}
+
+\section{Project Summary}
+\label{sec:orgb8f1dd0}
+\begin{frame}[label={sec:orgcde1358}]{Top Level}
+\begin{itemize}
+\item Nine Men's Morris in the browser
+\item Front-end delivers static HTML/CSS and handles user input
+\item Back-end drives game logic
+\end{itemize}
+\end{frame}
+\begin{frame}[label={sec:orgc77ff86}]{Front-End}
+\begin{itemize}
+\item Delivered statically via:
+\begin{itemize}
+\item Node.js sever
+\item Browser events target API endpoints
+\item Express.js pulls the engine
+\item Use EJS for templating
+\end{itemize}
+\end{itemize}
+\end{frame}
+\begin{frame}[label={sec:org464cedc}]{Back-End}
+\begin{itemize}
+\item Back-end is game logic and heavy lifting
+\begin{itemize}
+\item Written entirely in \href{https://www.rust-lang.org/}{Rust}, a systems programming language
+\item Use Neon library to interop with Node.js
+\item Compile time guarantees for:
+\begin{itemize}
+\item Memory safety
+\item Data race safety
+\item Type Safety
+\item FFI behavior
+\end{itemize}
+\item In addition to being as fast as C++!
+\end{itemize}
+\end{itemize}
+\end{frame}
+\section{Sprint 3 Goals}
+\label{sec:orgb3ef0ef}
+\begin{frame}[fragile,label={sec:orgf6c4e28}]{Finish Front \texttt{<->} Back Communication}
+ \begin{itemize}
+\item Sprint 1 left us with Rust defined types and a mocked front-end for rendering
+\item Sprint 2 left us with a working back-end and front-end that could talk
+\begin{itemize}
+\item JS had no means of communicating to back-end, same goes for back-end to front-end.
+\item Neon library allows Rust to compile into actual node module that can be used by JS
+\end{itemize}
+\item Needed to put together
+\end{itemize}
+\end{frame}
+\begin{frame}[label={sec:org96a3364}]{AI}
+\begin{itemize}
+\item Create basic functionality of a game AI
+\begin{itemize}
+\item take turns
+\item at least somewhat intelligently, preferably
+\end{itemize}
+\end{itemize}
+\end{frame}
+\begin{frame}[label={sec:orgd12d0ab}]{Polish Off Front-end}
+\begin{itemize}
+\item UI Theme
+\item Board layout improvement
+\end{itemize}
+\end{frame}
+\begin{frame}[label={sec:org17dd706}]{Get ready for Web Sockets}
+\begin{itemize}
+\item Separate web-server from game logic itself
+\item Drive game logic based on requests/responses over API endpoints
+\item Structure of project allows game to be played over web, over any device
+\end{itemize}
+\end{frame}
+\section{Sprint 3 Results}
+\label{sec:org24986a8}
+\begin{frame}[label={sec:orga5fc01f}]{Issues resolved}
+\begin{block}{The final issues were finished:}
+\begin{itemize}
+\item Proper back-end game validation
+\begin{itemize}
+\item Piece Placement
+\item Moves
+\item Attacking
+\end{itemize}
+\end{itemize}
+\end{block}
+\begin{block}{Relevant PR's:}
+\begin{itemize}
+\item \href{https://github.com/amadeusine/CS449GroupProject/pull/42}{\#42 Game Logic, Part 1}
+\href{https://github.com/amadeusine/CS449GroupProject/issues/43}{\#43 Change Poll API}
+\item \href{https://github.com/amadeusine/CS449GroupProject/pull/45}{\#45 Game Logic, Part 2}
+\item \href{https://github.com/amadeusine/CS449GroupProject/pull/46}{\#46 AI Logic}
+\end{itemize}
+\end{block}
+\end{frame}
+\begin{frame}[fragile,allowframebreaks, label=]{Front \texttt{<->} Back Done}
+ \begin{block}{API finalized}
+\begin{itemize}
+\item \texttt{Manager} type makes the API over FFI
+\begin{itemize}
+\item \texttt{poll} the back-end with the \texttt{options} and \texttt{type} of the move being made
+\item checks whether is correct, or not, and returns result
+\end{itemize}
+\item Internally, \texttt{Manager} engages with \texttt{GameState} and \texttt{GameOpt}, which are the major \alert{internal} API
+interfaces of the back-end.
+\begin{itemize}
+\item Only these entities have direct access to things like \texttt{Board}, \texttt{Coord}, \texttt{PositionStatus}, and
+other primitive types.
+\end{itemize}
+\end{itemize}
+\end{block}
+\begin{block}{Types cross FFI}
+\begin{itemize}
+\item Successfully convert from Rust \texttt{->} JS and JS \texttt{->} Rust
+\begin{itemize}
+\item neon provides a \texttt{define\_types!} macro that provides convenient syntactic sugar for defining
+what gets publicly exposed to Node.
+\item \alert{everything else defined stays private to node!}
+\end{itemize}
+\end{itemize}
+\end{block}
+\begin{block}{Integration Tests}
+\begin{itemize}
+\item Use Mocha and Chai within Node to pull in and check the exports and logic provided by the
+compiled Rust crate.
+\begin{itemize}
+\item Construct mock values, pass to generated rust code, and check functionality.
+\end{itemize}
+\item \alert{Isolates the testing logic} between what the front-end needs to worry about vs what the
+back-end need to worry about.
+\begin{itemize}
+\item Runs separate from the unit tests internal to rust module!
+\item Truly separated concerns and modulation of program logic.
+\end{itemize}
+\end{itemize}
+\end{block}
+\end{frame}
+\begin{frame}[label={sec:org71c50b8}]{Front-end finished}
+\begin{itemize}
+\item Add endpoints on `dev-express-js` to specialise client-server communication
+\item Browser has board receptors that work both on Web Socket and direct server messages
+\item Separating concerns between client and server, where we can now style and switch out game logic
+accordingly
+\item Integration testing from above (Mocha/Chai) is now being extended to serving logic
+\end{itemize}
+\end{frame}
+\begin{frame}[label={sec:orgba55666}]{Ready for Web Sockets}
+\begin{itemize}
+\item WS (game server established) -> Node (web server dispatcher)
+\item we can extend the game to online multiplayer
+\item Browser/server supports this, clients can play against one another
+\item Where the three-tier separation scales
+\begin{itemize}
+\item Faster computation on native module can push directly to WS
+\item Clients can interact with each other's GUI without nasty artifacting from server-server talkback
+\end{itemize}
+\end{itemize}
+\end{frame}
+\section{Sprint 3 Lessons}
+\label{sec:orge424a50}
+\begin{frame}[label={sec:org18db658}]{Planning time better}
+\begin{itemize}
+\item Kind of a toss up because of other commitments and classes
+\item Particularly with sprint 3, brutal for some of us
+\end{itemize}
+\end{frame}
+\begin{frame}[label={sec:org702f4ba}]{Documenting Changes}
+\begin{itemize}
+\item Didn't write sprint 3 writeup artifact as development occurred, rushed all at the end.
+\item Would be a lot smarter next time to writeup as we develop.
+\begin{itemize}
+\item Lesson was not learned from sprint 2
+\item said same thing last time
+\end{itemize}
+\end{itemize}
+\end{frame}
+\begin{frame}[label={sec:orgf6c04ee}]{Massive churn can still happen}
+\begin{itemize}
+\item Back-end saw probably around \textasciitilde{}1.5K LOC change over sprint 3
+\begin{itemize}
+\item I am not happy
+\item I am not well rested
+\item I am not chill
+\end{itemize}
+\end{itemize}
+\end{frame}
+\section{Future Improvements}
+\label{sec:orgc94ef9d}
+\begin{frame}[label={sec:orgf9f68af}]{Optimizations}
+\begin{itemize}
+\item Lots of low hanging fruit:
+\begin{itemize}
+\item back-end: excessive heap allocations
+\item front-end: more player options, back-menu
+\end{itemize}
+\end{itemize}
+\end{frame}
+\begin{frame}[label={sec:orga56bf2a}]{Game AI}
+\begin{itemize}
+\item Behavior
+\begin{itemize}
+\item simple search currently
+\item search state space for better moves in future
+\end{itemize}
+\end{itemize}
+\end{frame}
+\begin{frame}[label={sec:org4e7752f}]{Implement Web Sockets}
+\begin{itemize}
+\item Major stretch goal: play across browsers.
+\item Need to figure out server hosting and communication between possibly multi-threaded processes
+\item Have all infrastructure in place between rust and node
+\end{itemize}
+\end{frame}
+\end{document}
