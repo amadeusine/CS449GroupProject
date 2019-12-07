@@ -571,4 +571,38 @@
     - add impl tasks stubs to reflect stubs in stub section
     - (all things missed in sprint 2 docs)
     - diagram event loop
-
+** Meeting 2019
+   - Duration: 2 hour
+   - Location: Miller Nichols Library
+*** Agenda
+    - Review
+    - Diagram
+    - AC
+*** Review
+    - Elias
+      - Finished interface between front and back-end (PR #35)
+      - Finished refactoring of interface API (PR #44)
+      - Finished part 1 of Game Logic Validation #26 (PR #42)
+      - Started part 2 of Game Logic Validation #26 (PR #45)
+    - Sam
+      - Added mocks to master (PR #41)
+      - Worked on server testing
+      - Worked on board receptor, i.e. server endpoints
+    - Michael 
+      - Began working on options menu UI
+      - Refactored templating for turn based play
+*** Diagram
+    - Event Loop
+      - Game state
+      - Call backs
+    - Class Structure
+      - Front end
+      - Back end
+    - Architecture diagram
+      - i.e. how everything plugs in
+    - *proceeded to draw these things*
+*** AC
+    - didn't get to it
+*** TODO
+    - AC!
+    - Documenting all the changes done thus far instead of waiting until submission time!
