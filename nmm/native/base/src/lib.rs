@@ -4,7 +4,9 @@
 // ToString Needs to be in scope, do not believe the linter's lies.
 use std::string::ToString;
 use std::{cell::RefCell, collections::HashMap, rc::Rc};
-use strum_macros::Display;
+use strum_macros::{AsRefStr, Display};
+
+use enum_map::{enum_map, Enum, EnumMap};
 
 mod util;
 
@@ -14,7 +16,7 @@ pub enum Player {
     PlayerTwo,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Hash, Eq, Display)]
+#[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Hash, Eq, Display, Enum)]
 enum XCoord {
     A,
     B,
@@ -25,7 +27,7 @@ enum XCoord {
     G,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Hash, Eq, Display)]
+#[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Hash, Eq, Display, Enum)]
 enum YCoord {
     One = 1,
     Two = 2,
@@ -36,26 +38,55 @@ enum YCoord {
     Seven = 7,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Display, Enum, AsRefStr)]
+enum MillXY {
+    A1,
+    A4,
+    A7,
+    B2,
+    B6,
+    C3,
+    C5,
+    D1,
+    D5,
+    E3,
+    E4,
+    F2,
+    G1,
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Hash, Eq)]
 pub struct Coord(XCoord, YCoord);
 
-type Adjacents = Option<Rc<RefCell<Position>>>;
+type Position = Option<Rc<RefCell<PositionNode>>>;
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct AdjacentPositionList(HashMap<Coord, PositionList>);
 
 #[derive(Debug, Clone, PartialEq, PartialOrd)]
-struct Position {
-    position: Coord,
-    peers: Vec<Adjacents>,
-    occupied: Option<Player>,
+pub struct PositionNode {
+    data: Coord,
+    next: Position,
+}
+
+#[derive(Debug, Clone, PartialEq, PartialOrd)]
+pub struct PositionList {
+    head: Position,
+    tail: Position,
+    pub length: u64,
 }
 
 #[derive(Debug, Clone, PartialEq, PartialOrd)]
 struct Mill {
-    Owner: Player,
-    Pieces: (Position, Position, Position),
+    owner: Player,
+    pieces: [Coord; 3],
 }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct PositionStatus(bool, Option<Player>);
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct MillMap(EnumMap<MillXY, ([Coord; 3], Option<[Coord; 3]>)>);
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Board(HashMap<Coord, PositionStatus>);
@@ -64,6 +95,15 @@ pub struct Board(HashMap<Coord, PositionStatus>);
 pub enum Handle {
     Ok,
     Err,
+}
+
+#[derive(Debug, Clone, Copy, PartialOrd, PartialEq, Display)]
+pub enum PollError {
+    CantAttackMill,
+    InvalidPosition,
+    NotPlayersTurn,
+    NoMillForAttack,
+    AttackingSelf,
 }
 
 #[derive(Debug, Clone, Copy, PartialOrd, PartialEq, Display)]
@@ -83,7 +123,9 @@ pub struct GameState {
     handle: Handle,
     trigger: Trigger,
     board: Board,
-    mills: Vec<Mill>,
+    adj_positions: AdjacentPositionList,
+    mills: MillMap,
+    curr_mills: Vec<Mill>,
     p1_count: (u32, u32),
     p2_count: (u32, u32),
     switch_move: bool,
@@ -104,9 +146,10 @@ pub struct GameOpts {
     position: Option<Coord>,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 struct ActionResult {
     sender: Player,
+    board: Board,
     position: Coord,
     // Just want to get this going, will impl later.
     trigger: Trigger,
@@ -180,6 +223,11 @@ impl PositionStatus {
     fn occupied(&self) -> bool {
         self.0
     }
+
+    fn player(&self) -> Option<Player> {
+        self.1
+    }
+
     fn as_tuple(&self) -> (bool, Option<Player>) {
         (self.0, self.1)
     }
@@ -195,6 +243,7 @@ impl Coord {
     fn new(x: XCoord, y: YCoord) -> Self {
         Coord(x, y)
     }
+
     pub fn from_str(s: &str) -> Coord {
         let mut chars = s.chars();
         if let Some(x) = chars.next() {
@@ -212,13 +261,228 @@ impl Coord {
     }
 }
 
+impl MillXY {
+    fn from_coord(c: Coord) -> MillXY {
+        match c {
+            Coord(XCoord::A, YCoord::One) => MillXY::A1,
+            Coord(XCoord::A, YCoord::Four) => MillXY::A4,
+            Coord(XCoord::A, YCoord::Seven) => MillXY::A7,
+            Coord(XCoord::B, YCoord::Two) => MillXY::B2,
+            Coord(XCoord::B, YCoord::Six) => MillXY::B6,
+            Coord(XCoord::C, YCoord::Three) => MillXY::C3,
+            Coord(XCoord::C, YCoord::Five) => MillXY::C5,
+            Coord(XCoord::D, YCoord::One) => MillXY::D1,
+            Coord(XCoord::D, YCoord::Five) => MillXY::D5,
+            Coord(XCoord::E, YCoord::Three) => MillXY::E3,
+            Coord(XCoord::E, YCoord::Four) => MillXY::E4,
+            Coord(XCoord::F, YCoord::Two) => MillXY::F2,
+            Coord(XCoord::G, YCoord::One) => MillXY::G1,
+            _ => panic!("Invalid Coord passed to MillXY::from_coord()"),
+        }
+    }
+}
+
+impl PositionNode {
+    fn new(xy: Coord, next: Position) -> Rc<RefCell<PositionNode>> {
+        Rc::new(RefCell::new(PositionNode {
+            data: xy,
+            next: next,
+        }))
+    }
+}
+
+impl PositionList {
+    fn new_empty() -> Self {
+        PositionList {
+            head: None,
+            tail: None,
+            length: 0,
+        }
+    }
+    fn new_from_vec(head: Coord, ls: Vec<Coord>) -> Self {
+        let mut pl = PositionList::new_empty();
+        pl.append(head);
+
+        // shoutout to rust iters for not blowing up on empty.
+        for c in &ls[1..] {
+            pl.append(*c)
+        }
+        pl
+    }
+
+    fn append(&mut self, pos: Coord) {
+        let new_pos = PositionNode::new(pos, None);
+        match self.tail.take() {
+            Some(p) => p.borrow_mut().next = Some(new_pos.clone()),
+            _ => self.head = Some(new_pos.clone()),
+        };
+        self.length += 1;
+        self.tail = Some(new_pos);
+    }
+
+    // get_head(&self) -> & {
+    //     unimplemented!()
+    // }
+}
+
+pub struct AdjacencyIterator {
+    current: Position,
+}
+impl AdjacencyIterator {
+    fn new(start: Position) -> AdjacencyIterator {
+        AdjacencyIterator { current: start }
+    }
+}
+
+impl Iterator for AdjacencyIterator {
+    type Item = PositionNode;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        let curr = &self.current;
+        let mut result = None;
+        self.current = match curr {
+            Some(ref curr) => {
+                let curr = curr.borrow();
+                result = Some(curr.clone());
+                curr.next.clone()
+            }
+            _ => None,
+        };
+
+        result
+    }
+}
+
+impl IntoIterator for PositionList {
+    type Item = PositionNode;
+    type IntoIter = AdjacencyIterator;
+
+    fn into_iter(self) -> Self::IntoIter {
+        AdjacencyIterator { current: self.head }
+    }
+}
+
+impl<'a> IntoIterator for &'a AdjacentPositionList {
+    type Item = (&'a Coord, &'a PositionList);
+    type IntoIter = ::std::collections::hash_map::Iter<'a, Coord, PositionList>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.0.iter()
+    }
+}
+
+impl AdjacentPositionList {
+    fn get(&self, xy: &Coord) -> Option<&PositionList> {
+        match &self.0.get(xy) {
+            Some(pl) => Some(pl),
+            None => None,
+        }
+    }
+
+    fn is_adjacent(&self, positions: &Vec<Coord>, player_move: &Coord) -> bool {
+        // please forgive me, i know this is not how one would write this.
+        for (xy, pl) in self.into_iter() {
+            if positions.contains(xy) {
+                // pl.into_iter().any(|node| node.data == *player_move)
+                for node in pl.into_iter() {
+                    if node.data == *player_move {
+                        return true;
+                    }
+                }
+            }
+        }
+        false
+    }
+}
+
+impl Default for AdjacentPositionList {
+    fn default() -> Self {
+        let mut apl: HashMap<Coord, PositionList> = HashMap::new();
+
+        let vec_of_vec_coords = util::get_adjacency_vec("default.txt");
+        for coord_vec in vec_of_vec_coords {
+            let xy = match coord_vec.first() {
+                Some(c) => c,
+                None => panic!("Empty vec in Vec<Vec<Coord>> returned by `get_adjacency_vec`"),
+            };
+
+            apl.insert(*xy, PositionList::new_from_vec(*xy, coord_vec));
+        }
+        AdjacentPositionList(apl)
+    }
+}
+
+impl Default for MillMap {
+    #[rustfmt::skip]
+    fn default() -> Self {
+        MillMap(
+            enum_map! {
+            // It doesn't matter what order the mills are inserted in the tuple, but I organize this
+            // nasty declaration with the row mill being first when a MillXY is assoc with 2 mills.
+            // Otherwise, the non-option array is whatever mill a MillXY assoc with, whether row
+            // or col
+            MillXY::A1 => ([Coord::from_str("A1"), Coord::from_str("D1"), Coord::from_str("G1")],
+                           Some([Coord::from_str("A1"), Coord::from_str("A4"), Coord::from_str("A7")])),
+            MillXY::A4 => ([Coord::from_str("A4"), Coord::from_str("B4"), Coord::from_str("C4")], None),
+            MillXY::A7 => ([Coord::from_str("A7"), Coord::from_str("D7"), Coord::from_str("G7")], None),
+            MillXY::B2 => ([Coord::from_str("B2"), Coord::from_str("D2"), Coord::from_str("F2")],
+                           Some([Coord::from_str("B2"), Coord::from_str("B4"), Coord::from_str("B6")])),
+            MillXY::B6 => ([Coord::from_str("B6"), Coord::from_str("D6"), Coord::from_str("F6")], None),
+            MillXY::C3 => ([Coord::from_str("C3"), Coord::from_str("D3"), Coord::from_str("E3")],
+                           Some([Coord::from_str("C3"), Coord::from_str("C4"), Coord::from_str("C5")])),
+            MillXY::C5 => ([Coord::from_str("C5"), Coord::from_str("D5"), Coord::from_str("E5")], None),
+            MillXY::D1 => ([Coord::from_str("D1"), Coord::from_str("D2"), Coord::from_str("D3")], None),
+            MillXY::D5 => ([Coord::from_str("D5"), Coord::from_str("D6"), Coord::from_str("D7")], None),
+            MillXY::E3 => ([Coord::from_str("E3"), Coord::from_str("E4"), Coord::from_str("E5")], None),
+            MillXY::E4 => ([Coord::from_str("E4"), Coord::from_str("F4"), Coord::from_str("G4")], None),
+            MillXY::F2 => ([Coord::from_str("F2"), Coord::from_str("F4"), Coord::from_str("F6")], None),
+            MillXY::G1 => ([Coord::from_str("G1"), Coord::from_str("G4"), Coord::from_str("G7")], None),
+        })
+    }
+}
+
+impl MillXY {
+    fn as_coord(&self) -> Coord {
+        Coord::from_str(self.as_ref())
+    }
+}
+
+impl MillMap {
+    fn detect_mills(&self, player_pos: &Vec<Coord>) -> Vec<[Coord; 3]> {
+        let mut player_mills = vec![];
+
+        for (xy, mills) in self.0.iter() {
+            if player_pos.contains(&Coord::from_str(xy.as_ref())) {
+                let _ = match mills {
+                    (mill, Some(opt_mill)) => {
+                        if mill.iter().all(|c| player_pos.contains(c)) {
+                            player_mills.push(*mill);
+                        }
+                        if opt_mill.iter().all(|c| player_pos.contains(c)) {
+                            player_mills.push(*opt_mill);
+                        }
+                    }
+                    (mill, None) => {
+                        if mill.iter().all(|c| player_pos.contains(c)) {
+                            player_mills.push(*mill);
+                        }
+                    }
+                };
+            }
+        }
+        player_mills
+    }
+}
+
+impl Mill {
+    fn contains(&self, xy: &Coord) -> bool {
+        self.pieces.contains(xy)
+    }
+}
+
 impl Board {
     pub fn new() -> Self {
         Board::default()
-    }
-
-    fn update(&mut self, k: Coord, v: PositionStatus) {
-        self.0.insert(k, v);
     }
 
     pub fn len(&self) -> u32 {
@@ -228,8 +492,8 @@ impl Board {
     pub fn get(&self, xy: &Coord) -> Option<&PositionStatus> {
         self.0.get(xy)
     }
-    pub fn set(&mut self, xy: Coord, player: Player) -> Option<PositionStatus> {
-        self.0.insert(xy, PositionStatus::from(player))
+    pub fn set(&mut self, xy: Coord, player: Player) {
+        self.0.insert(xy, PositionStatus::from(player));
     }
 
     fn unset(&mut self, xy: &Coord) {
@@ -306,9 +570,16 @@ impl Default for Board {
 }
 
 impl ActionResult {
-    fn new(sender: Player, position: Coord, handle: Handle, trigger: Trigger) -> Self {
+    fn new(
+        sender: Player,
+        board: Board,
+        position: Coord,
+        handle: Handle,
+        trigger: Trigger,
+    ) -> Self {
         ActionResult {
             sender: sender,
+            board: board,
             position: position,
             handle: handle,
             trigger: trigger,
@@ -329,11 +600,18 @@ impl GameState {
             handle: Handle::Ok,
             trigger: Trigger::None,
             board: Board::default(),
-            mills: vec![],
+            adj_positions: AdjacentPositionList::default(),
+            mills: MillMap::default(),
+            curr_mills: vec![],
             p1_count: (0, 9),
             p2_count: (0, 9),
             switch_move: false,
         }
+    }
+
+    fn set_state(&mut self, handle: Handle, trigger: Trigger) {
+        self.handle = handle;
+        self.trigger = trigger;
     }
 
     fn get_handle(&self) -> Handle {
@@ -348,27 +626,68 @@ impl GameState {
         self.board.clone()
     }
 
-    fn get_player_pieces(&self) -> ((Player, u32), (Player, u32)) {
-        let mut p1 = 0;
-        let mut p2 = 0;
-        // I don't know why this works but
-        // for (_, pos) in &self.board.into_iter() doesn't. Should ask someone abou this.
-        let board = &self.board;
-        for (_, pos) in board.into_iter() {
-            if pos.occupied() {
-                match pos.1.as_ref() {
-                    Some(Player::PlayerOne) => p1 += 1,
-                    Some(Player::PlayerTwo) => p2 += 1,
-                    None => continue,
-                }
-            }
-        }
-
-        ((Player::PlayerOne, p1), (Player::PlayerTwo, p2))
+    fn get_player_counts(&self) -> ((u32, u32), (u32, u32)) {
+        (self.p1_count, self.p2_count)
     }
 
     fn set_switch(&mut self, b: bool) {
         self.switch_move = b;
+    }
+
+    fn get_player_positions(&self, player: &Player) -> Vec<Coord> {
+        let mut positions = vec![];
+        for (xy, pos) in &self.board {
+            match (*pos).as_tuple() {
+                (true, Some(p)) if p == player => positions.push(*xy),
+                (true, _) => panic!("matched PositionStatus true with None in find_mills"),
+                (false, _) => continue,
+            }
+        }
+        positions
+    }
+
+    fn update_mills(&mut self) {
+        let mut p1_positions: Vec<Coord> = vec![];
+        let mut p1_mills = vec![];
+        let mut p2_positions: Vec<Coord> = vec![];
+        let mut p2_mills = vec![];
+
+        for (xy, pos) in &self.board {
+            match (*pos).as_tuple() {
+                (true, Some(p)) if p == Player::PlayerOne => p1_positions.push(*xy),
+                (true, Some(_)) => p2_positions.push(*xy),
+                (true, _) => panic!("matched PositionStatus true with None in find_mills"),
+                (false, _) => continue,
+            }
+        }
+        if p1_positions.len() > 2 {
+            for mill in self.mills.detect_mills(&p1_positions) {
+                p1_mills.push(Mill {
+                    owner: Player::PlayerOne,
+                    pieces: mill,
+                })
+            }
+        }
+        if p2_positions.len() > 2 {
+            for mill in self.mills.detect_mills(&p2_positions) {
+                p2_mills.push(Mill {
+                    owner: Player::PlayerOne,
+                    pieces: mill,
+                })
+            }
+        }
+
+        p1_mills.append(&mut p2_mills);
+        self.curr_mills.clear();
+        self.curr_mills.append(&mut p1_mills);
+    }
+
+    fn player_mills(&self, player: &Player) -> Vec<Mill> {
+        self.curr_mills
+            .clone()
+            .into_iter()
+            .filter(|mill| mill.owner == *player)
+            .collect()
     }
 }
 
@@ -433,8 +752,6 @@ impl Manager {
     }
 
     pub fn poll(&mut self, opts: GameOpts) -> (Handle, Trigger, Board) {
-        // Grabbing this in case of failed poll operation to return.
-        let prev_board = self.get_board();
         // Get what we need out of the GameOpts struct.
         let (move_coord, curr_player) = self.setup(&opts);
 
@@ -442,7 +759,9 @@ impl Manager {
         self.validate(&move_coord, &curr_player);
         // TODO: generate action result, whether in validate, a method called within validate, etc
         // TODO: Add action result to history after deciding where to generate it
-        (Handle::Ok, Trigger::None, Board::default())
+        self.set_result();
+        self.add_result_to_history(&curr_player, &move_coord);
+        self.get_curr_state()
     }
 
     fn setup(&mut self, opts: &GameOpts) -> (Coord, Player) {
@@ -461,12 +780,16 @@ impl Manager {
     fn validate(&mut self, move_coord: &Coord, curr_player: &Player) {
         if self.is_switch() && Some(*curr_player) != self.get_prev_player() {
             // TODO: Generate unsuccessful poll game results
-            unimplemented!()
+            self.failed_poll(PollError::NotPlayersTurn);
+            // Leave
+            return;
         }
 
         match self.get_position(move_coord) {
             Some(p) => match p.as_tuple() {
-                (true, Some(_p)) if _p == *curr_player => self.move_out(move_coord, curr_player),
+                (true, Some(_p)) if _p == *curr_player && self.is_switch()
+                    => self.failed_poll(PollError::AttackingSelf),
+                (true, Some(_p)) if _p == *curr_player => self.move_out(move_coord),
                 (true, Some(_p)) => self.move_attack(move_coord, curr_player),
                 (true, _) => panic!(
                     "Invalid game state: PositionStatus of (true, None) matched in fn validate"
@@ -478,50 +801,124 @@ impl Manager {
             },
             None => panic!("Invalid game state: `position` value that does not exist matched in fn `validate`")
         };
-        self.update_board(&curr_player, &move_coord);
     }
 
-    fn failed_poll(&self) -> (Handle, Trigger, Board) {
-        unimplemented!()
+    fn failed_poll(&mut self, cause: PollError) {
+        match cause {
+            // TODO: Integrate error type into ActionResult/Returned values to exported module?
+            // PollError::AttackingSelf => ,
+            // PollError::InvalidPosition => ,
+            // PollError::NotPlayersTurn => ,
+            _ => self.state.set_state(Handle::Err, self.get_prev_trigger()),
+        }
     }
 
-    fn move_out(&mut self, xy: &Coord, curr_player: &Player) {
+    fn set_result(&mut self) {
+        let ((p1_set, p1_count), (p2_set, p2_count)) = self.get_player_counts();
+        if p1_count < 3 {
+            self.state.set_state(Handle::Ok, Trigger::Lose)
+        } else if p2_count < 3 {
+            self.state.set_state(Handle::Ok, Trigger::Win)
+        } else if p1_count == 3 || p2_count == 3 {
+            self.state.set_state(Handle::Ok, Trigger::Flying)
+        } else if p1_set == 9 && p2_set == 9 {
+            self.state.set_state(Handle::Ok, Trigger::Elimination)
+        } else {
+            self.state.set_state(Handle::Ok, Trigger::Placement)
+        }
+    }
+
+    fn add_result_to_history(&mut self, player: &Player, coord: &Coord) {
+        self.history.push(ActionResult {
+            sender: *player,
+            board: self.get_board(),
+            position: *coord,
+            trigger: self.state.get_trigger(),
+            handle: self.state.get_handle(),
+        })
+    }
+
+    fn move_out(&mut self, xy: &Coord) {
         self.unset_position(xy);
         self.set_switch(true);
-        // TODO: set_actionresult again
     }
 
     fn move_into(&mut self, xy: &Coord, curr_player: &Player) {
         let prev_trig = self.get_prev_trigger();
+
         if (prev_trig == Trigger::None || prev_trig == Trigger::Placement)
             && self.player_pieces_set(curr_player) < 9
         {
             self.inc_player_pieces_set(curr_player);
         }
 
-        self.set_position(*xy, *curr_player);
-        // TODO: Should we check for new mills here?
-        // TODO: New mill => ability to take an attack immediately after, w/o changing turns.
-        // TODO: set_actionresult
+        let prev_mills = self.get_player_mills(curr_player);
+
+        if self.get_prev_trigger() == Trigger::Flying && self.player_pieces_left(curr_player) < 4
+            || self.can_place_piece(curr_player, xy)
+        {
+            self.set_position(*xy, *curr_player);
+            self.update_mills();
+            let updated_mills = self.get_player_mills(curr_player);
+            if self.is_switch()
+                && prev_mills != updated_mills
+                && updated_mills.len() <= prev_mills.len()
+            {
+                self.set_switch(false);
+            }
+        } else {
+            self.failed_poll(PollError::InvalidPosition)
+        }
     }
 
     fn move_attack(&mut self, xy: &Coord, curr_player: &Player) {
-        unimplemented!()
+        match self.can_attack(xy, curr_player) {
+            Some(err) => self.failed_poll(err),
+            None => {
+                self.unset_position(xy);
+                self.dec_player_pieces_given(&self.get_opponent(curr_player));
+                self.set_switch(false);
+            }
+        }
     }
 
-    fn find_mills(&mut self) {
-        unimplemented!()
+    fn update_mills(&mut self) {
+        self.state.update_mills()
     }
 
-    fn has_mill(&mut self) -> bool {
-        unimplemented!()
+    fn get_player_mills(&self, player: &Player) -> Vec<Mill> {
+        self.state.player_mills(player)
     }
 
-    fn update_board(&mut self, player: &Player, pos: &Coord) {
-        // TODO: Should I move the setter one level up into state instead of reaching all the
-        // way into Board? I hate OOP! This shouldn't be a thing I need to even consider! Why
-        // bundle all this state needlessly! Whatever! Figure out what is less horrificaly ugly!
-        self.state.board.update(*pos, PositionStatus::from(*player))
+    fn can_place_piece(&mut self, player: &Player, player_move: &Coord) -> bool {
+        self.state
+            .adj_positions
+            .is_adjacent(&self.player_positions(player), player_move)
+    }
+
+    fn player_positions(&self, player: &Player) -> Vec<Coord> {
+        self.player_positions(player)
+    }
+
+    fn can_attack(&mut self, xy: &Coord, attacker: &Player) -> Option<PollError> {
+        if self.get_player_mills(&Player::PlayerOne).len() == 0 {
+            Some(PollError::NoMillForAttack)
+        // self.failed_poll(PollError::NoMillForAttack);
+        // return false;
+        } else if !self.can_eliminate_piece(xy, attacker) {
+            Some(PollError::CantAttackMill)
+        // self.failed_poll(PollError::CantAttackMill)
+        } else {
+            None
+        }
+    }
+
+    fn can_eliminate_piece(&self, xy: &Coord, attacker: &Player) -> bool {
+        let opp_mills = self.get_player_mills(&self.get_opponent(attacker));
+        let opp_count = self.player_pieces_set(&self.get_opponent(attacker));
+
+        !&opp_mills.iter().any(|m| m.contains(xy))
+            || !&opp_mills.iter().any(|m| m.contains(xy)) && opp_mills.len() == opp_count as usize
     }
 
     pub fn get_curr_state(&self) -> (Handle, Trigger, Board) {
@@ -540,16 +937,25 @@ impl Manager {
         self.state.board.get(xy)
     }
 
-    fn set_position(&mut self, xy: Coord, player: Player) -> Option<PositionStatus> {
-        self.state.board.set(xy, player)
+    fn set_position(&mut self, xy: Coord, player: Player) {
+        self.state.board.set(xy, player);
+        self.update_mills();
     }
 
     fn unset_position(&mut self, xy: &Coord) {
-        self.state.board.unset(xy)
+        self.state.board.unset(xy);
+        self.update_mills();
     }
 
     fn get_settings(&self) -> GameOpts {
         self.settings
+    }
+
+    fn get_opponent(&self, player: &Player) -> Player {
+        match player {
+            Player::PlayerOne => Player::PlayerTwo,
+            _ => Player::PlayerOne,
+        }
     }
 
     fn get_prev_trigger(&self) -> Trigger {
@@ -567,11 +973,17 @@ impl Manager {
     }
 
     fn player_pieces_set(&self, player: &Player) -> u32 {
-        let (count, _) = match player {
-            &Player::PlayerOne => self.state.p1_count,
-            &Player::PlayerTwo => self.state.p2_count,
-        };
-        count
+        match player {
+            &Player::PlayerOne => self.state.p1_count.0,
+            &Player::PlayerTwo => self.state.p2_count.0,
+        }
+    }
+
+    fn player_pieces_left(&self, player: &Player) -> u32 {
+        match player {
+            &Player::PlayerOne => self.state.p1_count.1,
+            &Player::PlayerTwo => self.state.p2_count.1,
+        }
     }
 
     fn inc_player_pieces_set(&mut self, player: &Player) {
@@ -581,11 +993,15 @@ impl Manager {
         };
     }
 
-    fn dec_player_pieces_set(&mut self, player: &Player) {
+    fn dec_player_pieces_given(&mut self, player: &Player) {
         match player {
-            &Player::PlayerOne => self.state.p1_count.0 -= 1,
-            &Player::PlayerTwo => self.state.p2_count.0 -= 1,
+            &Player::PlayerOne => self.state.p1_count.1 -= 1,
+            &Player::PlayerTwo => self.state.p2_count.1 -= 1,
         };
+    }
+
+    fn get_player_counts(&self) -> ((u32, u32), (u32, u32)) {
+        self.state.get_player_counts()
     }
 
     fn set_switch(&mut self, b: bool) {
@@ -672,28 +1088,6 @@ mod base_tests {
     }
 
     #[test]
-    fn test_get_player_pieces() {
-        use super::{Board, GameState};
-        let gs = GameState::new();
-
-        let ((p1, p1_pieces), (p2, p2_pieces)) = gs.get_player_pieces();
-        assert_eq!(p1_pieces, 0);
-        assert_eq!(p2_pieces, 0);
-    }
-
-    #[test]
-    fn test_update_board() {
-        use super::{Board, Coord, GameOpts, Manager, Player, PositionStatus};
-
-        let mut mngr = Manager::new();
-        mngr.set_position(Coord::from_str("A1"), Player::PlayerOne);
-        assert_eq!(
-            Some(&PositionStatus(true, Some(Player::PlayerOne))),
-            mngr.get_position(&Coord::from_str("A1"))
-        )
-    }
-
-    #[test]
     fn test_basic_validate() {
         use super::{Coord, GameOpts, GameState, Manager, Player, PositionStatus};
 
@@ -723,8 +1117,8 @@ mod base_tests {
     }
 
     #[test]
-    fn test_unset_position() {
-        use super::{Coord, GameState, Manager, Player, PositionStatus};
+    fn test_set_position() {
+        use super::{Coord, Manager, Player, PositionStatus};
 
         let mut mgr = Manager::new();
         mgr.set_position(Coord::from_str("A1"), Player::PlayerOne);
@@ -732,6 +1126,15 @@ mod base_tests {
             mgr.get_position(&Coord::from_str("A1")),
             Some(&PositionStatus::from(Player::PlayerOne))
         );
+    }
+
+    #[test]
+    fn test_unset_position() {
+        use super::{Coord, GameState, Manager, Player, PositionStatus};
+
+        let mut mgr = Manager::new();
+        mgr.set_position(Coord::from_str("A1"), Player::PlayerOne);
+
         mgr.unset_position(&Coord::from_str("A1"));
         assert_eq!(
             mgr.get_position(&Coord::from_str("A1")),
@@ -740,7 +1143,147 @@ mod base_tests {
     }
 
     #[test]
+    fn test_move_into_position_new_board() {
+        use super::{Coord, Manager, Player, PositionStatus};
+
+        let mut mgr = Manager::new();
+        mgr.move_into(&Coord::from_str("A1"), &Player::PlayerOne);
+
+        assert_eq!(
+            mgr.get_position(&Coord::from_str("A1")),
+            Some(&PositionStatus::from(Player::PlayerOne))
+        )
+    }
+
+    #[test]
+    fn test_move_out_position() {
+        use super::{Coord, Manager, Player, PositionStatus};
+
+        let mut mgr = Manager::new();
+        mgr.move_into(&Coord::from_str("A1"), &Player::PlayerOne);
+
+        mgr.move_out(&Coord::from_str("A1"));
+        assert_eq!(
+            mgr.get_position(&Coord::from_str("A1")),
+            Some(&PositionStatus::new())
+        )
+    }
+
+    #[test]
     fn test_incomplete_switch() {
-        // TODO test where switch = true but it's a different player than previous turn.
+        use super::{Coord, Manager, Player, PositionStatus};
+
+        let mut mgr = Manager::new();
+        mgr.move_into(&Coord::from_str("A1"), &Player::PlayerOne);
+    }
+
+    #[test]
+    fn test_adjacency_position_list_default() {
+        use super::{AdjacentPositionList, Coord, Position, PositionList, PositionNode};
+        use crate::util::get_adjacency_vec;
+
+        let apl = AdjacentPositionList::default();
+
+        let a1_list = apl.get(&Coord::from_str("A1")).unwrap();
+
+        let g7_list = apl.get(&Coord::from_str("G7")).unwrap();
+
+        assert_eq!(
+            a1_list.head.as_ref().unwrap().as_ref().borrow().data,
+            Coord::from_str("A1")
+        );
+        assert_eq!(
+            g7_list.head.as_ref().unwrap().as_ref().borrow().data,
+            Coord::from_str("G7")
+        );
+    }
+
+    #[test]
+    fn test_AdjPosList_PosList_iterators() {
+        use super::{
+            AdjacencyIterator, AdjacentPositionList, Coord, Position, PositionList, PositionNode,
+        };
+
+        let apl = AdjacentPositionList::default();
+
+        let a1 = Coord::from_str("A1");
+        for (xy, pos) in &apl {
+            if *xy == a1 {
+                assert_eq!(
+                    pos.clone().into_iter().next().unwrap().data,
+                    Coord::from_str("A1")
+                )
+            }
+        }
+    }
+
+    #[test]
+    fn test_detect_mills_col() {
+        use super::{Coord, MillMap};
+
+        let player_pos_col = vec![
+            Coord::from_str("A1"),
+            Coord::from_str("A4"),
+            Coord::from_str("A7"),
+        ];
+
+        let mill_map = MillMap::default();
+
+        assert_eq!(
+            mill_map.detect_mills(&player_pos_col),
+            vec![[
+                Coord::from_str("A1"),
+                Coord::from_str("A4"),
+                Coord::from_str("A7"),
+            ]]
+        )
+    }
+
+    #[test]
+    fn test_detect_mills_col_none() {
+        use super::{Coord, MillMap};
+
+        let player_pos_col = vec![Coord::from_str("A1"), Coord::from_str("A7")];
+
+        let mill_map = MillMap::default();
+
+        assert_eq!(
+            mill_map.detect_mills(&player_pos_col),
+            Vec::<[Coord; 3]>::new()
+        )
+    }
+
+    #[test]
+    fn test_detect_mills_row() {
+        use super::{Coord, MillMap};
+
+        let player_pos_row = vec![
+            Coord::from_str("A1"),
+            Coord::from_str("D1"),
+            Coord::from_str("G1"),
+        ];
+        let mill_map = MillMap::default();
+
+        assert_eq!(
+            mill_map.detect_mills(&player_pos_row),
+            vec![[
+                Coord::from_str("A1"),
+                Coord::from_str("D1"),
+                Coord::from_str("G1"),
+            ]]
+        )
+    }
+
+    #[test]
+    fn test_detect_mills_row_none() {
+        use super::{Coord, MillMap};
+
+        let player_pos_row = vec![Coord::from_str("A1"), Coord::from_str("G1")];
+        let mill_map = MillMap::default();
+
+        assert_eq!(
+            mill_map.detect_mills(&player_pos_row),
+            Vec::<[Coord; 3]>::new()
+        )
     }
 }
