@@ -571,7 +571,7 @@
     - add impl tasks stubs to reflect stubs in stub section
     - (all things missed in sprint 2 docs)
     - diagram event loop
-** Meeting 2019
+** Meeting 2019.11.15
    - Duration: 2 hour
    - Location: Miller Nichols Library
 *** Agenda
@@ -606,3 +606,19 @@
 *** TODO
     - AC!
     - Documenting all the changes done thus far instead of waiting until submission time!
+** Meeting 2019.12.06
+   - Duration: 2 Hour
+   - Location: Miller Nichols Library
+*** Agenda
+    - Finalizing AI logic
+    - Presentation preparation
+    - Finalizing UI stuff
+*** AI Logic
+    - Attacking and piece placement behavior
+      + Choosing intelligently
+      + Blocking "potential" enemy mills by searching board space for 2 sequential pieces
+    - Move validation, verification
+    - Integration into polling
+*** Presentation
+    - Slides
+    - Material to discuss
