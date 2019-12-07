@@ -5,6 +5,13 @@ use std::io::BufReader;
 
 use crate::Coord;
 
+pub fn get_adjacency_vec(game_layout: &str) -> Vec<Vec<Coord>> {
+    match read_position_file(game_layout) {
+        Ok(vec_str) => read_positions(vec_str),
+        Err(e) => panic!("Error while reading position file: {:#?}", e),
+    }
+}
+
 fn read_positions(lines: Vec<String>) -> Vec<Vec<Coord>> {
     let mut adjacent: Vec<Coord> = vec![];
     let mut adjList: Vec<Vec<Coord>> = vec![];
