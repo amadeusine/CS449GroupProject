@@ -169,6 +169,7 @@ pub struct Manager {
     state: GameState,
     history: Vec<ActionResult>,
     settings: GameOpts,
+    ai_turn: bool,
 }
 
 impl XCoord {
@@ -472,6 +473,44 @@ impl MillMap {
         }
         player_mills
     }
+
+    fn detect_potential_mills(&self, player_pos: &Vec<Coord>) -> Vec<Coord> {
+        let mut move_candidates = vec![];
+
+        for (_, mill) in self.0.iter() {
+            let _ = match mill {
+                (m, Some(opt_m)) => {
+                    let x: Vec<_> = m.iter().filter(|m| player_pos.contains(m)).collect();
+                    if x.len() == 2 {
+                        for _m in m {
+                            if !player_pos.contains(_m) {
+                                move_candidates.push(*_m);
+                            }
+                        }
+                    }
+                    let x: Vec<_> = opt_m.iter().filter(|m| player_pos.contains(m)).collect();
+                    if x.len() == 2 {
+                        for _m in opt_m {
+                            if !player_pos.contains(_m) {
+                                move_candidates.push(*_m);
+                            }
+                        }
+                    }
+                }
+                (m, None) => {
+                    let x: Vec<_> = m.iter().filter(|m| player_pos.contains(m)).collect();
+                    if x.len() == 2 {
+                        for _m in m {
+                            if !player_pos.contains(_m) {
+                                move_candidates.push(*_m);
+                            }
+                        }
+                    }
+                }
+            };
+        }
+        move_candidates
+    }
 }
 
 impl Mill {
@@ -682,6 +721,40 @@ impl GameState {
         self.curr_mills.append(&mut p1_mills);
     }
 
+    fn potential_mills(&self, player: &Player) -> Vec<Coord> {
+        let mut positions: Vec<Coord> = vec![];
+        let mut potent_mills = vec![];
+
+        for (xy, pos) in &self.board {
+            match (*pos).as_tuple() {
+                (true, Some(p)) if p == *player => positions.push(*xy),
+                (true, _) => panic!("matched PositionStatus true with None in find_mills"),
+                (false, _) => continue,
+            }
+        }
+        if positions.len() > 2 {
+            for coord in self.mills.detect_potential_mills(&positions) {
+                match self.board.get(&coord) {
+                    Some(_) => continue,
+                    _ => potent_mills.push(coord),
+                }
+            }
+        }
+        potent_mills
+    }
+
+    fn find_empty_position(&self) -> Coord {
+        let mut empty_move: Coord;
+        for (xy, pos) in &self.board {
+            empty_move = match (*pos).as_tuple() {
+                (false, _) => *xy,
+                _ => continue,
+            };
+        }
+
+        empty_move
+    }
+
     fn player_mills(&self, player: &Player) -> Vec<Mill> {
         self.curr_mills
             .clone()
@@ -744,6 +817,7 @@ impl Manager {
             state: GameState::new(),
             history: vec![],
             settings: GameOpts::new(),
+            ai_turn: false,
         }
     }
 
@@ -753,14 +827,18 @@ impl Manager {
 
     pub fn poll(&mut self, opts: GameOpts) -> (Handle, Trigger, Board) {
         // Get what we need out of the GameOpts struct.
-        let (move_coord, curr_player) = self.setup(&opts);
+        if self.ai_turn {
+        } else {
+            let (move_coord, curr_player) = self.setup(&opts);
+            // Actual poll logic starts here.
+            self.set_result();
+            self.validate(&move_coord, &curr_player);
+            self.add_result_to_history(&curr_player, &move_coord);
+        }
 
-        // Actual poll logic starts here.
-        self.validate(&move_coord, &curr_player);
         // TODO: generate action result, whether in validate, a method called within validate, etc
         // TODO: Add action result to history after deciding where to generate it
-        self.set_result();
-        self.add_result_to_history(&curr_player, &move_coord);
+
         self.get_curr_state()
     }
 
@@ -775,6 +853,26 @@ impl Manager {
             None => panic!("Poll called without a `position` value in GameOpts struct"),
         };
         (move_coord, curr_player)
+    }
+
+    fn ai_move(&mut self) {
+        let (defensive_moves, offensive_moves) = self.find_moves();
+
+        if defensive_moves.len() > 0 {
+        } else if offensive_moves.len() > 0 {
+        } else {
+        }
+    }
+
+    fn find_moves(&self) -> (Vec<Coord>, Vec<Coord>) {
+        (
+            self.state.potential_mills(&Player::PlayerOne),
+            self.state.potential_mills(&Player::PlayerTwo),
+        )
+    }
+
+    fn find_empty_position(&self) -> Coord {
+        self.state.find_empty_position()
     }
 
     fn validate(&mut self, move_coord: &Coord, curr_player: &Player) {
